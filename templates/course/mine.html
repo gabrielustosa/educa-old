@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Meus cursos
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row row-cols-auto">
+            {% for course in courses %}
+                <div class="col pb-3">
+                    <div class="card pt-3" style="width: 13rem;">
+                        <a href="#" class="text-decoration-none">
+                            <img class="card-img-top" src="{{ course.image.url }}" alt="Post image">
+                            <div class="card-body" style="color: black;">
+                                <h5 class="card-title">{{ course.title }}</h5>
+                                <p class="card-text" style="font-size: 16px;">{{ course.description }}</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            {% empty %}
+                <h2 class="mx-auto pt-5">Você ainda não tem nenhum curso.</h2>
+            {% endfor %}
+        </div>
+        {% if perms.course.can_add_course %}
+            <a href="" class="btn btn-primary position-absolute bottom-0 end-0 m-4">Criar novo curso</a>
+        {% endif %}
+        {% include 'partials/_paginator.html' %}
+    </div>
+{% endblock %}
