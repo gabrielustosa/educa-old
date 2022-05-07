@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 
 from educa.apps.subject.models import Subject
 
@@ -28,6 +29,10 @@ class Course(models.Model):
 
     class Meta:
         ordering = ['-created']
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Course, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title

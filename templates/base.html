@@ -13,13 +13,17 @@
             font-size: 22px;
         }
 
+        .selected {
+            background-color: #82ea46;
+        }
+
 
     </style>
 </head>
 <body>
 <header class="d-flex bg-primary pt-1">
     <div class="m-auto">
-        <a href="#" class="text-white text-decoration-none">
+        <a href="/" class="text-white text-decoration-none">
             <h2>CURSOS</h2>
         </a>
     </div>
@@ -32,6 +36,7 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="{% url 'logout' %}">Deslogar</a></li>
+                    <li><a class="dropdown-item" href="{% url 'course:mine' %}">Seus cursos</a></li>
                 </ul>
             {% else %}
                 <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button"
@@ -48,6 +53,7 @@
 </header>
 
 {% block content %}{% endblock %}
+{% block javascript %}{% endblock %}
 {% bootstrap_javascript %}
 </body>
 </html>

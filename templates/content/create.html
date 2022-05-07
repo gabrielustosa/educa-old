@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% load bootstrap5 %}
+
+{% block title %}
+    Criando curso
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="text-center">Adicionar conteúdo</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+                <button type="submit" class="btn btn-primary">Criar</button>
+            {% endbuttons %}
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% load course %}
+
+{% block title %}
+    Detalhes do módulo - {{ module.title }}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="mt-4 shadow-lg">
+                    <h5 class="text-center">Conteúdos</h5>
+                    <div class="row row-cols-auto">
+                        {% for content in contents %}
+                            <div class="col-6">
+                                <div class="card m-2">
+                                    <div class="card-header" style="font-weight: bold;">
+                                        {{ content.item.title }} ({{ content.item|model_name }})
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="card-text">
+                                            <div class="d-flex justify-content-between"><a href="">Editar</a> <a
+                                                    href="">Deletar</a></div>
+                                            <p class="text-center"><a href="">Gerenciar Conteúdo</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <h3 class="pt-4">Adicionar conteúdo</h3>
+                <div class="d-flex gap-2">
+                    {% for option in "Texto, Vídeo, Arquivo, Imagem"|create_list %}
+                        <a href="#" class="btn btn-sm btn-primary">
+                            {{ option }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

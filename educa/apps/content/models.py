@@ -50,14 +50,26 @@ class ItemBase(models.Model):
 class Text(ItemBase):
     content = models.TextField()
 
+    class Meta:
+        verbose_name = 'Texto'
+
 
 class File(ItemBase):
     file = models.FileField(upload_to='files')
+
+    class Meta:
+        verbose_name = 'Arquivo'
 
 
 class Image(ItemBase):
     image = models.ImageField(upload_to='images')
 
+    class Meta:
+        verbose_name = 'Imagem'
+
 
 class Video(ItemBase):
     url = models.URLField()
+
+    class Meta:
+        verbose_name = 'Vídeo'

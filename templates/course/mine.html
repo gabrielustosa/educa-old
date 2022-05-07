@@ -13,10 +13,57 @@
                         <a href="#" class="text-decoration-none">
                             <img class="card-img-top" src="{{ course.image.url }}" alt="Post image">
                             <div class="card-body" style="color: black;">
-                                <h5 class="card-title">{{ course.title }}</h5>
-                                <p class="card-text" style="font-size: 16px;">{{ course.description }}</p>
+                                <h5 class="card-title text-dark">{{ course.title }}</h5>
+                                <div class="d-flex flex-column gap-2 pb-2">
+                                    <a class="btn btn-primary" data-bs-toggle="modal"
+                                       data-bs-target="#courseModal-{{ course.id }}">
+                                        Adicionar
+                                    </a>
+                                    <a href="" class="btn btn-primary">
+                                        Editar
+                                    </a>
+                                    <a href="" class="btn btn-primary">
+                                        Deletar
+                                    </a>
+                                </div>
                             </div>
                         </a>
+                    </div>
+                </div>
+                <div class="modal fade" id="courseModal-{{ course.id }}" tabindex="-1" aria-labelledby="courseModal"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="wishModal">Selecione um módulo.</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                {% for module in course.modules.all %}
+                                    <a href="{% url 'module:detail' module.id %}"
+                                       class="text-decoration-none text-dark">
+                                        <div class="card mx-auto mb-3" style="width: 80%;">
+                                            <div class="card-header" style="font-weight: bold;">
+                                                {{ module.title }}
+                                            </div>
+                                            <div class="card-body">
+                                                <p class="card-text">
+                                                    {{ module.description }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                {% empty %}
+                                    <p class="text-center pb-2">Não há módulos.</p>
+                                {% endfor %}
+                                <div class="text-center pb-2">
+                                    <a href="{% url 'module:create' course.id %}" class="btn btn-primary btn-sm">
+                                        Criar novo Módulo
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             {% empty %}
@@ -24,7 +71,8 @@
             {% endfor %}
         </div>
         {% if perms.course.can_add_course %}
-            <a href="" class="btn btn-primary position-absolute bottom-0 end-0 m-4">Criar novo curso</a>
+            <a href="{% url 'course:create' %}" class="btn btn-primary position-absolute bottom-0 end-0 m-4">Criar novo
+                curso</a>
         {% endif %}
         {% include 'partials/_paginator.html' %}
     </div>
