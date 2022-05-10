@@ -1,3 +1,4 @@
+from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
@@ -47,3 +48,14 @@ class ModuleDetailView(
         context['contents'] = Content.objects.filter(module=module).order_by('order')
         context['module'] = module
         return context
+
+
+class ModuleOrderView(
+    CsrfExemptMixin,
+    JsonRequestResponseMixin,
+    TemplateView
+):
+    def post(self, request):
+        for module_id, order in self.request_json.items():
+            Module.objects.filter(id=module_id).update(order=order)
+        return self.render_json_response({'saved': 'OK'})

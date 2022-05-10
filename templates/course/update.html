@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+
+{% block title %}
+    Editando curso - {{ object.title }}
+{% endblock %}
+
+{% block content %}
+    <div class="container pt-5">
+        <div class="row">
+            <div class="col">
+                <form method="post">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    {% buttons %}
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    {% endbuttons %}
+                </form>
+            </div>
+            <div class="col">
+                <h3>Ordem dos módulos</h3>
+                <div class="contents bg-secondary py-3 border border-dark" style="width: 60%;">
+                    <ul id="modules" style="list-style-type: none;">
+                        {% for module in modules %}
+                            <li data-id="{{ module.id }}">
+                                <a href="{% url 'module:detail' module.id %}" class="text-decoration-none">
+                              <span class="text-white">
+                                Módulo #<span class="order">{{ module.order|add:1 }}</span>
+                              </span>
+                                    <br>
+                                    <span class="text-dark">
+                                    {{ module.title }}
+                                        </span>
+                                </a>
+                            </li>
+                        {% empty %}
+                            <li>Seu curso ainda não possui módulos.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(document).ready(() => {
+            $('#modules').sortable({
+                stop: function (event, ui) {
+                    modules_order = {};
+                    $('#modules').children().each(function () {
+                        $(this).find('.order').text($(this).index() + 1);
+                        modules_order[$(this).data('id')] = $(this).index();
+                    });
+                    $.ajax({
+                        type: 'POST',
+                        url: '{% url 'module:order' %}',
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        data: JSON.stringify(modules_order)
+                    });
+                }
+            });
+        })
+    </script>
+{% endblock %}

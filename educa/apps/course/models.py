@@ -13,13 +13,14 @@ class Course(models.Model):
     )
     subject = models.ForeignKey(
         Subject,
+        verbose_name='Matéria',
         related_name='courses',
         on_delete=models.CASCADE
     )
-    title = models.CharField(max_length=200)
+    title = models.CharField('Título', max_length=200)
     slug = models.SlugField(unique=True)
-    description = models.TextField()
-    image = models.ImageField()
+    description = models.TextField('Descrição')
+    image = models.ImageField('Imagem')
     created = models.DateField(auto_now_add=True)
     students = models.ManyToManyField(
         User,

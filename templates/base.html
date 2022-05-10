@@ -13,11 +13,6 @@
             font-size: 22px;
         }
 
-        .selected {
-            background-color: #82ea46;
-        }
-
-
     </style>
 </head>
 <body>
@@ -53,6 +48,8 @@
 </header>
 
 {% block content %}{% endblock %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 {% block javascript %}{% endblock %}
 {% bootstrap_javascript %}
 </body>
