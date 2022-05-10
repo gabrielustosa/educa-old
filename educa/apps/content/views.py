@@ -1,11 +1,12 @@
 from django.apps import apps
+from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.forms import modelform_factory
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
-from django.views.generic import TemplateView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import TemplateView, DeleteView
 
-from educa.apps.content.models import Content, Text
+from educa.apps.content.models import Content
 from educa.apps.module.models import Module
 
 
@@ -73,3 +74,14 @@ class ContentCreateUpdateView(
         context['object'] = self.object
 
         return render(request, self.template_name, context=context)
+
+
+class ContentDeleteView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DeleteView,
+):
+    template_name = 'content/delete.html'
+    model = Content
+    success_url = reverse_lazy('course:mine')
+    permission_required = 'content.delete_content'

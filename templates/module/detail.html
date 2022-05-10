@@ -14,23 +14,26 @@
                     <h5 class="text-center">Conteúdos</h5>
                     <div class="row row-cols-auto">
                         {% for content in contents %}
-                            <div class="col-6">
-                                <div class="card m-2">
-                                    <div class="card-header" style="font-weight: bold;">
-                                        {{ content.item.title }} ({{ content.item|model_verbose }})
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="card-text">
-                                            <div class="d-flex justify-content-between">
-                                                <a href="
-                                                        {% url 'content:update' module.id  content.item|model_name  content.item.id %}">
-                                                    Editar</a>
-                                                <a href="">Deletar</a></div>
-                                            <p class="text-center"><a href="">Gerenciar Conteúdo</a></p>
+                            {% with item=content.item %}
+                                <div class="col-6">
+                                    <div class="card m-2">
+                                        <div class="card-header" style="font-weight: bold;">
+                                            {{ item.title }} ({{ item|model_verbose }})
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <a href="
+                                                        {% url 'content:update' module.id  item|model_name  item.id %}">
+                                                        Editar</a>
+                                                    <a href="{% url 'content:delete' item.id %}">Deletar</a></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            {% endwith %}
+                        {% empty %}
+                            <h5 class="mx-auto pb-2">Este módulo ainda não possui nenhum conteúdo.</h5>
                         {% endfor %}
                     </div>
                 </div>

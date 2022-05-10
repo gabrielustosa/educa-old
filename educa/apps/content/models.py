@@ -36,7 +36,7 @@ class ItemBase(models.Model):
         related_name='%(class)s_related',
         on_delete=models.CASCADE
     )
-    title = models.CharField(max_length=250)
+    title = models.CharField('Título', max_length=250)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -48,28 +48,28 @@ class ItemBase(models.Model):
 
 
 class Text(ItemBase):
-    content = models.TextField()
+    content = models.TextField(verbose_name='Conteúdo')
 
     class Meta:
         verbose_name = 'Texto'
 
 
 class File(ItemBase):
-    file = models.FileField(upload_to='files')
+    file = models.FileField(verbose_name='Arquivo', upload_to='files')
 
     class Meta:
         verbose_name = 'Arquivo'
 
 
 class Image(ItemBase):
-    image = models.ImageField(upload_to='images')
+    image = models.ImageField(verbose_name='Imagem', upload_to='images')
 
     class Meta:
         verbose_name = 'Imagem'
 
 
 class Video(ItemBase):
-    url = models.URLField()
+    url = models.URLField(verbose_name='Vídeo')
 
     class Meta:
         verbose_name = 'Vídeo'

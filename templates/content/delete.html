@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+
+{% block title %}
+    Excluir Conteúdo
+{% endblock %}
+
+{% block content %}
+    <div class="container text-center pt-5">
+        <form method="post">
+            {% csrf_token %}
+            <p>Você tem certeza que você quer excluir o conteúdo "{{ object.item.title }}"?</p>
+            {% buttons %}
+                <button type="submit" class="btn btn-danger">Confirmar</button>
+                <button type="submit" class="btn btn-warning">
+                    <a href="{% url 'course:mine' %}" class="text-decoration-none text-white">Cancelar</a>
+                </button>
+            {% endbuttons %}
+        </form>
+    </div>
+{% endblock %}
