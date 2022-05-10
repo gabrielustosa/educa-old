@@ -29,8 +29,8 @@ urlpatterns = [
     path('accounts/logout/', views_login.LogoutView.as_view(), name='logout'),
     path('students/', include('educa.apps.student.urls')),
     path('course/', include('educa.apps.course.urls')),
-    path('course/content/', include('educa.apps.content.urls')),
-    path('course/module/', include('educa.apps.module.urls')),
+    path('content/', include('educa.apps.content.urls')),
+    path('module/', include('educa.apps.module.urls')),
     path('', CourseListView.as_view(), name='home')
 ]
 

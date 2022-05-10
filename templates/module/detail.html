@@ -17,12 +17,15 @@
                             <div class="col-6">
                                 <div class="card m-2">
                                     <div class="card-header" style="font-weight: bold;">
-                                        {{ content.item.title }} ({{ content.item|model_name }})
+                                        {{ content.item.title }} ({{ content.item|model_verbose }})
                                     </div>
                                     <div class="card-body">
                                         <div class="card-text">
-                                            <div class="d-flex justify-content-between"><a href="">Editar</a> <a
-                                                    href="">Deletar</a></div>
+                                            <div class="d-flex justify-content-between">
+                                                <a href="
+                                                        {% url 'content:update' module.id  content.item|model_name  content.item.id %}">
+                                                    Editar</a>
+                                                <a href="">Deletar</a></div>
                                             <p class="text-center"><a href="">Gerenciar Conteúdo</a></p>
                                         </div>
                                     </div>
@@ -35,11 +38,18 @@
             <div class="col">
                 <h3 class="pt-4">Adicionar conteúdo</h3>
                 <div class="d-flex gap-2">
-                    {% for option in "Texto, Vídeo, Arquivo, Imagem"|create_list %}
-                        <a href="#" class="btn btn-sm btn-primary">
-                            {{ option }}
-                        </a>
-                    {% endfor %}
+                    <a href="{% url 'content:create' module.id 'text' %}" class="btn btn-sm btn-primary">
+                        Texto
+                    </a>
+                    <a href="{% url 'content:create' module.id 'video' %}" class="btn btn-sm btn-primary">
+                        Vídeo
+                    </a>
+                    <a href="{% url 'content:create' module.id 'file' %}" class="btn btn-sm btn-primary">
+                        Arquivo
+                    </a>
+                    <a href="{% url 'content:create' module.id 'image' %}" class="btn btn-sm btn-primary">
+                        Imagem
+                    </a>
                 </div>
             </div>
         </div>

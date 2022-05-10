@@ -10,9 +10,9 @@ class StudentRegisterViewTest(TestCase):
         self.assertEqual(view.func.view_class, StudentRegisterView)
 
     def test_student_register_view_returns_status_code_200_OK(self):
-        response = self.client.get(reverse('register'))
+        response = self.client.get()
         self.assertEqual(response.status_code, 200)
 
     def test_student_register_view_loads_correct_template(self):
-        response = self.client.get(reverse('register'))
+        response = self.client.get()
         self.assertTemplateUsed(response, 'registration/register.html')
