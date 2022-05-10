@@ -11,8 +11,8 @@ class Module(models.Model):
         related_name='modules',
         on_delete=models.CASCADE
     )
-    title = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
+    title = models.CharField('Título', max_length=200)
+    description = models.TextField('Descrição', blank=True)
     order = OrderField(blank=True, for_fields=['course'])
 
     def __str__(self):

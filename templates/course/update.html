@@ -19,7 +19,7 @@
             </div>
             <div class="col">
                 <h3>Ordem dos módulos</h3>
-                <div class="contents bg-secondary py-3 border border-dark" style="width: 60%;">
+                <div class="contents bg-secondary py-3 border border-dark" style="width: 70%;">
                     <ul id="modules" style="list-style-type: none;">
                         {% for module in modules %}
                             <li data-id="{{ module.id }}">
@@ -37,6 +37,11 @@
                             <li>Seu curso ainda não possui módulos.</li>
                         {% endfor %}
                     </ul>
+                </div>
+                <div class="pt-2">
+                    <a href="{% url 'module:create' course.id %}" class="btn btn-primary btn-sm">
+                        Criar novo Módulo
+                    </a>
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import ListView, TemplateView, CreateView, UpdateView
+from django.views.generic import ListView, TemplateView, CreateView, UpdateView, DeleteView
 
 from educa.apps.course.models import Course
 from educa.apps.module.models import Module
@@ -49,9 +49,20 @@ class CourseUpdateView(
     model = Course
     fields = ['title', 'description', 'subject', 'image']
     success_url = reverse_lazy('course:mine')
-    permission_required = 'courses.delete_course'
+    permission_required = 'courses.change_course'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['modules'] = Module.objects.filter(course=self.get_object())
         return context
+
+
+class CourseDeleteView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DeleteView,
+):
+    template_name = 'course/delete.html'
+    model = Course
+    success_url = reverse_lazy('course:mine')
+    permission_required = 'courses.delete_course'

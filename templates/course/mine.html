@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row row-cols-auto">
             {% for course in courses %}
-                <div class="col pb-3">
+                <div class="col py-3">
                     <div class="card pt-3" style="width: 13rem;">
                         <a href="#" class="text-decoration-none">
                             <img class="card-img-top" src="{{ course.image.url }}" alt="Post image">
@@ -22,7 +22,7 @@
                                     <a href="{% url 'course:update' course.id %}" class="btn btn-primary">
                                         Editar
                                     </a>
-                                    <a href="" class="btn btn-primary">
+                                    <a href="{% url 'course:delete' course.id %}" class="btn btn-primary">
                                         Deletar
                                     </a>
                                 </div>
