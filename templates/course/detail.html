@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load course %}
+
 {% block title %}
     Curso - {{ course.title }}
 {% endblock %}
@@ -34,7 +36,16 @@
                     <img src="{{ course.image.url }}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title text-start">{{ course.title }}</h5>
-                        <a href="#" class="btn btn-primary mt-3" style="width: 16rem;">Inscreva-se</a>
+                        {% if request.user|student_is_enrolled:course.id %}
+                            <a href="#" class="btn btn-primary mt-3" style="width: 16rem;">Acessar</a>
+                        {% else %}
+                            <form method="post" action="{% url 'course:enrroll' course.id %}">
+                                {% csrf_token %}
+                                <button class="btn btn-primary mt-3"
+                                        style="width: 16rem;">Inscreva-se
+                                </button>
+                            </form>
+                        {% endif %}
                     </div>
                 </div>
             </div>

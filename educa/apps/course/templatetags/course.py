@@ -1,5 +1,7 @@
 from django import template
 
+from educa.apps.course.models import Course
+
 register = template.Library()
 
 
@@ -20,5 +22,7 @@ def model_verbose(obj):
 
 
 @register.filter
-def create_list(values):
-    return values.split(',')
+def student_is_enrolled(user, course_id):
+    if user.is_anonymous:
+        return False
+    return Course.objects.filter(id=course_id).filter(students=user).exists()
