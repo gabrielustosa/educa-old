@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Curso - {{ course.title }}
+{% endblock %}
+
+{% block content %}
+    <div class="container pt-4">
+        <div class="row">
+            <div class="col-8">
+                <div>
+                    <h3>{{ course.title }}</h3>
+                    <p>{{ course.description }}</p>
+                    <p>Criado por: {{ course.owner.get_full_name }}</p>
+                </div>
+                {% for module in course.modules.all %}
+                    <div class="dropdown">
+                        <div class="d-flex justify-content-between align-items-center border border-dark"
+                             data-bs-toggle="dropdown"
+                             aria-expanded="false" style="width: 40vw;">
+                            <p>{{ module.title }}</p>
+                            <p>{{ module.get_total_lessons }} aulas</p>
+                        </div>
+                        <div class="dropdown-menu  border border-dark" style="width: 40vw;">
+                            {% for lesson in module.lessons.all %}
+                                <div class="dropdown-item disabled text-dark">{{ lesson.title }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col text-center">
+                <div class="card" style="width: 18rem;">
+                    <img src="{{ course.image.url }}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title text-start">{{ course.title }}</h5>
+                        <a href="#" class="btn btn-primary mt-3" style="width: 16rem;">Inscreva-se</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

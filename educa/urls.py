@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as views_login
 
-from educa.apps.course.views import CourseListView
+from educa.apps.course.views.views import CourseListView
 from educa.apps.student.views import StudentRegisterView
 
 urlpatterns = [

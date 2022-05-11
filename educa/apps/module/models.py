@@ -1,8 +1,7 @@
 from django.db import models
 
 from educa.apps.course.models import Course
-
-from .fields import OrderField
+from educa.apps.module.fields import OrderField
 
 
 class Module(models.Model):
@@ -15,8 +14,12 @@ class Module(models.Model):
     description = models.TextField('Descrição', blank=True)
     order = OrderField(blank=True, for_fields=['course'])
 
+    class Meta:
+        ordering = ['order']
+
     def __str__(self):
         return f'{self.order}. {self.title}'
 
-    class Meta:
-        ordering = ['order']
+    def get_total_lessons(self):
+        from educa.apps.lesson.models import Lesson
+        return Lesson.objects.filter(module=self).count()

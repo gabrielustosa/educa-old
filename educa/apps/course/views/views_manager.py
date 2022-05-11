@@ -1,27 +1,9 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import ListView, TemplateView, CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView, DeleteView
 
 from educa.apps.course.models import Course
 from educa.apps.module.models import Module
-
-
-class CourseListView(ListView):
-    template_name = 'course/list.html'
-    model = Course
-    paginate_by = 6
-    context_object_name = 'courses'
-
-
-class CourseOwnerListView(
-    LoginRequiredMixin,
-    CourseListView,
-):
-    template_name = 'course/mine.html'
-
-    def get_queryset(self):
-        queryset = super(CourseOwnerListView, self).get_queryset()
-        return queryset.filter(owner=self.request.user)
 
 
 class CourseCreateView(

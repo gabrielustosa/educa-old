@@ -26,7 +26,7 @@ class LessonCreateView(
         return module
 
     def form_valid(self, form):
-        form.instance.lesson = self.get_module()
+        form.instance.module = self.get_module()
         return super().form_valid(form)
 
 
