@@ -3,13 +3,13 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
+from educa.apps.lesson.models import Lesson
 from educa.apps.module.fields import OrderField
-from educa.apps.module.models import Module
 
 
 class Content(models.Model):
-    module = models.ForeignKey(
-        Module,
+    lesson = models.ForeignKey(
+        Lesson,
         related_name='contents',
         on_delete=models.CASCADE
     )
@@ -24,7 +24,7 @@ class Content(models.Model):
     )
     object_id = models.PositiveIntegerField()
     item = GenericForeignKey('content_type', 'object_id')
-    order = OrderField(blank=True, for_fields=['module'])
+    order = OrderField(blank=True, for_fields=['lesson'])
 
     class Meta:
         ordering = ['order']
@@ -66,10 +66,3 @@ class Image(ItemBase):
 
     class Meta:
         verbose_name = 'Imagem'
-
-
-class Video(ItemBase):
-    url = models.URLField(verbose_name='Vídeo')
-
-    class Meta:
-        verbose_name = 'Vídeo'

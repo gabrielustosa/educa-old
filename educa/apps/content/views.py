@@ -1,5 +1,4 @@
 from django.apps import apps
-from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.forms import modelform_factory
 from django.shortcuts import get_object_or_404, redirect, render
@@ -7,7 +6,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, DeleteView
 
 from educa.apps.content.models import Content
-from educa.apps.module.models import Module
+from educa.apps.lesson.models import Lesson
 
 
 class ContentCreateUpdateView(
@@ -17,7 +16,7 @@ class ContentCreateUpdateView(
 ):
     template_name = 'content/create.html'
     permission_required = 'content.add_content'
-    module = None
+    lesson = None
     model = None
     object = None
 
@@ -36,7 +35,7 @@ class ContentCreateUpdateView(
         return form(*args, **kwargs)
 
     def setup(self, request, *args, **kwargs):
-        self.module = get_object_or_404(Module, id=kwargs.get('module_id'))
+        self.lesson = get_object_or_404(Lesson, id=kwargs.get('lesson_id'))
         self.model = self.get_model(kwargs.get('model_name'))
         object_id = kwargs.get('object_id')
         if object_id:
@@ -64,10 +63,10 @@ class ContentCreateUpdateView(
             obj.save()
             if not self.kwargs.get('object_id'):
                 Content.objects.create(
-                    module=self.module,
+                    lesson=self.lesson,
                     item=obj
                 )
-            return redirect(reverse('module:detail', kwargs={'module_id': self.module.id}))
+            return redirect(reverse('lesson:detail', kwargs={'lesson_id': self.lesson.id}))
 
         context = super().get_context_data()
         context['form'] = form

@@ -33,7 +33,7 @@ class CourseCreateView(
     model = Course
     fields = ['title', 'description', 'subject', 'image']
     success_url = reverse_lazy('course:mine')
-    permission_required = 'courses.add_course'
+    permission_required = 'course.add_course'
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
@@ -49,7 +49,7 @@ class CourseUpdateView(
     model = Course
     fields = ['title', 'description', 'subject', 'image']
     success_url = reverse_lazy('course:mine')
-    permission_required = 'courses.change_course'
+    permission_required = 'course.change_course'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -65,4 +65,4 @@ class CourseDeleteView(
     template_name = 'course/delete.html'
     model = Course
     success_url = reverse_lazy('course:mine')
-    permission_required = 'courses.delete_course'
+    permission_required = 'course.delete_course'

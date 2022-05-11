@@ -8,53 +8,87 @@
 
 {% block content %}
     <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="mt-4 shadow-lg">
-                    <h5 class="text-center">Conteúdos</h5>
-                    <div class="row row-cols-auto">
-                        {% for content in contents %}
-                            {% with item=content.item %}
-                                <div class="col-6">
-                                    <div class="card m-2">
-                                        <div class="card-header" style="font-weight: bold;">
-                                            {{ item.title }} ({{ item|model_verbose }})
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <a href="
-                                                        {% url 'content:update' module.id  item|model_name  item.id %}">
-                                                        Editar</a>
-                                                    <a href="{% url 'content:delete' item.id %}">Deletar</a></div>
-                                            </div>
+        <div class="row pt-4">
+            <div class="col-8">
+                <h3 class="text-center">Aulas</h3>
+                <div class="row row-cols-auto">
+                    {% for lesson in lessons %}
+                        <div class="col-6">
+                            <div class="card m-2">
+                                <div class="card-header" style="font-weight: bold;">
+                                    {{ lesson.title }}
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-text">
+                                        <div class="d-flex justify-content-between">
+                                            <a href="{% url 'lesson:detail' lesson.id %}">
+                                                Detalhes
+                                            </a>
+                                            <a href="{% url 'lesson:update' lesson.id %}">
+                                                Editar
+                                            </a>
+                                            <a href="{% url 'lesson:delete' lesson.id %}">
+                                                Deletar
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
-                            {% endwith %}
-                        {% empty %}
-                            <h5 class="mx-auto pb-2">Este módulo ainda não possui nenhum conteúdo.</h5>
-                        {% endfor %}
-                    </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <h5 class="mx-auto pb-2">Este módulo ainda não possui nenhuma aula.</h5>
+                    {% endfor %}
                 </div>
             </div>
             <div class="col">
-                <h3 class="pt-4">Adicionar conteúdo</h3>
-                <div class="d-flex gap-2">
-                    <a href="{% url 'content:create' module.id 'text' %}" class="btn btn-sm btn-primary">
-                        Texto
-                    </a>
-                    <a href="{% url 'content:create' module.id 'video' %}" class="btn btn-sm btn-primary">
-                        Vídeo
-                    </a>
-                    <a href="{% url 'content:create' module.id 'file' %}" class="btn btn-sm btn-primary">
-                        Arquivo
-                    </a>
-                    <a href="{% url 'content:create' module.id 'image' %}" class="btn btn-sm btn-primary">
-                        Imagem
+                <div class="contents bg-secondary py-3 border border-dark mx-auto" style="width: 70%;">
+                    <ul id="lessons" style="list-style-type: none;">
+                        {% for lesson in lessons %}
+                            <li data-id="{{ lesson.id }}">
+                                <a href="#" class="text-decoration-none">
+                              <span class="text-white">
+                                Aula #<span class="order">{{ lesson.order|add:1 }}</span>
+                              </span>
+                                    <br>
+                                    <span class="text-dark">
+                                        {{ lesson.title }}
+                                    </span>
+                                </a>
+                            </li>
+                        {% empty %}
+                            <li>Seu módulo ainda não possui aulas.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="pt-2 text-center">
+                    <a href="{% url 'lesson:create' module.id %}" class="btn btn-primary btn-sm">
+                        Criar nova Aula
                     </a>
                 </div>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(document).ready(() => {
+            $('#lessons').sortable({
+                stop: function (event, ui) {
+                    lessons_order = {};
+                    $('#lessons').children().each(function () {
+                        $(this).find('.order').text($(this).index() + 1);
+                        lessons_order[$(this).data('id')] = $(this).index();
+                    });
+                    $.ajax({
+                        type: 'POST',
+                        url: '{% url 'lesson:order' %}',
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        data: JSON.stringify(lessons_order)
+                    });
+                }
+            });
+        })
+    </script>
 {% endblock %}

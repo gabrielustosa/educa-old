@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% load course %}
+
+{% block title %}
+    Detalhes da aula - {{ lesson.title }}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="mt-4 shadow-lg">
+                    <h5 class="text-center">Conteúdos</h5>
+                    <div class="row row-cols-auto">
+                        {% for content in contents %}
+                            {% with item=content.item %}
+                                <div class="col-6">
+                                    <div class="card m-2">
+                                        <div class="card-header" style="font-weight: bold;">
+                                            {{ item.title }} ({{ item|model_verbose }})
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <a href="
+                                                        {% url 'content:update' lesson.id  item|model_name  item.id %}">
+                                                        Editar
+                                                    </a>
+                                                    <a href="{% url 'content:delete' content.id %}">
+                                                        Deletar
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endwith %}
+                        {% empty %}
+                            <h5 class="mx-auto pb-2">Esta aula ainda não possui nenhum conteúdo.</h5>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="text-center">
+                    <h3 class="pt-4">Adicionar conteúdo</h3>
+                    <div class="d-flex gap-2 justify-content-center">
+                        <a href="{% url 'content:create' lesson.id 'text' %}" class="btn btn-sm btn-primary">
+                            Texto
+                        </a>
+                        <a href="{% url 'content:create' lesson.id 'file' %}" class="btn btn-sm btn-primary">
+                            Arquivo
+                        </a>
+                        <a href="{% url 'content:create' lesson.id 'image' %}" class="btn btn-sm btn-primary">
+                            Imagem
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

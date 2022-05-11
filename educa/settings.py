@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'educa.apps.module',
     'educa.apps.student',
     'educa.apps.subject',
+    'educa.apps.lesson',
 
 ]
 

@@ -2,11 +2,10 @@ from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.utils.functional import cached_property
 from django.views.generic import CreateView, TemplateView
 
-from educa.apps.content.models import Content
 from educa.apps.course.models import Course
+from educa.apps.lesson.models import Lesson
 from educa.apps.module.models import Module
 
 
@@ -45,7 +44,7 @@ class ModuleDetailView(
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         module = self.get_module()
-        context['contents'] = Content.objects.filter(module=module).order_by('order')
+        context['lessons'] = Lesson.objects.filter(module=module).order_by('order')
         context['module'] = module
         return context
 
