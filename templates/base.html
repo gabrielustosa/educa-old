@@ -32,7 +32,10 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="{% url 'logout' %}">Deslogar</a></li>
-                    <li><a class="dropdown-item" href="{% url 'course:mine' %}">Meus cursos</a></li>
+                    {% if perms.course.can_add_course %}
+                        <li><a class="dropdown-item" href="{% url 'course:mine' %}">Meus cursos</a></li>
+                    {% endif %}
+                    <li><a class="dropdown-item" href="{% url 'student:courses' %}">Meu aprendizado</a></li>
                 </ul>
             {% else %}
                 <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button"

@@ -1,7 +1,8 @@
 from django.contrib.auth import authenticate, login
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, TemplateView
 
+from educa.apps.course.models import Course
 from educa.apps.student.forms import UserCreateForm
 
 
@@ -19,3 +20,14 @@ class StudentRegisterView(CreateView):
         )
         login(user)
         return result
+
+
+class StudentCoursesView(TemplateView):
+    template_name = 'student/course_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['courses'] = Course.objects.filter(students=self.request.user)
+
+        return context

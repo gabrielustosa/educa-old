@@ -41,16 +41,16 @@
                 </div>
             </div>
             <div class="col">
-                <div class="contents bg-secondary py-3 border border-dark mx-auto" style="width: 70%;">
+                <div class="contents py-3 border border-dark mx-auto" style="width: 70%;">
                     <ul id="lessons" style="list-style-type: none;">
                         {% for lesson in lessons %}
                             <li data-id="{{ lesson.id }}">
                                 <a href="#" class="text-decoration-none">
-                              <span class="text-white">
+                              <span class="text-secondary">
                                 Aula #<span class="order">{{ lesson.order|add:1 }}</span>
                               </span>
                                     <br>
-                                    <span class="text-dark">
+                                    <span class="text-dark" style="font-size: 16px;">
                                         {{ lesson.title }}
                                     </span>
                                 </a>

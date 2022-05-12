@@ -19,16 +19,16 @@
             </div>
             <div class="col">
                 <h3>Ordem dos módulos</h3>
-                <div class="contents bg-secondary py-3 border border-dark" style="width: 70%;">
+                <div class="contents py-3 border border-dark" style="width: 70%;">
                     <ul id="modules" style="list-style-type: none;">
                         {% for module in modules %}
                             <li data-id="{{ module.id }}">
                                 <a href="{% url 'module:detail' module.id %}" class="text-decoration-none">
-                              <span class="text-white">
+                               <span class="text-secondary">
                                 Módulo #<span class="order">{{ module.order|add:1 }}</span>
                               </span>
                                     <br>
-                                    <span class="text-dark">
+                                    <span class="text-dark" style="font-size: 16px;">
                                     {{ module.title }}
                                         </span>
                                 </a>

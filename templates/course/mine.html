@@ -70,10 +70,8 @@
                 <h2 class="mx-auto pt-5">Você ainda não tem nenhum curso.</h2>
             {% endfor %}
         </div>
-        {% if perms.course.can_add_course %}
-            <a href="{% url 'course:create' %}" class="btn btn-primary position-absolute bottom-0 end-0 m-4">Criar novo
-                curso</a>
-        {% endif %}
+        <a href="{% url 'course:create' %}" class="btn btn-primary position-absolute bottom-0 end-0 m-4">Criar novo
+            curso</a>
         {% include 'partials/_paginator.html' %}
     </div>
 {% endblock %}
