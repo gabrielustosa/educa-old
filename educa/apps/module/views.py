@@ -1,7 +1,7 @@
-from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import CreateView, TemplateView
 
 from educa.apps.course.models import Course
@@ -49,12 +49,12 @@ class ModuleDetailView(
         return context
 
 
-class ModuleOrderView(
-    CsrfExemptMixin,
-    JsonRequestResponseMixin,
-    TemplateView
-):
-    def post(self, request):
-        for module_id, order in self.request_json.items():
-            Module.objects.filter(id=module_id).update(order=order)
-        return self.render_json_response({'saved': 'OK'})
+@csrf_exempt
+def module_order_view(request):
+    modules_id = request.POST.getlist('module_id')
+    for order, module_id in enumerate(modules_id, start=1):
+        Module.objects.filter(id=module_id).update(order=order)
+    return render(request, 'hx/module_sortable.html',
+                  context={
+                      'modules': Module.objects.filter(course__owner=request.user).order_by('order').all()
+                  })

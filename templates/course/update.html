@@ -18,27 +18,12 @@
                 </form>
             </div>
             <div class="col">
-                <h3>Ordem dos módulos</h3>
-                <div class="contents py-3 border border-dark" style="width: 70%;">
-                    <ul id="modules" style="list-style-type: none;">
-                        {% for module in modules %}
-                            <li data-id="{{ module.id }}">
-                                <a href="{% url 'module:detail' module.id %}" class="text-decoration-none">
-                               <span class="text-secondary">
-                                Módulo #<span class="order">{{ module.order|add:1 }}</span>
-                              </span>
-                                    <br>
-                                    <span class="text-dark" style="font-size: 16px;">
-                                    {{ module.title }}
-                                        </span>
-                                </a>
-                            </li>
-                        {% empty %}
-                            <li>Seu curso ainda não possui módulos.</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <div class="pt-2">
+                <h3 class="text-center">Ordem dos módulos</h3>
+                <form class="sortable" hx-post="{% url 'module:order' %}" hx-trigger="end">
+                    {% csrf_token %}
+                    {% include 'hx/module_sortable.html' %}
+                </form>
+                <div class="text-end pt-2">
                     <a href="{% url 'module:create' course.id %}" class="btn btn-primary btn-sm">
                         Criar novo Módulo
                     </a>
@@ -46,27 +31,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
-
-{% block javascript %}
-    <script>
-        $(document).ready(() => {
-            $('#modules').sortable({
-                stop: function (event, ui) {
-                    modules_order = {};
-                    $('#modules').children().each(function () {
-                        $(this).find('.order').text($(this).index() + 1);
-                        modules_order[$(this).data('id')] = $(this).index();
-                    });
-                    $.ajax({
-                        type: 'POST',
-                        url: '{% url 'module:order' %}',
-                        contentType: 'application/json; charset=utf-8',
-                        dataType: 'json',
-                        data: JSON.stringify(modules_order)
-                    });
-                }
-            });
-        })
-    </script>
 {% endblock %}

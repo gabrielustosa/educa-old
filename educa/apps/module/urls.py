@@ -7,5 +7,5 @@ app_name = 'module'
 urlpatterns = [
     path('create/<int:course_id>/', views.ModuleCreateView.as_view(), name='create'),
     path('detail/<int:module_id>/', views.ModuleDetailView.as_view(), name='detail'),
-    path('order/', views.ModuleOrderView.as_view(), name='order'),
+    path('order/', views.module_order_view, name='order'),
 ]

@@ -41,25 +41,10 @@
                 </div>
             </div>
             <div class="col">
-                <div class="contents py-3 border border-dark mx-auto" style="width: 70%;">
-                    <ul id="lessons" style="list-style-type: none;">
-                        {% for lesson in lessons %}
-                            <li data-id="{{ lesson.id }}">
-                                <a href="#" class="text-decoration-none">
-                              <span class="text-secondary">
-                                Aula #<span class="order">{{ lesson.order|add:1 }}</span>
-                              </span>
-                                    <br>
-                                    <span class="text-dark" style="font-size: 16px;">
-                                        {{ lesson.title }}
-                                    </span>
-                                </a>
-                            </li>
-                        {% empty %}
-                            <li>Seu módulo ainda não possui aulas.</li>
-                        {% endfor %}
-                    </ul>
-                </div>
+                <form class="sortable" hx-post="{% url 'lesson:order' %}" hx-trigger="end">
+                    {% csrf_token %}
+                    {% include 'hx/lesson_sortable.html' %}
+                </form>
                 <div class="pt-2 text-center">
                     <a href="{% url 'lesson:create' module.id %}" class="btn btn-primary btn-sm">
                         Criar nova Aula
@@ -68,27 +53,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
-
-{% block javascript %}
-    <script>
-        $(document).ready(() => {
-            $('#lessons').sortable({
-                stop: function (event, ui) {
-                    lessons_order = {};
-                    $('#lessons').children().each(function () {
-                        $(this).find('.order').text($(this).index() + 1);
-                        lessons_order[$(this).data('id')] = $(this).index();
-                    });
-                    $.ajax({
-                        type: 'POST',
-                        url: '{% url 'lesson:order' %}',
-                        contentType: 'application/json; charset=utf-8',
-                        dataType: 'json',
-                        data: JSON.stringify(lessons_order)
-                    });
-                }
-            });
-        })
-    </script>
 {% endblock %}

@@ -32,7 +32,7 @@ urlpatterns = [
     path('module/content/', include('educa.apps.content.urls')),
     path('course/module/', include('educa.apps.module.urls')),
     path('content/lesson/', include('educa.apps.lesson.urls')),
-    path('', CourseListView.as_view(), name='home')
+    path('', CourseListView.as_view(), name='home'),
 ]
 
 if settings.DEBUG:

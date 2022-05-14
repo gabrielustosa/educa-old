@@ -15,7 +15,7 @@
                     <div class="row row-cols-auto">
                         {% for content in contents %}
                             {% with item=content.item %}
-                                <div class="col-6">
+                                <div class="col-6" >
                                     <div class="card m-2">
                                         <div class="card-header" style="font-weight: bold;">
                                             {{ item.title }} ({{ item|model_verbose }})

@@ -1,0 +1,9 @@
+{% for module in modules %}
+    <div class="mx-auto border border-dark mb-2" style="width: 10rem;">
+        <input type='hidden' name='module_id' value='{{ module.id }}'>
+        <div class="ps-3">
+            <span class="d-block"> Módulo #{{ module.order }}</span>
+            <span class="ps-3">{{ module.title }}</span>
+        </div>
+    </div>
+{% endfor %}

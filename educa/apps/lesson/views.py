@@ -1,7 +1,8 @@
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView, CreateView, DeleteView, UpdateView
 
 from educa.apps.content.models import Content
@@ -73,12 +74,12 @@ class LessonUpdateView(
     permission_required = 'lesson.change_lesson'
 
 
-class LessonOrderView(
-    CsrfExemptMixin,
-    JsonRequestResponseMixin,
-    TemplateView,
-):
-    def post(self, request):
-        for lesson_id, order in self.request_json.items():
-            Lesson.objects.filter(id=lesson_id).update(order=order)
-        return self.render_json_response({'saved': 'OK'})
+@csrf_exempt
+def lesson_order_view(request):
+    lessons_id = request.POST.getlist('lesson_id')
+    for order, lesson_id in enumerate(lessons_id, start=1):
+        Lesson.objects.filter(id=lesson_id).update(order=order)
+    return render(request, 'hx/lesson_sortable.html',
+                  context={
+                      'lessons': Lesson.objects.filter(module__course__owner=request.user).order_by('order').all()
+                  })
