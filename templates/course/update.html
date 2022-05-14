@@ -2,7 +2,7 @@
 {% load bootstrap5 %}
 
 {% block title %}
-    Editando curso - {{ object.title }}
+    Editando curso - {{ course.title }}
 {% endblock %}
 
 {% block content %}
@@ -19,7 +19,7 @@
             </div>
             <div class="col">
                 <h3 class="text-center">Ordem dos módulos</h3>
-                <form class="sortable" hx-post="{% url 'module:order' %}" hx-trigger="end">
+                <form class="sortable" hx-post="{% url 'module:order' course.id %}" hx-trigger="end">
                     {% csrf_token %}
                     {% include 'hx/module_sortable.html' %}
                 </form>

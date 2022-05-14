@@ -41,7 +41,8 @@
                 </div>
             </div>
             <div class="col">
-                <form class="sortable" hx-post="{% url 'lesson:order' %}" hx-trigger="end">
+                <h3 class="text-center">Ordem das aulas</h3>
+                <form class="sortable" hx-post="{% url 'lesson:order' module.id %}" hx-trigger="end">
                     {% csrf_token %}
                     {% include 'hx/lesson_sortable.html' %}
                 </form>

@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
@@ -50,11 +51,14 @@ class ModuleDetailView(
 
 
 @csrf_exempt
-def module_order_view(request):
+def module_order_view(request, course_id):
+    course = Course.objects.get(id=course_id)
+    if course.owner != request.user:
+        raise PermissionDenied
     modules_id = request.POST.getlist('module_id')
     for order, module_id in enumerate(modules_id, start=1):
         Module.objects.filter(id=module_id).update(order=order)
     return render(request, 'hx/module_sortable.html',
                   context={
-                      'modules': Module.objects.filter(course__owner=request.user).order_by('order').all()
+                      'modules': Module.objects.filter(course=course).order_by('order').all()
                   })

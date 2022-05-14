@@ -1,5 +1,6 @@
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
@@ -18,7 +19,6 @@ class LessonCreateView(
     template_name = 'lesson/create.html'
     model = Lesson
     fields = ['title', 'video']
-    success_url = reverse_lazy('course:mine')
     permission_required = 'lesson.add_lesson'
 
     def get_module(self):
@@ -30,6 +30,9 @@ class LessonCreateView(
         form.instance.module = self.get_module()
         return super().form_valid(form)
 
+    def get_success_url(self):
+        return reverse_lazy('module:detail', kwargs={'module_id': self.kwargs.get('module_id')})
+
 
 class LessonDeleteView(
     LoginRequiredMixin,
@@ -38,8 +41,11 @@ class LessonDeleteView(
 ):
     template_name = 'lesson/delete.html'
     model = Lesson
-    success_url = reverse_lazy('course:mine')
     permission_required = 'lessons.delete_lesson'
+
+    def get_success_url(self):
+        module_id = self.get_object().module.id
+        return reverse_lazy('module:detail', kwargs={'module_id': module_id})
 
 
 class LessonDetailView(
@@ -70,16 +76,22 @@ class LessonUpdateView(
     template_name = 'lesson/create.html'
     model = Lesson
     fields = ['title', 'video']
-    success_url = reverse_lazy('course:mine')
     permission_required = 'lesson.change_lesson'
+
+    def get_success_url(self):
+        module_id = self.get_object().module.id
+        return reverse_lazy('module:detail', kwargs={'module_id': module_id})
 
 
 @csrf_exempt
-def lesson_order_view(request):
+def lesson_order_view(request, module_id):
+    module = Module.objects.get(id=module_id)
+    if module.course.owner != request.user:
+        raise PermissionDenied
     lessons_id = request.POST.getlist('lesson_id')
     for order, lesson_id in enumerate(lessons_id, start=1):
         Lesson.objects.filter(id=lesson_id).update(order=order)
     return render(request, 'hx/lesson_sortable.html',
                   context={
-                      'lessons': Lesson.objects.filter(module__course__owner=request.user).order_by('order').all()
+                      'lessons': Lesson.objects.filter(module=module).order_by('order').all()
                   })

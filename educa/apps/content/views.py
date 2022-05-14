@@ -82,5 +82,8 @@ class ContentDeleteView(
 ):
     template_name = 'content/delete.html'
     model = Content
-    success_url = reverse_lazy('course:mine')
     permission_required = 'content.delete_content'
+
+    def get_success_url(self):
+        lesson_id = self.get_object().lesson.id
+        return reverse_lazy('lesson:detail', kwargs={'lesson_id': lesson_id})
