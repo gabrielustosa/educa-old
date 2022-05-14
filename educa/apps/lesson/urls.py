@@ -10,4 +10,5 @@ urlpatterns = [
     path('delete/<int:pk>/', views.LessonDeleteView.as_view(), name='delete'),
     path('detail/<int:lesson_id>/', views.LessonDetailView.as_view(), name='detail'),
     path('update/<int:pk>/', views.LessonUpdateView.as_view(), name='update'),
+    path('content/<int:lesson_id>/<str:class_name>/', views.lesson_content_view, name='content'),
 ]

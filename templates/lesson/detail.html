@@ -9,36 +9,25 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col">
+            <div class="col-7">
                 <div class="mt-4 shadow-lg">
                     <h5 class="text-center">Conteúdos</h5>
-                    <div class="row row-cols-auto">
-                        {% for content in contents %}
-                            {% with item=content.item %}
-                                <div class="col-6" >
-                                    <div class="card m-2">
-                                        <div class="card-header" style="font-weight: bold;">
-                                            {{ item.title }} ({{ item|model_verbose }})
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <a href="
-                                                        {% url 'content:update' lesson.id  item|model_name  item.id %}">
-                                                        Editar
-                                                    </a>
-                                                    <a href="{% url 'content:delete' content.id %}">
-                                                        Deletar
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endwith %}
-                        {% empty %}
-                            <h5 class="mx-auto pb-2">Esta aula ainda não possui nenhum conteúdo.</h5>
-                        {% endfor %}
+                    <div class="d-flex justify-content-between m-2">
+                        <a href="#" class="text-dark" hx-get="{% url 'lesson:content' lesson.id 'text' %}"
+                           hx-target="#content">
+                            Texto
+                        </a>
+                        <a href="#" class="text-dark" hx-get="{% url 'lesson:content' lesson.id 'file' %}"
+                           hx-target="#content">
+                            Arquivo
+                        </a>
+                        <a href="#" class="text-dark" hx-get="{% url 'lesson:content' lesson.id 'image' %}"
+                           hx-target="#content">
+                            Imagem
+                        </a>
+                    </div>
+                    <div id="content">
+                        {% include 'hx/lesson_dynamic_content.html' %}
                     </div>
                 </div>
             </div>

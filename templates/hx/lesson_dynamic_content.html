@@ -1,0 +1,29 @@
+{% load course %}
+
+<div class="row row-cols-auto">
+    {% for content in contents %}
+        {% with item=content.item %}
+            <div class="col-6">
+                <div class="card m-2">
+                    <div class="card-header" style="font-weight: bold;">
+                        {{ item.title }} ({{ item|model_verbose }})
+                    </div>
+                    <div class="card-body">
+                        <div class="card-text">
+                            <div class="d-flex justify-content-between">
+                                <a href="{% url 'content:update' lesson.id  item|model_name  item.id %}">
+                                    Editar
+                                </a>
+                                <a href="{% url 'content:delete' content.id %}">
+                                    Deletar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endwith %}
+    {% empty %}
+        <h5 class="mx-auto pb-2">Aqui ainda não tem conteúdos.</h5>
+    {% endfor %}
+</div>

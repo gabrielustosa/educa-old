@@ -1,4 +1,3 @@
-from django.apps import apps
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.forms import modelform_factory
 from django.shortcuts import get_object_or_404, redirect, render
@@ -7,6 +6,7 @@ from django.views.generic import TemplateView, DeleteView
 
 from educa.apps.content.models import Content
 from educa.apps.lesson.models import Lesson
+from educa.utils import get_model
 
 
 class ContentCreateUpdateView(
@@ -20,11 +20,6 @@ class ContentCreateUpdateView(
     model = None
     object = None
 
-    def get_model(self, model_name):
-        if model_name in ['text', 'video', 'image', 'file']:
-            return apps.get_model(app_label='content', model_name=model_name)
-        return None
-
     def get_form(self, *args, **kwargs):
         form = modelform_factory(self.model, exclude=[
             'owner',
@@ -36,7 +31,7 @@ class ContentCreateUpdateView(
 
     def setup(self, request, *args, **kwargs):
         self.lesson = get_object_or_404(Lesson, id=kwargs.get('lesson_id'))
-        self.model = self.get_model(kwargs.get('model_name'))
+        self.model = get_model(kwargs.get('model_name'))
         object_id = kwargs.get('object_id')
         if object_id:
             self.object = get_object_or_404(self.model, id=object_id)

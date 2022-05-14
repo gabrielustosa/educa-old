@@ -1,4 +1,3 @@
-from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, render
@@ -9,6 +8,7 @@ from django.views.generic import TemplateView, CreateView, DeleteView, UpdateVie
 from educa.apps.content.models import Content
 from educa.apps.lesson.models import Lesson
 from educa.apps.module.models import Module
+from educa.utils import content_is_instance
 
 
 class LessonCreateView(
@@ -63,7 +63,12 @@ class LessonDetailView(
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         lesson = self.get_lesson()
-        context['contents'] = Content.objects.filter(lesson=lesson).order_by('order')
+        contents = Content.objects.filter(lesson=lesson).order_by('order')
+        contents_list = []
+        for content in contents:
+            if content_is_instance(content, 'text'):
+                contents_list.append(content)
+        context['contents'] = contents_list
         context['lesson'] = lesson
         return context
 
@@ -95,3 +100,12 @@ def lesson_order_view(request, module_id):
                   context={
                       'lessons': Lesson.objects.filter(module=module).order_by('order').all()
                   })
+
+
+def lesson_content_view(request, lesson_id, class_name):
+    lesson = Lesson.objects.get(id=lesson_id)
+    contents = []
+    for content in lesson.contents.all():
+        if content_is_instance(content, class_name):
+            contents.append(content)
+    return render(request, 'hx/lesson_dynamic_content.html', context={'contents': contents, 'lesson': lesson})
