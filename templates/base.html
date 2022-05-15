@@ -1,4 +1,5 @@
 {% load bootstrap5 %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -6,15 +7,8 @@
     <title>{% block title %}{% endblock %}</title>
     {% bootstrap_css %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Hubballi&family=Raleway:ital,wght@1,200&display=swap');
+    <link rel="stylesheet" href="{% static 'css/educa.css' %}">
 
-        * {
-            font-family: 'Hubballi', cursive;
-            font-size: 22px;
-        }
-
-    </style>
 </head>
 <body>
 {% include 'partials/base/_nav.html' %}
@@ -27,7 +21,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 
 {% bootstrap_javascript %}
-
+{% block javascript %}{% endblock %}
 <script>
     htmx.onLoad(function (content) {
         let sortables = content.querySelectorAll(".sortable");

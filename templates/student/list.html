@@ -10,7 +10,7 @@
             {% for course in courses %}
                 <div class="col pb-3">
                     <a href="{% url 'course:detail' course.id %}" class="text-decoration-none">
-                        <div class="card pt-3" style="width: 13rem;">
+                        <div class="card mt-3" style="width: 13rem;">
                             <img class="card-img-top" src="{{ course.image.url }}" alt="Post image">
                             <div class="card-body" style="color: black;">
                                 <h5 class="card-title">{{ course.title }}</h5>

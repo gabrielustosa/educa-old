@@ -20,12 +20,14 @@
                         <div class="d-flex justify-content-between align-items-center border border-dark"
                              data-bs-toggle="dropdown"
                              aria-expanded="false" style="width: 40vw;">
-                            <p>{{ module.title }}</p>
-                            <p>{{ module.get_total_lessons }} aulas</p>
+                            <p class="ps-2">{{ module.title }}</p>
+                            <p class="pe-2">{{ module.get_total_lessons }} aulas</p>
                         </div>
                         <div class="dropdown-menu  border border-dark" style="width: 40vw;">
                             {% for lesson in module.lessons.all %}
                                 <div class="dropdown-item disabled text-dark">{{ lesson.title }}</div>
+                            {% empty %}
+                                <div class="dropdown-item disabled text-dark">Esse módulo ainda não possui aulas.</div>
                             {% endfor %}
                         </div>
                     </div>
@@ -37,7 +39,8 @@
                     <div class="card-body">
                         <h5 class="card-title text-start">{{ course.title }}</h5>
                         {% if request.user|student_is_enrolled:course.id %}
-                            <a href="#" class="btn btn-primary mt-3" style="width: 16rem;">Acessar</a>
+                            <a href="{% url 'student:view' course.id %}" class="btn btn-primary mt-3"
+                               style="width: 16rem;">Acessar</a>
                         {% else %}
                             <form method="post" action="{% url 'course:enrroll' course.id %}">
                                 {% csrf_token %}
