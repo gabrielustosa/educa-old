@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import CreateView, TemplateView
 
 from educa.apps.content.models import Content
@@ -50,3 +51,10 @@ class StudentCourseView(TemplateView):
 def select_lesson_view(request, lesson_id):
     lesson = Lesson.objects.get(id=lesson_id)
     return render(request, 'hx/lesson_video.html', context={'video': lesson.video})
+
+
+@csrf_exempt
+def lesson_note_view(request, content_id):
+    item = Content.objects.get(id=content_id).item
+
+    return render(request, 'hx/lesson_note.html', context={'content': item.content})

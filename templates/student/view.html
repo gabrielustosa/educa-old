@@ -44,7 +44,9 @@
                                                             {% with item=content.item %}
                                                                 {% if item|item_is_instance:'text' %}
                                                                     <li>
-                                                                        <a class="dropdown-item">
+                                                                        <a class="dropdown-item open"
+                                                                           hx-get="{% url 'student:lesson_note' content.id %}"
+                                                                           hx-target="#note">
                                                                             {{ item.title }}
                                                                         </a>
                                                                     </li>
@@ -80,4 +82,28 @@
             </div>
         </div>
     </div>
+    <div id="note">
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        const opens = document.querySelectorAll('.open');
+
+        opens.forEach(open => {
+            open.addEventListener('click', () => {
+                setTimeout(() => {
+                    const modal = document.getElementById('modal_container');
+                    modal.classList.add('show');
+                    const close = document.getElementById('close');
+                    close.addEventListener('click', () => {
+                        const modal = document.getElementById('modal_container');
+                        modal.classList.remove('show');
+                    });
+                }, 300)
+            });
+        })
+
+
+    </script>
 {% endblock %}
