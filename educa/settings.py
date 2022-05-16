@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'educa.apps.student',
     'educa.apps.subject',
     'educa.apps.lesson',
+    'educa.apps.rating',
 
 ]
 

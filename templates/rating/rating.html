@@ -1,0 +1,22 @@
+{% load course %}
+
+<section class="py-5">
+    {% if ratings %}
+        <h3>Avaliações</h3>
+        {% for rating in ratings %}
+            <div class="card" style="width: 25rem;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="card-title">{{ rating.user.get_full_name }}</h5>
+                        <div>
+                            {% for n in rating.rating|range_list %}
+                                <i class="bi bi-star-fill text-warning"></i>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <p class="card-text">{{ rating.comment }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</section>

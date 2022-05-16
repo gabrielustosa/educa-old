@@ -1,6 +1,7 @@
 from django import template
 
 from educa.apps.course.models import Course
+from educa.apps.rating.models import Rating
 from educa.utils import content_is_instance, get_model
 
 register = template.Library()
@@ -32,3 +33,13 @@ def student_is_enrolled(user, course_id):
 @register.filter
 def item_is_instance(item, class_name):
     return isinstance(item, get_model(class_name))
+
+
+@register.filter()
+def hasnt_rating(user, course):
+    return not Rating.objects.filter(user=user, course=course).exists()
+
+
+@register.filter()
+def range_list(value):
+    return [v for v in range(value)]

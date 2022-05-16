@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load course %}
+
 {% block title %}
     Todos os cursos
 {% endblock %}
@@ -9,15 +11,21 @@
         <div class="row row-cols-auto">
             {% for course in courses %}
                 <div class="col pb-3">
-                    <a href="{% url 'course:detail' course.id %}" class="text-decoration-none">
-                        <div class="card mt-3" style="width: 13rem;">
+                    <div class="card mt-3 position-relative" style="width: 13rem;">
+                        {% if user|hasnt_rating:course %}
+                            <div class="position-absolute">
+                                <a href="{% url 'rating:create' course.id %}" class="btn btn-primary btn-sm"
+                                   style="width: 13rem;">AVALIAR</a>
+                            </div>
+                        {% endif %}
+                        <a href="{% url 'student:view' course.id %}" class="text-decoration-none">
                             <img class="card-img-top" src="{{ course.image.url }}" alt="Post image">
                             <div class="card-body" style="color: black;">
                                 <h5 class="card-title">{{ course.title }}</h5>
                                 <p class="card-text" style="font-size: 16px;">{{ course.description }}</p>
                             </div>
-                        </div>
-                    </a>
+                        </a>
+                    </div>
                 </div>
             {% endfor %}
         </div>

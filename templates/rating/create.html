@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+
+{% block title %}
+    Avaliando curso
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="text-center">Avaliar curso</h1>
+        <form method="post">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+                <button type="submit" class="btn btn-primary">Avaliar</button>
+            {% endbuttons %}
+        </form>
+    </div>
+{% endblock %}

@@ -6,6 +6,7 @@ from django.views.decorators.http import require_POST
 from django.views.generic import ListView, TemplateView
 
 from educa.apps.course.models import Course
+from educa.apps.rating.models import Rating
 
 
 class CourseListView(ListView):
@@ -32,7 +33,9 @@ class CourseDetailView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['course'] = Course.objects.get(pk=self.kwargs['course_id'])
+        course = Course.objects.get(pk=self.kwargs['course_id'])
+        context['course'] = course
+        context['ratings'] = Rating.objects.filter(course=course)
 
         return context
 
