@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
@@ -13,5 +14,5 @@ class RatingCreateView(CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        form.instance.course = Course.objects.get(pk=self.kwargs.get('course_id'))
+        form.instance.course = get_object_or_404(Course, id=self.kwargs.get('course_id'))
         return super().form_valid(form)

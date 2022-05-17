@@ -1,7 +1,6 @@
 from django.contrib.auth import authenticate, login
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import CreateView, TemplateView
 
 from educa.apps.content.models import Content
@@ -44,16 +43,15 @@ class StudentCourseView(TemplateView):
         context = super(StudentCourseView, self).get_context_data(**kwargs)
         course = Course.objects.get(id=self.kwargs.get('course_id'))
         context['course'] = course
-        context['video'] = course.modules.first().lessons.first().video
+        context['current_lesson'] = get_object_or_404(Lesson, id=self.kwargs.get('lesson_id'))
         return context
 
 
 def select_lesson_view(request, lesson_id):
     lesson = Lesson.objects.get(id=lesson_id)
-    return render(request, 'hx/lesson_video.html', context={'video': lesson.video})
+    return render(request, 'hx/lesson_video.html', context={'current_lesson': lesson})
 
 
-@csrf_exempt
 def lesson_note_view(request, content_id):
     item = Content.objects.get(id=content_id).item
 

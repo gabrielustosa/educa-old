@@ -52,7 +52,7 @@ class ModuleDetailView(
 
 @csrf_exempt
 def module_order_view(request, course_id):
-    course = Course.objects.get(id=course_id)
+    course = get_object_or_404(Course, id=course_id)
     if course.owner != request.user:
         raise PermissionDenied
     modules_id = request.POST.getlist('module_id')

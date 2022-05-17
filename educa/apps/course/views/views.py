@@ -33,7 +33,7 @@ class CourseDetailView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        course = Course.objects.get(pk=self.kwargs['course_id'])
+        course = get_object_or_404(Course, id=self.kwargs['course_id'])
         context['course'] = course
         context['ratings'] = Rating.objects.filter(course=course)
 

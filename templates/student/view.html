@@ -30,7 +30,8 @@
                                     {% for lesson in module.lessons.all %}
                                         <div class="position-relative">
                                             <div class="py-3 my-3 border border-dark"
-                                                 hx-get="{% url 'student:select_video' lesson.id %}" hx-target="#video">
+                                                 hx-get="{% url 'student:select_video' lesson.id %}"
+                                                 hx-target="#video">
                                                 <p class="ps-2">{{ lesson.order }}. {{ lesson.title }}</p>
                                             </div>
                                             {% if lesson.contents.exists %}
@@ -103,6 +104,12 @@
                 }, 300)
             });
         })
+
+        document.body.addEventListener('htmx:afterRequest', e => {
+            let lesson_element = document.getElementById('lesson_id')
+            let lesson_id = lesson_element.getAttribute('data-value')
+            window.history.pushState("", "", `/students/course/view/3/lesson/${lesson_id}/`);
+        });
 
 
     </script>

@@ -1,4 +1,5 @@
 {% load embed_video_tags %}
 
+<span id="lesson_id" data-value="{{ current_lesson.id }}"></span>
 
-{% video video '1124x728' %}
+{% video current_lesson.video '1124x728' %}
