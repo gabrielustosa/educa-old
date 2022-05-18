@@ -44,7 +44,7 @@
                 <h3 class="text-center">Ordem das aulas</h3>
                 <form class="sortable" hx-post="{% url 'lesson:order' module.id %}" hx-trigger="end">
                     {% csrf_token %}
-                    {% include 'hx/lesson_sortable.html' %}
+                    {% include 'hx/lesson/lesson_sortable.html' %}
                 </form>
                 <div class="pt-2 text-center">
                     <a href="{% url 'lesson:create' module.id %}" class="btn btn-primary btn-sm">

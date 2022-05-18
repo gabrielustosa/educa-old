@@ -21,7 +21,7 @@
                 <h3 class="text-center">Ordem dos módulos</h3>
                 <form class="sortable" hx-post="{% url 'module:order' course.id %}" hx-trigger="end">
                     {% csrf_token %}
-                    {% include 'hx/module_sortable.html' %}
+                    {% include 'hx/module/module_sortable.html' %}
                 </form>
                 <div class="text-end pt-2">
                     <a href="{% url 'module:create' course.id %}" class="btn btn-primary btn-sm">

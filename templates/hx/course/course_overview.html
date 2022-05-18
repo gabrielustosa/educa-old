@@ -1,0 +1,23 @@
+<div class="pt-4">
+    <h3>Sobre este curso</h3>
+    <p class="py-2">{{ course.description }}</p>
+    <hr>
+    <div class="d-flex justify-content-around">
+        <div>Números do curso</div>
+        <div>
+            <p>Alunos: {{ course.students.count }}</p>
+            <p>Aulas: {{ course.get_total_lessons }}</p>
+        </div>
+    </div>
+    <hr>
+    <div class="d-flex justify-content-around">
+        <div>Descrição do curso</div>
+        <div>
+            <p>{{ course.description }}</p>
+            {% for module in course.modules.all %}
+                <p>Módulo {{ module.order }}: {{ module.title }}</p>
+                <p>{{ module.description }}</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+<h5>Perguntas que eu fiz ({{ questions|length }})</h5>
+<div>
+    {% for question in questions %}
+        <p>{{ question.title }}</p>
+        <p>{{ question.content|slice:":100" }}{% if question.content|length > 25 %}...{% endif %} </p>
+    {% empty %}
+        <h5>Você ainda não fez nenhuma pergunta.</h5>
+    {% endfor %}
+</div>

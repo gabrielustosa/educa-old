@@ -8,7 +8,7 @@
 {% block content %}
     <div class="container">
         <h1 class="text-center">Criar um novo Módulo</h1>
-        <form method="post" enctype="multipart/form-data">
+        <form method="post">
             {% csrf_token %}
             {% bootstrap_form form %}
             {% buttons %}

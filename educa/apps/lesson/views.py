@@ -96,7 +96,7 @@ def lesson_order_view(request, module_id):
     lessons_id = request.POST.getlist('lesson_id')
     for order, lesson_id in enumerate(lessons_id, start=1):
         Lesson.objects.filter(id=lesson_id).update(order=order)
-    return render(request, 'hx/lesson_sortable.html',
+    return render(request, 'hx/lesson/lesson_sortable.html',
                   context={
                       'lessons': Lesson.objects.filter(module=module).order_by('order').all()
                   })
@@ -108,4 +108,4 @@ def lesson_content_view(request, lesson_id, class_name):
     for content in lesson.contents.all():
         if content_is_instance(content, class_name):
             contents.append(content)
-    return render(request, 'hx/lesson_dynamic_content.html', context={'contents': contents, 'lesson': lesson})
+    return render(request, 'hx/lesson/lesson_dynamic_content.html', context={'contents': contents, 'lesson': lesson})

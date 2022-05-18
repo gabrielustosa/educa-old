@@ -18,7 +18,7 @@
                                    style="width: 13rem;">AVALIAR</a>
                             </div>
                         {% endif %}
-                        <a href="{% url 'student:view' course.id 20 %}" class="text-decoration-none">
+                        <a href="{% url 'student:view' course.slug 20 %}" class="text-decoration-none">
                             <img class="card-img-top" src="{{ course.image.url }}" alt="Post image">
                             <div class="card-body" style="color: black;">
                                 <h5 class="card-title">{{ course.title }}</h5>

@@ -36,23 +36,20 @@ class StudentCourseListView(TemplateView):
         return context
 
 
-class StudentCourseView(TemplateView):
-    template_name = 'student/view.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(StudentCourseView, self).get_context_data(**kwargs)
-        course = Course.objects.get(id=self.kwargs.get('course_id'))
-        context['course'] = course
-        context['current_lesson'] = get_object_or_404(Lesson, id=self.kwargs.get('lesson_id'))
-        return context
+def student_course_view(request, course_slug, lesson_id):
+    context = {}
+    course = get_object_or_404(Course, slug=course_slug)
+    context['course'] = course
+    context['current_lesson'] = get_object_or_404(Lesson, id=lesson_id)
+    return render(request, 'student/view.html', context=context)
 
 
 def select_lesson_view(request, lesson_id):
     lesson = Lesson.objects.get(id=lesson_id)
-    return render(request, 'hx/lesson_video.html', context={'current_lesson': lesson})
+    return render(request, 'hx/lesson/lesson_video.html', context={'current_lesson': lesson})
 
 
 def lesson_note_view(request, content_id):
     item = Content.objects.get(id=content_id).item
 
-    return render(request, 'hx/lesson_note.html', context={'content': item.content})
+    return render(request, 'hx/lesson/lesson_note.html', context={'content': item.content})

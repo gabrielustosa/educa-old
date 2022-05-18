@@ -37,3 +37,11 @@ class Course(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_total_lessons(self):
+        from educa.apps.lesson.models import Lesson
+        return Lesson.objects.filter(module__course=self).count()
+
+    def get_total_questions(self):
+        from educa.apps.question.models import Question
+        return Question.objects.filter(lesson__module__course=self).count()
