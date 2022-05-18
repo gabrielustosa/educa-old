@@ -14,4 +14,5 @@ urlpatterns = [
     path('without_answer/<int:course_id>/', views.question_without_answer_view, name='without_answer'),
     path('create/<int:course_id>/', views.question_create_view, name='create'),
     path('ask/<int:lesson_id>/', views.question_ask_view, name='ask'),
+    path('search/<int:course_id>/', views.question_search_view, name='search'),
 ]

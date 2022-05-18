@@ -1,8 +1,10 @@
 <section class="container pt-3">
     <div class="pt-3">
         <div class="input-group rounded">
-            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                   aria-describedby="search-addon"/>
+            <input hx-post="{% url 'question:search' course.id %}" hx-target="#question"
+                   hx-trigger="keyup changed delay:500ms"
+                   type="search" class="form-control rounded" name="search"
+                   placeholder="Pesquisar" aria-label="Search" aria-describedby="search-addon"/>
             <span class="input-group-text border-0" id="search-addon">
                <i class="bi bi-search"></i>
             </span>

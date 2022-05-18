@@ -1,4 +1,4 @@
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.forms import modelform_factory
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST
@@ -80,4 +80,16 @@ def question_ask_view(request, lesson_id):
     questions = Question.objects.filter(lesson__module__course=course)
 
     return render(request, 'hx/question/course/course_all_questions.html',
+                  context={'questions': questions, 'course': course})
+
+
+@require_POST
+def question_search_view(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    search = request.POST.get('search')
+
+    questions = Question.objects.filter(lesson__module__course=course). \
+        filter(Q(title__icontains=search) | Q(content__icontains=search))
+
+    return render(request, 'hx/question/search.html',
                   context={'questions': questions, 'course': course})
