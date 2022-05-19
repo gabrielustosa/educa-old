@@ -30,39 +30,35 @@
         </div>
     </div>
     <div id="modal">
+        {% include 'hx/modal.html' %}
     </div>
 {% endblock %}
 
 {% block javascript %}
     <script>
 
-        const loadModal = () => {
-            const opens = document.querySelectorAll('.open');
-            opens.forEach(open => {
-                open.addEventListener('click', () => {
-                    setTimeout(() => {
-                        const modal = document.getElementById('modal_container');
-                        modal.classList.add('show');
-                        const close = document.getElementById('close');
-                        close.addEventListener('click', () => {
-                            const modal = document.getElementById('modal_container');
-                            modal.classList.remove('show');
-                        });
-                    }, 300)
-                });
-            })
-        }
-
-        loadModal()
-
-        document.body.addEventListener('htmx:afterRequest', () => {
+        const setLessonID = () => {
             let lesson_element = document.getElementById('lesson_id')
             document.lesson_id = lesson_element.getAttribute('data-value')
-            let course_slug = "{{ course.slug }}"
-            window.history.pushState("", "", `/students/course/${course_slug}/lesson/${document.lesson_id}/`);
-            loadModal()
+        }
+
+        setLessonID()
+
+        htmx.on('htmx:afterRequest', e => {
+            if (e.detail.target.id === 'video') {
+                setLessonID()
+                let course_slug = "{{ course.slug }}"
+                window.history.pushState("", "", `/students/course/${course_slug}/lesson/${document.lesson_id}/`);
+            }
         });
-
-
+        htmx.on("htmx:afterSwap", (e) => {
+            if (e.detail.target.id === "modal") {
+                const modal = new bootstrap.Modal(document.getElementById("modal-course"))
+                modal.show()
+            }
+        })
+        htmx.on("hidden.bs.modal", () => {
+            document.getElementById("modal-course").innerHTML = ""
+        })
     </script>
 {% endblock %}

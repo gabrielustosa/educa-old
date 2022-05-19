@@ -32,7 +32,7 @@
                                                 {% with item=content.item %}
                                                     {% if item|item_is_instance:'text' %}
                                                         <li>
-                                                            <a class="dropdown-item open"
+                                                            <a class="dropdown-item"
                                                                hx-get="{% url 'student:lesson_note' content.id %}"
                                                                hx-target="#modal">
                                                                 {{ item.title }}
