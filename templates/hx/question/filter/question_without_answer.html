@@ -1,9 +1,4 @@
 <h5>Perguntas sem respostas ({{ questions|length }})</h5>
 <div>
-    {% for question in questions %}
-        <p>{{ question.title }}</p>
-        <p>{{ question.content|slice:":100" }}{% if question.content|length > 25 %}...{% endif %} </p>
-    {% empty %}
-        <h5>Ainda não há perguntas.</h5>
-    {% endfor %}
+    {% include 'hx/question/question.html' with empty_message='Ainda não há perguntas.' %}
 </div>

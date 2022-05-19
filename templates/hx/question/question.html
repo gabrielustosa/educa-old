@@ -1,0 +1,16 @@
+{% for question in questions %}
+    <div class="border border-dark my-4">
+        <div class="d-flex justify-content-between">
+            <div>
+                <h5 hx-get="{% url 'question:view' question.id %}" hx-target="#question">{{ question.title }}</h5>
+                <p>{{ question.content|slice:":100" }}{% if question.content|length > 100 %}...{% endif %} </p>
+                <p>{{ question.user.get_full_name }} - Aula "{{ question.lesson.title }}" - {{ question.updated }}</p>
+            </div>
+            <div>
+                <i hx-get="" hx-target="#question" class="bi bi-chat"></i>
+            </div>
+        </div>
+    </div>
+{% empty %}
+    <h5>{{ empty_message }}</h5>
+{% endfor %}
