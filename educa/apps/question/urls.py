@@ -13,8 +13,9 @@ urlpatterns = [
     path('more_answers/<int:course_id>/', views_filter.question_more_answers_view, name='more_answers'),
     path('more_recent/<int:course_id>/', views_filter.question_more_recent_view, name='more_recent'),
     path('without_answer/<int:course_id>/', views_filter.question_without_answer_view, name='without_answer'),
-    path('create/<int:course_id>/', views.question_create_view, name='create'),
+    path('create/', views.question_create_view, name='create'),
     path('ask/<int:lesson_id>/', views.question_ask_view, name='ask'),
     path('search/<int:course_id>/', views.question_search_view, name='search'),
     path('view/<int:question_id>/', views.question_view, name='view'),
+    path('answer/<int:question_id>/', views.create_answer_view, name='answer'),
 ]

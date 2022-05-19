@@ -8,19 +8,23 @@
         </p>
         <p>{{ question.content }}</p>
     </div>
-    <div>
-        <div>
-            <p>{{ answers|length }} Respostas</p>
-        </div>
-        <div>
-            {% for answer in answers %}
-                <div>
-                    <p>{{ answer.user.get_full_name }}</p>
-                    <p>{{ answer.updated }}</p>
-                    <p>{{ answer.content }}</p>
-                </div>
-            {% endfor %}
-
-        </div>
-    </div>
+    {% include 'hx/question/answer.html' %}
 </div>
+
+{% block javascript %}
+    <script>
+        document.getElementById('send').addEventListener('click', () => {
+            let question_id = "{{ question.id }}"
+            let form = document.querySelector('#answer-question')
+            let inputs = form.querySelectorAll('input, textarea')
+            let values = {}
+            inputs.forEach(input => {
+                values[input.name] = input.value
+            })
+            htmx.ajax('POST', `/course/question/answer/${question_id}/`, {
+                target: '#answers',
+                values: values
+            })
+        })
+    </script>
+{% endblock %}

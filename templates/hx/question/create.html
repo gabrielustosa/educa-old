@@ -7,6 +7,7 @@
                 hx-target="#question">
             Voltar para todas as perguntas
         </button>
+        {% csrf_token %}
         {% bootstrap_form form %}
         {% buttons %}
             <button id="send" class="btn btn-dark">Publicar</button>

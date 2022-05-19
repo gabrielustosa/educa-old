@@ -1,0 +1,23 @@
+{% load bootstrap5 %}
+
+<div>
+    <div>
+        <p>{{ answers|length }} Respostas</p>
+    </div>
+    <div id="answers">
+        {% for answer in answers %}
+            <div>
+                <p>{{ answer.user.get_full_name }}</p>
+                <p>{{ answer.updated }}</p>
+                <p>{{ answer.content }}</p>
+            </div>
+        {% endfor %}
+        <div id="answer-question">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+                <button id="send" class="btn btn-dark">Responder</button>
+            {% endbuttons %}
+        </div>
+    </div>
+</div>

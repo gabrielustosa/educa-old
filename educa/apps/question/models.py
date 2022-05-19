@@ -33,7 +33,6 @@ class Answer(models.Model):
         related_name='answers',
         on_delete=models.CASCADE
     )
-    title = models.CharField('Título', max_length=255)
     content = models.TextField('Resposta')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

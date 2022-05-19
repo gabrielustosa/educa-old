@@ -25,6 +25,7 @@ def question_create_view(request, course_id):
 @require_POST
 def question_ask_view(request, lesson_id):
     lesson = get_object_or_404(Lesson, id=lesson_id)
+
     title = request.POST.get('title')
     content = request.POST.get('content')
 
@@ -51,5 +52,19 @@ def question_search_view(request, course_id):
 def question_view(request, question_id):
     question = get_object_or_404(Question, id=question_id)
     answers = question.answers.all()
+    form = modelform_factory(Answer, fields=('content',))
     return render(request, 'hx/question/view.html',
-                  context={'question': question, 'answers': answers})
+                  context={'question': question, 'answers': answers, 'form': form})
+
+
+def create_answer_view(request, question_id):
+    question = get_object_or_404(Question, id=question_id)
+
+    content = request.POST.get('content')
+
+    Answer.objects.create(user=request.user, question=question, content=content)
+    answers = Answer.objects.filter(question=question)
+    form = modelform_factory(Answer, fields=('content',))
+
+    return render(request, 'hx/question/answer.html',
+                  context={'answers': answers, 'form': form})
