@@ -1,0 +1,29 @@
+{% load bootstrap5 %}
+
+<div>
+    <div id="question-update">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button id="send" class="btn btn-dark">Salvar</button>
+        {% endbuttons %}
+    </div>
+</div>
+
+{% block javascript %}
+    <script>
+        document.getElementById('send').addEventListener('click', () => {
+            let question_id = "{{ question.id }}"
+            let form = document.querySelector('#question-update')
+            let inputs = form.querySelectorAll('input, textarea')
+            let values = {}
+            inputs.forEach(input => {
+                values[input.name] = input.value
+            })
+            htmx.ajax('POST', `/course/question/save/${question_id}/`, {
+                target: `#question-content`,
+                values: values
+            })
+        })
+    </script>
+{% endblock %}

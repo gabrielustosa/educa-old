@@ -55,3 +55,30 @@ def question_view(request, question_id):
     form = modelform_factory(Answer, fields=('content',))
     return render(request, 'hx/question/view.html',
                   context={'question': question, 'answers': answers, 'form': form})
+
+
+def question_update_view(request, question_id):
+    question = get_object_or_404(Question, id=question_id)
+    form = modelform_factory(Question, fields=('title', 'content'))
+    form = form(instance=question)
+    return render(request, 'hx/question/update.html',
+                  context={'form': form, 'question': question})
+
+
+def question_save_view(request, question_id):
+    question = get_object_or_404(Question, id=question_id)
+
+    question.title = request.POST.get('title')
+    question.content = request.POST.get('content')
+    question.save()
+
+    return render(request, 'hx/question/content.html',
+                  context={'question': question})
+
+
+def question_confirm_view():
+    ...
+
+
+def question_delete_view():
+    ...
