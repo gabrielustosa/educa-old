@@ -3,8 +3,8 @@
 <div class="container">
     <div id="question-ask">
         <button class="btn btn-dark"
-                hx-get="{% url 'question:course_all' course.id %}"
-                hx-target="#question">
+                hx-get="{% url 'question:course' course.id %}"
+                hx-target="#question-nav">
             Voltar para todas as perguntas
         </button>
         {% csrf_token %}
@@ -25,7 +25,7 @@
                 values[input.name] = input.value
             })
             htmx.ajax('POST', `/course/question/ask/${document.lesson_id}/`, {
-                target: '#question',
+                target: '#question-nav',
                 values: values
             })
         })

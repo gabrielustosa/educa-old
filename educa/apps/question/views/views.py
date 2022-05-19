@@ -15,10 +15,11 @@ def course_questions_view(request, course_id):
                   context={'course': course, 'questions': questions})
 
 
-def question_create_view(request):
+def question_create_view(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
     form = modelform_factory(Question, fields=('title', 'content'))
     return render(request, 'hx/question/create.html',
-                  context={'form': form})
+                  context={'form': form, 'course': course})
 
 
 @require_POST
@@ -32,7 +33,7 @@ def question_ask_view(request, lesson_id):
     course = lesson.module.course
     questions = Question.objects.filter(lesson__module__course=course)
 
-    return render(request, 'hx/question/course/course_all_questions.html',
+    return render(request, 'hx/question/course/course_questions.html',
                   context={'questions': questions, 'course': course})
 
 
@@ -65,5 +66,5 @@ def create_answer_view(request, question_id):
     answers = Answer.objects.filter(question=question)
     form = modelform_factory(Answer, fields=('content',))
 
-    return render(request, 'hx/question/answer.html',
+    return render(request, 'hx/question/answer/answer.html',
                   context={'answers': answers, 'form': form, 'question': question})

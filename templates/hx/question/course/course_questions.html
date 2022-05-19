@@ -1,4 +1,4 @@
-<section class="container pt-3">
+<div id="question-nav" class="container pt-3">
     <div class="pt-3">
         <div class="input-group rounded">
             <input hx-post="{% url 'question:search' course.id %}" hx-target="#question"
@@ -11,14 +11,13 @@
         </div>
         <div class="d-flex justify-content-between pt-3">
             <div class="btn-group">
-                <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
-                        aria-expanded="false">
+                <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown">
                     Todas as aulas
                 </button>
                 <ul class="dropdown-menu">
                     <li>
                         <a class="dropdown-item"
-                           hx-get="{% url 'question:course_all' course.id %}"
+                           hx-get="{% url 'question_filter:course_all' course.id %}"
                            hx-target="#question">
                             Todas as aulas
                         </a>
@@ -31,35 +30,34 @@
                 </ul>
             </div>
             <div class="btn-group">
-                <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
-                        aria-expanded="false">
+                <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown">
                     Filtrar perguntas
                 </button>
                 <ul class="dropdown-menu">
                     <li>
                         <a class="dropdown-item"
-                           hx-get="{% url 'question:i_ask' course.id %}"
+                           hx-get="{% url 'question_filter:i_ask' course.id %}"
                            hx-target="#question">
                             Perguntas que eu fiz
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item"
-                           hx-get="{% url 'question:more_answers' course.id %}"
+                           hx-get="{% url 'question_filter:more_answers' course.id %}"
                            hx-target="#question">
                             Perguntas com mais respostas
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item"
-                           hx-get="{% url 'question:more_recent' course.id %}"
+                           hx-get="{% url 'question_filter:more_recent' course.id %}"
                            hx-target="#question">
                             Perguntas mais recentes
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item"
-                           hx-get="{% url 'question:without_answer' course.id %}"
+                           hx-get="{% url 'question_filter:without_answer' course.id %}"
                            hx-target="#question">
                             Perguntas sem respostas
                         </a>
@@ -68,8 +66,8 @@
             </div>
             <div>
                 <button class="btn btn-dark"
-                        hx-get="{% url 'question:create' %}"
-                        hx-target="#question">
+                        hx-get="{% url 'question:create' course.id %}"
+                        hx-target="#question-nav">
                     Fazer uma pergunta
                 </button>
             </div>
@@ -78,12 +76,12 @@
     <div id="question" class="pt-3">
         {% include 'hx/question/course/course_all_questions.html' %}
     </div>
-</section>
+</div>
 
 {% block javascript %}
     <script>
         document.getElementById('question-lesson').addEventListener('click', () => {
-            htmx.ajax('GET', `/course/question/lesson/${document.lesson_id}/`, '#question')
+            htmx.ajax('GET', `/course/question/filter/lesson/${document.lesson_id}/`, '#question')
         })
     </script>
 {% endblock %}
