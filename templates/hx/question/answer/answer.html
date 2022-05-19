@@ -6,31 +6,8 @@
             <p>{{ answers|length }} Respostas</p>
         </div>
         {% for answer in answers %}
-            <div id="answer-{{ answer.id }}" class="d-flex justify-content-between border border-dark my-3">
-                <div>
-                    <p>{{ answer.user.get_full_name }}</p>
-                    <p>{{ answer.updated }}</p>
-                    <p>{{ answer.content }}</p>
-                </div>
-                {% if answer.user == request.user %}
-                    <div class="dropdown">
-                        <span data-bs-toggle="dropdown">
-                            <i class="bi bi-three-dots-vertical"></i>
-                        </span>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <span class="dropdown-item">
-                                    Editar
-                                </span>
-                            </li>
-                            <li>
-                                <span class="dropdown-item">
-                                    Apagar
-                                </span>
-                            </li>
-                        </ul>
-                    </div>
-                {% endif %}
+            <div id="aswner-view-{{ answer.id }}">
+                {% include 'hx/question/answer/view.html' %}
             </div>
         {% endfor %}
         <div id="answer-question">

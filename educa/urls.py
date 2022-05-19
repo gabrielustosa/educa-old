@@ -33,7 +33,7 @@ urlpatterns = [
     path('course/module/', include('educa.apps.module.urls')),
     path('content/lesson/', include('educa.apps.lesson.urls')),
     path('course/rating/', include('educa.apps.rating.urls')),
-    path('course/question/', include('educa.apps.question.urls.urls')),
+    path('course/question/', include('educa.apps.question.urls.urls_question')),
     path('course/answer/', include('educa.apps.question.urls.urls_answer')),
     path('course/question/filter/', include('educa.apps.question.urls.urls_filter')),
     path('', CourseListView.as_view(), name='home'),
