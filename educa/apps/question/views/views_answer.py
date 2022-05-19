@@ -35,3 +35,26 @@ def save_answer_view(request, answer_id):
 
     return render(request, 'hx/question/answer/view.html',
                   context={'answer': answer})
+
+
+def confirm_answer_view(request, answer_id):
+    answer = get_object_or_404(Answer, id=answer_id)
+
+    return render(request, 'hx/modal.html',
+                  context={'title': 'Confirmação',
+                           'content': 'Você tem certeza que deseja deletar sua resposta?',
+                           'confirm': True,
+                           'answer': answer})
+
+
+def delete_answer_view(request, answer_id):
+    answer = get_object_or_404(Answer, id=answer_id)
+
+    answer.delete()
+
+    question = answer.question
+    answers = Answer.objects.filter(question=question)
+    form = modelform_factory(Answer, fields=('content',))
+
+    return render(request, 'hx/question/answer/answer.html',
+                  context={'answers': answers, 'form': form, 'question': question})

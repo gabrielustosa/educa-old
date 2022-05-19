@@ -52,4 +52,4 @@ def select_lesson_view(request, lesson_id):
 def lesson_note_view(request, content_id):
     item = Content.objects.get(id=content_id).item
 
-    return render(request, 'hx/lesson/lesson_note.html', context={'content': item.content})
+    return render(request, 'hx/modal.html', context={'content': item.content, 'title': 'Notas'})

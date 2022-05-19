@@ -17,17 +17,19 @@
 
 {% block javascript %}
     <script>
-        document.getElementById('send').addEventListener('click', () => {
-            let form = document.querySelector('#question-ask')
-            let inputs = form.querySelectorAll('input, textarea')
-            let values = {}
-            inputs.forEach(input => {
-                values[input.name] = input.value
+        {
+            document.getElementById('send').addEventListener('click', () => {
+                let form = document.querySelector('#question-ask')
+                let inputs = form.querySelectorAll('input, textarea')
+                let values = {}
+                inputs.forEach(input => {
+                    values[input.name] = input.value
+                })
+                htmx.ajax('POST', `/course/question/ask/${document.lesson_id}/`, {
+                    target: '#question-nav',
+                    values: values
+                })
             })
-            htmx.ajax('POST', `/course/question/ask/${document.lesson_id}/`, {
-                target: '#question-nav',
-                values: values
-            })
-        })
+        }
     </script>
 {% endblock %}
