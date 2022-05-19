@@ -17,8 +17,8 @@
     </div>
 </div>
 
-{% if answer %}
-    {% block javascript %}
+{% block javascript %}
+    {% if answer %}
         <script>
             {
                 let confirm = document.querySelector('#confirm')
@@ -32,5 +32,20 @@
                 })
             }
         </script>
-    {% endblock %}
-{% endif %}
+    {% endif %}
+    {% if question %}
+        <script>
+            {
+                let confirm = document.querySelector('#confirm')
+                confirm.addEventListener('click', () => {
+                    let question_id = "{{ question.id }}"
+                    htmx.ajax('POST', `/course/question/delete/${question_id}/`, {
+                        target: '#question'
+                    })
+                    const modal = document.getElementById('modal_container');
+                    modal.classList.remove('show');
+                })
+            }
+        </script>
+    {% endif %}
+{% endblock %}

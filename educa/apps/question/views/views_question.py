@@ -76,9 +76,24 @@ def question_save_view(request, question_id):
                   context={'question': question})
 
 
-def question_confirm_view():
-    ...
+def question_confirm_view(request, question_id):
+    question = get_object_or_404(Question, id=question_id)
+
+    return render(request, 'hx/modal.html',
+                  context={'title': 'Confirmação',
+                           'content': 'Você tem certeza que deseja deletar sua pergunta?',
+                           'confirm': True,
+                           'question': question})
 
 
-def question_delete_view():
-    ...
+def question_delete_view(request, question_id):
+    question = get_object_or_404(Question, id=question_id)
+
+    question.delete()
+
+    course = question.lesson.module.course
+
+    questions = Question.objects.filter(lesson__module__course=course)
+
+    return render(request, 'hx/question/course/course_all_questions.html',
+                  context={'questions': questions, 'course': course})

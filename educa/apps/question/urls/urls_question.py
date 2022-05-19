@@ -12,6 +12,6 @@ urlpatterns = [
     path('view/<int:question_id>/', views_question.question_view, name='view'),
     path('update/<int:question_id>/', views_question.question_update_view, name='update'),
     path('save/<int:question_id>/', views_question.question_save_view, name='save'),
-    path('confirm/', views_question.question_confirm_view, name='confirm'),
+    path('confirm/<int:question_id>/', views_question.question_confirm_view, name='confirm'),
     path('delete/<int:question_id>/', views_question.question_delete_view, name='delete'),
 ]
