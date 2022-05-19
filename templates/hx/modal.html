@@ -10,7 +10,17 @@
             {% if confirm %}
                 {% csrf_token %}
                 <div class="pt-3">
-                    <button id="confirm" class="btn btn-danger">Confirmar</button>
+                    <button id="confirm"
+                            {% if answer %}
+                            hx-post="{% url 'answer:delete' answer.id %}"
+                            hx-target="#answers"
+                            {% elif question %}
+                            hx-post="{% url 'question:delete' question.id %}"
+                            hx-target="#question"
+                            {% endif %}
+                            class="btn btn-danger">
+                        Confirmar
+                    </button>
                 </div>
             {% endif %}
         </div>
@@ -18,34 +28,10 @@
 </div>
 
 {% block javascript %}
-    {% if answer %}
-        <script>
-            {
-                let confirm = document.querySelector('#confirm')
-                confirm.addEventListener('click', () => {
-                    let answer_id = "{{ answer.id }}"
-                    htmx.ajax('POST', `/course/answer/delete/${answer_id}/`, {
-                        target: '#answers'
-                    })
-                    const modal = document.getElementById('modal_container');
-                    modal.classList.remove('show');
-                })
-            }
-        </script>
-    {% endif %}
-    {% if question %}
-        <script>
-            {
-                let confirm = document.querySelector('#confirm')
-                confirm.addEventListener('click', () => {
-                    let question_id = "{{ question.id }}"
-                    htmx.ajax('POST', `/course/question/delete/${question_id}/`, {
-                        target: '#question'
-                    })
-                    const modal = document.getElementById('modal_container');
-                    modal.classList.remove('show');
-                })
-            }
-        </script>
-    {% endif %}
+    <script>
+        document.querySelector('#confirm').addEventListener('click', () => {
+            let modal = document.getElementById('modal_container');
+            modal.classList.remove('show');
+        })
+    </script>
 {% endblock %}

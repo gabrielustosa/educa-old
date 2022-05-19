@@ -19,7 +19,7 @@
                                 </span>
                             </li>
                             <li>
-                                <span class="dropdown-item confirm"
+                                <span class="dropdown-item open"
                                       hx-get="{% url 'question:confirm' question.id %}"
                                       hx-target="#modal">
                                     Apagar
@@ -33,25 +33,3 @@
         {% include 'hx/question/answer/answer.html' %}
     </div>
 </div>
-
-{% block javascript %}
-    <script>
-        {
-            const confirms = document.querySelectorAll('.confirm');
-
-            confirms.forEach(open => {
-                open.addEventListener('click', () => {
-                    setTimeout(() => {
-                        const modal = document.getElementById('modal_container');
-                        modal.classList.add('show');
-                        const close = document.getElementById('close');
-                        close.addEventListener('click', () => {
-                            const modal = document.getElementById('modal_container');
-                            modal.classList.remove('show');
-                        });
-                    }, 300)
-                });
-            })
-        }
-    </script>
-{% endblock %}

@@ -35,27 +35,32 @@
 
 {% block javascript %}
     <script>
-        const opens = document.querySelectorAll('.open');
 
-        opens.forEach(open => {
-            open.addEventListener('click', () => {
-                setTimeout(() => {
-                    const modal = document.getElementById('modal_container');
-                    modal.classList.add('show');
-                    const close = document.getElementById('close');
-                    close.addEventListener('click', () => {
+        const loadModal = () => {
+            const opens = document.querySelectorAll('.open');
+            opens.forEach(open => {
+                open.addEventListener('click', () => {
+                    setTimeout(() => {
                         const modal = document.getElementById('modal_container');
-                        modal.classList.remove('show');
-                    });
-                }, 300)
-            });
-        })
+                        modal.classList.add('show');
+                        const close = document.getElementById('close');
+                        close.addEventListener('click', () => {
+                            const modal = document.getElementById('modal_container');
+                            modal.classList.remove('show');
+                        });
+                    }, 300)
+                });
+            })
+        }
+
+        loadModal()
 
         document.body.addEventListener('htmx:afterRequest', () => {
             let lesson_element = document.getElementById('lesson_id')
             document.lesson_id = lesson_element.getAttribute('data-value')
             let course_slug = "{{ course.slug }}"
             window.history.pushState("", "", `/students/course/${course_slug}/lesson/${document.lesson_id}/`);
+            loadModal()
         });
 
 
