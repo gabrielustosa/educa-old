@@ -36,6 +36,7 @@ urlpatterns = [
     path('course/question/', include('educa.apps.question.urls.urls_question')),
     path('course/answer/', include('educa.apps.question.urls.urls_answer')),
     path('course/question/filter/', include('educa.apps.question.urls.urls_filter')),
+    path('course/notice/', include('educa.apps.notice.urls')),
     path('', CourseListView.as_view(), name='home'),
 ]
 

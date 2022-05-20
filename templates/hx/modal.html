@@ -16,6 +16,9 @@
                         {% elif question %}
                             hx-post="{% url 'question:delete' question.id %}"
                             hx-target="#question"
+                        {% elif notice %}
+                            hx-post="{% url 'notice:delete' notice.id %}"
+                            hx-target="#notice"
                         {% endif %}
                             data-bs-dismiss="modal"
                             class="btn btn-danger">

@@ -1,0 +1,14 @@
+{% load bootstrap5 %}
+
+<div id="notice-update" class="container">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons %}
+        <button class="btn btn-dark"
+                hx-post="{% url 'notice:update' notice.id %}"
+                hx-target="#notice"
+                hx-parent="#notice-update">
+            Salvar
+        </button>
+    {% endbuttons %}
+</div>

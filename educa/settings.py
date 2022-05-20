@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'educa.apps.lesson',
     'educa.apps.rating',
     'educa.apps.question',
-
+    'educa.apps.notice',
 ]
 
 MIDDLEWARE = [

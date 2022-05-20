@@ -106,6 +106,5 @@ def question_delete_view(request, question_id):
     question = get_object_or_404(Question, id=question_id)
 
     question.delete()
-    course_id = question.lesson.module.course.id
 
-    return course_all_questions_view(request, course_id)
+    return course_all_questions_view(request, question.lesson.module.course.id)

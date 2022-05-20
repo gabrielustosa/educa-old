@@ -21,7 +21,9 @@
                     <div hx-get="{% url 'question:course' course.id %}" hx-target="#content">
                         <h5>Perguntas e respostas</h5>
                     </div>
-                    <div><h5>Notas</h5></div>
+                    <div  hx-get="{% url 'notice:view' course.id %}" hx-target="#content">
+                        <h5>Avisos</h5>
+                    </div>
                     <div><h5>Avaliações</h5></div>
                 </div>
                 <div id="content">
