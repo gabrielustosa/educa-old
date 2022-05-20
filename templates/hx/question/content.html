@@ -1,7 +1,11 @@
-<h5>{{ question.title }}</h5>
-<p>
-    {{ question.user.get_full_name }} -
-    Aula "{{ question.lesson.title }}" -
-    {{ question.updated }}
-</p>
-<p>{{ question.content }}</p>
+<div>
+    <h5>{{ question.title }}</h5>
+    <p>
+        {{ question.user.get_full_name }} -
+        Aula "{{ question.lesson.title }}" -
+        {{ question.updated }}
+    </p>
+    <div class="text-break">
+        <p>{{ question.content }}</p>
+    </div>
+</div>

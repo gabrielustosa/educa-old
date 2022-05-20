@@ -10,16 +10,15 @@
                 {% if confirm %}
                     {% csrf_token %}
                     <div class="pt-3">
-                        <button id="confirm"
-                                {% if answer %}
-                                hx-post="{% url 'answer:delete' answer.id %}"
-                                hx-target="#answers"
-                                {% elif question %}
-                                hx-post="{% url 'question:delete' question.id %}"
-                                hx-target="#question"
-                                {% endif %}
-                                data-bs-dismiss="modal"
-                                class="btn btn-danger">
+                        <button{% if answer %}
+                            hx-post="{% url 'answer:delete' answer.id %}"
+                            hx-target="#answers"
+                        {% elif question %}
+                            hx-post="{% url 'question:delete' question.id %}"
+                            hx-target="#question"
+                        {% endif %}
+                            data-bs-dismiss="modal"
+                            class="btn btn-danger">
                             Confirmar
                         </button>
                     </div>

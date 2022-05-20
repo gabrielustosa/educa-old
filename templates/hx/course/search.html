@@ -1,0 +1,15 @@
+<div>
+    <div class="input-group rounded">
+        <input hx-post="{% url 'student:content_search' course.id %}" hx-target="#result"
+               hx-trigger="keyup changed delay:500ms"
+               type="search" class="form-control rounded" name="search"
+               placeholder="Pesquisar" aria-label="Search" aria-describedby="search-addon"/>
+        <span class="input-group-text border-0" id="search-addon">
+               <i class="bi bi-search"></i>
+            </span>
+    </div>
+    <div id="result">
+        <h5>Iniciar uma nova pesquisa</h5>
+        <p>Para encontrar aulas ou módulos</p>
+    </div>
+</div>

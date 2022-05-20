@@ -1,0 +1,12 @@
+<div>
+    <h5>Resultados para "{{ search }}" ({{ lessons|length }} aulas)</h5>
+    <div class="pt-2">
+        {% for lesson in lessons %}
+            <p class="ps-5"
+               hx-get="{% url 'student:select_video' lesson.id %}"
+               hx-target="#video">
+                {{ lesson.order }}. {{ lesson.title }}
+            </p>
+        {% endfor %}
+    </div>
+</div>

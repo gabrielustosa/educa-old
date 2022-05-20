@@ -1,4 +1,6 @@
 from django.contrib.auth import authenticate, login
+from django.db.models import Q
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView
@@ -6,6 +8,7 @@ from django.views.generic import CreateView, TemplateView
 from educa.apps.content.models import Content
 from educa.apps.course.models import Course
 from educa.apps.lesson.models import Lesson
+from educa.apps.module.models import Module
 from educa.apps.student.forms import UserCreateForm
 
 
@@ -46,10 +49,30 @@ def student_course_view(request, course_slug, lesson_id):
 
 def select_lesson_view(request, lesson_id):
     lesson = Lesson.objects.get(id=lesson_id)
-    return render(request, 'hx/lesson/lesson_video.html', context={'current_lesson': lesson})
+    return render(request, 'hx/lesson/video.html', context={'current_lesson': lesson})
 
 
 def lesson_note_view(request, content_id):
     item = Content.objects.get(id=content_id).item
 
     return render(request, 'hx/modal.html', context={'content': item.content, 'title': 'Notas'})
+
+
+def course_search_view(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    return render(request, 'hx/course/search.html', context={'course': course})
+
+
+def course_content_search_view(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    search = request.POST.get('search')
+
+    if search == "":
+        return HttpResponse("<h5>Iniciar uma nova pesquisa</h5> <p>Para encontrar aulas ou módulos</p>")
+
+    lessons = Lesson.objects.filter(module__course=course, title__icontains=search).all()
+
+    if not lessons.exists():
+        return HttpResponse("<h5>Não foi encontrado nenhum resultado para sua busca</h5>")
+
+    return render(request, 'hx/course/search_content.html', context={'lessons': lessons, 'search': search})

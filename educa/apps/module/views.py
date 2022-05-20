@@ -58,7 +58,7 @@ def module_order_view(request, course_id):
     modules_id = request.POST.getlist('module_id')
     for order, module_id in enumerate(modules_id, start=1):
         Module.objects.filter(id=module_id).update(order=order)
-    return render(request, 'hx/module/module_sortable.html',
+    return render(request, 'hx/module/sortable.html',
                   context={
                       'modules': Module.objects.filter(course=course).order_by('order').all()
                   })

@@ -9,13 +9,13 @@ from educa.apps.question.models import Question
 def course_all_questions_view(request, course_id):
     course = get_object_or_404(Course, id=course_id)
     questions = Question.objects.filter(lesson__module__course=course)
-    return render(request, 'hx/question/course/course_all_questions.html',
+    return render(request, 'hx/question/course/all_questions.html',
                   context={'questions': questions, 'course': course})
 
 
 def lesson_questions_view(request, lesson_id):
     lesson = get_object_or_404(Lesson, id=lesson_id)
-    return render(request, 'hx/question/lesson/lesson_questions.html',
+    return render(request, 'hx/question/lesson/questions.html',
                   context={'lesson': lesson, 'questions': lesson.questions.all()})
 
 

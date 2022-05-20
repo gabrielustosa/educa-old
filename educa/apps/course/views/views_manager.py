@@ -53,4 +53,4 @@ class CourseDeleteView(
 
 def get_course_overview(request, course_id):
     course = get_object_or_404(Course, id=course_id)
-    return render(request, 'hx/course/course_overview.html', context={'course': course})
+    return render(request, 'hx/course/overview.html', context={'course': course})
