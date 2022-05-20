@@ -5,25 +5,12 @@
         {% csrf_token %}
         {% bootstrap_form form %}
         {% buttons %}
-            <button id="send" class="btn btn-dark">Salvar</button>
+            <button class="btn btn-dark"
+                    hx-post="{% url 'answer:save' answer.id %}"
+                    hx-target="#aswner-view-{{ answer.id }}"
+                    hx-parent="#answer-update">
+                Salvar
+            </button>
         {% endbuttons %}
     </div>
 </div>
-
-{% block javascript %}
-    <script>
-        document.getElementById('send').addEventListener('click', () => {
-            let answer_id = "{{ answer.id }}"
-            let form = document.querySelector('#answer-update')
-            let inputs = form.querySelectorAll('input, textarea')
-            let values = {}
-            inputs.forEach(input => {
-                values[input.name] = input.value
-            })
-            htmx.ajax('POST', `/course/answer/save/${answer_id}/`, {
-                target: `#aswner-view-${answer_id}`,
-                values: values
-            })
-        })
-    </script>
-{% endblock %}

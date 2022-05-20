@@ -23,7 +23,9 @@
                         </a>
                     </li>
                     <li>
-                        <a id="question-lesson" class="dropdown-item">
+                        <a class="dropdown-item"
+                           hx-get="{% url 'question_filter:lesson' lesson_id %}"
+                           hx-target="#question">
                             Aula atual
                         </a>
                     </li>
@@ -77,11 +79,3 @@
         {% include 'hx/question/course/course_all_questions.html' %}
     </div>
 </div>
-
-{% block javascript %}
-    <script>
-        document.getElementById('question-lesson').addEventListener('click', () => {
-            htmx.ajax('GET', `/course/question/filter/lesson/${document.lesson_id}/`, '#question')
-        })
-    </script>
-{% endblock %}

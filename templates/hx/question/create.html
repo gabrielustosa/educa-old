@@ -1,35 +1,23 @@
 {% load bootstrap5 %}
 
 <div class="container">
-    <div id="question-ask">
+    <div>
         <button class="btn btn-dark"
                 hx-get="{% url 'question:course' course.id %}"
                 hx-target="#question-nav">
             Voltar para todas as perguntas
         </button>
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        {% buttons %}
-            <button id="send" class="btn btn-dark">Publicar</button>
-        {% endbuttons %}
+        <div id="question-ask">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+                <button class="btn btn-dark"
+                        hx-post="{% url 'question:ask' lesson_id %}"
+                        hx-target="#question-nav"
+                        hx-parent="#question-ask">
+                    Publicar
+                </button>
+            {% endbuttons %}
+        </div>
     </div>
 </div>
-
-{% block javascript %}
-    <script>
-        {
-            document.getElementById('send').addEventListener('click', () => {
-                let form = document.querySelector('#question-ask')
-                let inputs = form.querySelectorAll('input, textarea')
-                let values = {}
-                inputs.forEach(input => {
-                    values[input.name] = input.value
-                })
-                htmx.ajax('POST', `/course/question/ask/${document.lesson_id}/`, {
-                    target: '#question-nav',
-                    values: values
-                })
-            })
-        }
-    </script>
-{% endblock %}

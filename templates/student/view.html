@@ -42,16 +42,25 @@
             document.lesson_id = lesson_element.getAttribute('data-value')
         }
 
+        const getFormInputs = form => {
+            let inputs = form.querySelectorAll('input, textarea')
+            let values = {}
+            inputs.forEach(input => {
+                values[input.name] = input.value
+            })
+            return values
+        }
+
         setLessonID()
 
-        htmx.on('htmx:afterRequest', e => {
+        htmx.on("htmx:afterRequest", e => {
             if (e.detail.target.id === 'video') {
                 setLessonID()
                 let course_slug = "{{ course.slug }}"
                 window.history.pushState("", "", `/students/course/${course_slug}/lesson/${document.lesson_id}/`);
             }
         });
-        htmx.on("htmx:afterSwap", (e) => {
+        htmx.on("htmx:afterSwap", e => {
             if (e.detail.target.id === "modal") {
                 const modal = new bootstrap.Modal(document.getElementById("modal-course"))
                 modal.show()
@@ -60,5 +69,20 @@
         htmx.on("hidden.bs.modal", () => {
             document.getElementById("modal-course").innerHTML = ""
         })
+
+        htmx.on("htmx:configRequest", e => {
+            if (e.detail.verb === 'post') {
+                if (e.detail.elt.hasAttribute('hx-parent')) {
+                    let parent_data = e.detail.elt.getAttribute('hx-parent')
+                    let parent = document.querySelector(parent_data)
+                    let values = getFormInputs(parent)
+                    for (const [name, value] of Object.entries(values)) {
+                        e.detail.parameters[name] = value
+                    }
+                }
+            }
+            e.detail.parameters['lesson_id'] = document.lesson_id
+        })
+
     </script>
 {% endblock %}

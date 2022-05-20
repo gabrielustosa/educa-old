@@ -12,14 +12,18 @@ def course_questions_view(request, course_id):
     course = get_object_or_404(Course, id=course_id)
     questions = Question.objects.filter(lesson__module__course=course)
     return render(request, 'hx/question/course/course_questions.html',
-                  context={'course': course, 'questions': questions})
+                  context={'course': course,
+                           'questions': questions,
+                           'lesson_id': request.GET.get('lesson_id')})
 
 
 def question_create_view(request, course_id):
     course = get_object_or_404(Course, id=course_id)
     form = modelform_factory(Question, fields=('title', 'content'))
     return render(request, 'hx/question/create.html',
-                  context={'form': form, 'course': course})
+                  context={'form': form,
+                           'course': course,
+                           'lesson_id': request.GET.get('lesson_id')})
 
 
 @require_POST
@@ -34,7 +38,9 @@ def question_ask_view(request, lesson_id):
     questions = Question.objects.filter(lesson__module__course=course)
 
     return render(request, 'hx/question/course/course_questions.html',
-                  context={'questions': questions, 'course': course})
+                  context={'questions': questions,
+                           'course': course,
+                           'lesson_id': request.POST.get('lesson_id')})
 
 
 @require_POST
@@ -46,7 +52,8 @@ def question_search_view(request, course_id):
         filter(Q(title__icontains=search) | Q(content__icontains=search))
 
     return render(request, 'hx/question/search.html',
-                  context={'questions': questions, 'course': course})
+                  context={'questions': questions,
+                           'course': course})
 
 
 def question_view(request, question_id):
@@ -54,7 +61,9 @@ def question_view(request, question_id):
     answers = question.answers.all()
     form = modelform_factory(Answer, fields=('content',))
     return render(request, 'hx/question/view.html',
-                  context={'question': question, 'answers': answers, 'form': form})
+                  context={'question': question,
+                           'answers': answers,
+                           'form': form})
 
 
 def question_update_view(request, question_id):
@@ -62,7 +71,8 @@ def question_update_view(request, question_id):
     form = modelform_factory(Question, fields=('title', 'content'))
     form = form(instance=question)
     return render(request, 'hx/question/update.html',
-                  context={'form': form, 'question': question})
+                  context={'form': form,
+                           'question': question})
 
 
 def question_save_view(request, question_id):
@@ -96,4 +106,5 @@ def question_delete_view(request, question_id):
     questions = Question.objects.filter(lesson__module__course=course)
 
     return render(request, 'hx/question/course/course_all_questions.html',
-                  context={'questions': questions, 'course': course})
+                  context={'questions': questions,
+                           'course': course})
