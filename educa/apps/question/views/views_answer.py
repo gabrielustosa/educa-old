@@ -54,7 +54,7 @@ class AnswerRenderUpdateView(AnswerMixin):
 
 
 class AnswerUpdateView(AnswerMixin):
-    template_name = 'hx/question/answer/view.html'
+    template_name = 'hx/question/answer/content.html'
     http_method_names = ['post']
 
     def post(self, request, *args, **kwargs):

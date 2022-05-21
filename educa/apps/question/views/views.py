@@ -1,14 +1,14 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.forms import modelform_factory
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
 from django.utils.functional import cached_property
 from django.views.generic import TemplateView
 
 from educa.apps.course.models import Course
 from educa.apps.lesson.models import Lesson
 from educa.apps.question.models import Question
-from educa.apps.question.views.views_filter import course_all_questions_view
 from educa.utils import get_lesson_id
 
 
@@ -35,17 +35,18 @@ class QuestionMixin(
         return context
 
 
-class QuestionAll(QuestionMixin):
+class QuestionView(QuestionMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         context['questions'] = Question.objects.filter(lesson__module__course=self.get_course)
+        print(context['lesson_id'])
 
         return context
 
 
-class QuestionRenderCreate(QuestionMixin):
+class QuestionRenderCreateView(QuestionMixin):
     template_name = 'hx/question/render/create.html'
 
     def get_context_data(self, **kwargs):
@@ -56,7 +57,7 @@ class QuestionRenderCreate(QuestionMixin):
         return context
 
 
-class QuestionCreate(QuestionMixin):
+class QuestionCreateView(QuestionMixin):
     http_method_names = ['post']
 
     def get_course(self):
@@ -75,7 +76,7 @@ class QuestionCreate(QuestionMixin):
         return self.render_to_response(context)
 
 
-class QuestionSearch(QuestionMixin):
+class QuestionSearchView(QuestionMixin):
     template_name = 'hx/question/search.html'
     http_method_names = ['post']
 
@@ -85,7 +86,7 @@ class QuestionSearch(QuestionMixin):
         search = request.POST.get('search')
 
         if search == "":
-            return course_all_questions_view(request, self.get_course.id)
+            return redirect(reverse('question:course', kwargs={'course_id': self.get_course.id}))
 
         context['questions'] = Question.objects.filter(lesson__module__course=self.get_course). \
             filter(Q(title__icontains=search) | Q(content__icontains=search))
