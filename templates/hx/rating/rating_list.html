@@ -1,8 +1,6 @@
 {% load course %}
 
-<section class="py-5">
-    {% if ratings %}
-        <h3>Avaliações</h3>
+<div class="py-3">
         {% for rating in ratings %}
             <div class="card" style="width: 25rem;">
                 <div class="card-body">
@@ -18,5 +16,4 @@
                 </div>
             </div>
         {% endfor %}
-    {% endif %}
-</section>
+</div>

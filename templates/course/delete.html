@@ -9,7 +9,7 @@
     <div class="container text-center pt-5">
         <form method="post">
             {% csrf_token %}
-            <p>Você tem certeza que você quer excluir o curso "{{ object.title }}"?</p>
+            <p>Você tem certeza que deseja excluir o curso "{{ object.title }}"?</p>
             {% buttons %}
                 <button type="submit" class="btn btn-danger">Confirmar</button>
                 <button type="submit" class="btn btn-warning">

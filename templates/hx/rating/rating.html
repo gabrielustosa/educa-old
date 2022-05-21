@@ -1,0 +1,17 @@
+{% load course %}
+
+<div id="rating">
+    <div class="d-flex justify-content-end">
+        {% if request.user|hasnt_rating:course %}
+            <button class="btn btn-dark"
+                    hx-get="{% url 'rating:render_create' course.id %}"
+                    hx-target="#rating">
+                Avaliar
+            </button>
+        {% endif %}
+    </div>
+    <div>
+        <h3>Avaliações</h3>
+        {% include 'hx/rating/rating_list.html' %}
+    </div>
+</div>
