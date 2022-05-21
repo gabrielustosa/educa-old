@@ -14,7 +14,7 @@
                             hx-post="{% url 'answer:delete' answer.id %}"
                             hx-target="#answers"
                         {% elif question %}
-                            hx-post="{% url 'question:delete' question.id %}"
+                            hx-post="{% url 'question_view:delete' question.id %}"
                             hx-target="#question"
                         {% elif notice %}
                             hx-post="{% url 'notice:delete' notice.id %}"

@@ -12,7 +12,7 @@
             {% bootstrap_form form %}
             {% buttons %}
                 <button class="btn btn-dark"
-                        hx-post="{% url 'question:ask' lesson_id %}"
+                        hx-post="{% url 'question:create' lesson_id %}"
                         hx-target="#question-nav"
                         hx-parent="#question-ask">
                     Publicar

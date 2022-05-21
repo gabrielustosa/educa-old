@@ -9,3 +9,7 @@ def get_model(model_name):
 
 def content_is_instance(content, class_name):
     return isinstance(content.item, get_model(class_name))
+
+
+def get_lesson_id(request):
+    return request.GET.get('lesson_id') if request.GET.get('lesson_id') else request.POST.get('lesson_id')

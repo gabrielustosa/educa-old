@@ -13,14 +13,14 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <span class="dropdown-item"
-                                      hx-get="{% url 'question:update' question.id %}"
+                                      hx-get="{% url 'question_view:render_update' question.id %}"
                                       hx-target="#question-content">
                                     Editar
                                 </span>
                             </li>
                             <li>
                                 <span class="dropdown-item"
-                                      hx-get="{% url 'question:confirm' question.id %}"
+                                      hx-get="{% url 'question_view:confirm' question.id %}"
                                       hx-target="#modal">
                                     Apagar
                                 </span>

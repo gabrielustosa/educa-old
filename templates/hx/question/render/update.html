@@ -6,7 +6,7 @@
         {% bootstrap_form form %}
         {% buttons %}
             <button class="btn btn-dark"
-                    hx-post="{% url 'question:save' question.id %}"
+                    hx-post="{% url 'question_view:update' question.id %}"
                     hx-target="#question-content"
                     hx-parent="#question-update">
                 Salvar
