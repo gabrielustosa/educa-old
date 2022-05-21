@@ -1,60 +1,99 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import modelform_factory
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
+from django.utils.functional import cached_property
+from django.views.generic import TemplateView
 
-from educa.apps.question.models import Answer, Question
-
-
-def create_answer_view(request, question_id):
-    question = get_object_or_404(Question, id=question_id)
-
-    content = request.POST.get('content')
-
-    Answer.objects.create(user=request.user, question=question, content=content)
-    answers = Answer.objects.filter(question=question)
-    form = modelform_factory(Answer, fields=('content',))
-
-    return render(request, 'hx/question/answer/answer.html',
-                  context={'answers': answers, 'form': form, 'question': question})
+from educa.apps.question.models import Answer
+from educa.apps.question.views.views_question import QuestionViewMixin
 
 
-def update_answer_view(request, answer_id):
-    answer = get_object_or_404(Answer, id=answer_id)
+class AnswerCreateView(QuestionViewMixin):
+    template_name = 'hx/question/answer/answer.html'
+    http_method_names = ['post']
 
-    form = modelform_factory(Answer, fields=('content',))
-    form = form(instance=answer)
+    def post(self, request, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    return render(request, 'hx/question/answer/update.html',
-                  context={'form': form, 'answer': answer})
+        content = self.request.POST.get('content')
+        Answer.objects.create(user=self.request.user, question=self.get_question, content=content)
 
+        context['answers'] = Answer.objects.filter(question=self.get_question)
+        context['form'] = modelform_factory(Answer, fields=('content',))
 
-def save_answer_view(request, answer_id):
-    answer = get_object_or_404(Answer, id=answer_id)
-
-    answer.content = request.POST.get('content')
-    answer.save()
-
-    return render(request, 'hx/question/answer/view.html',
-                  context={'answer': answer})
+        return self.render_to_response(context)
 
 
-def confirm_answer_view(request, answer_id):
-    answer = get_object_or_404(Answer, id=answer_id)
+class AnswerMixin(
+    LoginRequiredMixin,
+    TemplateView
+):
 
-    return render(request, 'hx/modal.html',
-                  context={'title': 'Confirmação',
-                           'content': 'Você tem certeza que deseja deletar sua resposta?',
-                           'confirm': True,
-                           'answer': answer})
+    @cached_property
+    def get_answer(self):
+        return get_object_or_404(Answer, id=self.kwargs.get('answer_id'))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['answer'] = self.get_answer
+
+        return context
 
 
-def delete_answer_view(request, answer_id):
-    answer = get_object_or_404(Answer, id=answer_id)
+class AnswerRenderUpdateView(AnswerMixin):
+    template_name = 'hx/question/answer/update.html'
 
-    answer.delete()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    question = answer.question
-    answers = Answer.objects.filter(question=question)
-    form = modelform_factory(Answer, fields=('content',))
+        form = modelform_factory(Answer, fields=('content',))
+        context['form'] = form(instance=self.get_answer)
 
-    return render(request, 'hx/question/answer/answer.html',
-                  context={'answers': answers, 'form': form, 'question': question})
+        return context
+
+
+class AnswerUpdateView(AnswerMixin):
+    template_name = 'hx/question/answer/view.html'
+    http_method_names = ['post']
+
+    def post(self, request, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        answer = self.get_answer
+        answer.content = request.POST.get('content')
+        answer.save()
+
+        return self.render_to_response(context)
+
+
+class AnswerConfirmDeleteView(AnswerMixin):
+    template_name = 'hx/modal.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context = context | {'title': 'Confirmação',
+                             'content': 'Você tem certeza que deseja deletar sua resposta?',
+                             'confirm': True}
+        return context
+
+
+class AnswerDeleteView(AnswerMixin):
+    template_name = 'hx/question/answer/answer.html'
+    http_method_names = ['post']
+
+    def post(self, request, *args, **kwargs):
+        question = self.get_answer.question
+        answers = Answer.objects.filter(question=question)
+        form = modelform_factory(Answer, fields=('content',))
+
+        self.get_answer.delete()
+
+        context = {
+            'answers': answers,
+            'form': form,
+            'question': question
+        }
+
+        return self.render_to_response(context)

@@ -14,7 +14,7 @@
             <ul class="dropdown-menu">
                 <li>
                     <span class="dropdown-item"
-                          hx-get="{% url 'answer:update' answer.id %}"
+                          hx-get="{% url 'answer:render_update' answer.id %}"
                           hx-target="#answer-{{ answer.id }}">
                         Editar
                     </span>

@@ -6,7 +6,7 @@
         {% bootstrap_form form %}
         {% buttons %}
             <button class="btn btn-dark"
-                    hx-post="{% url 'answer:save' answer.id %}"
+                    hx-post="{% url 'answer:update' answer.id %}"
                     hx-target="#aswner-view-{{ answer.id }}"
                     hx-parent="#answer-update">
                 Salvar
