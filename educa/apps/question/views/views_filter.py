@@ -45,7 +45,7 @@ class FilterQuestionMixin(
 
 
 class FilterQuestionLesson(FilterQuestionMixin):
-    template_name = 'hx/question/lesson/questions.html'
+    template_name = 'hx/question/filter/question_lesson.html'
 
     def get_questions(self):
         return self.get_lesson.questions.all()
