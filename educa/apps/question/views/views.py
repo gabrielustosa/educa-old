@@ -1,14 +1,14 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.forms import modelform_factory
-from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse
+from django.shortcuts import get_object_or_404
 from django.utils.functional import cached_property
 from django.views.generic import TemplateView
 
 from educa.apps.course.models import Course
 from educa.apps.lesson.models import Lesson
 from educa.apps.question.models import Question
+from educa.apps.question.views.views_filter import course_all_questions_view
 from educa.utils import get_lesson_id
 
 
@@ -16,8 +16,6 @@ class QuestionMixin(
     LoginRequiredMixin,
     TemplateView,
 ):
-    template_name = 'hx/question/course/questions.html'
-
     @cached_property
     def get_course(self):
         return get_object_or_404(Course, id=self.kwargs.get('course_id'))
@@ -36,12 +34,12 @@ class QuestionMixin(
 
 
 class QuestionView(QuestionMixin):
+    template_name = 'hx/question/course/questions.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['questions'] = Question.objects.filter(lesson__module__course=self.get_course)
-        print(context['lesson_id'])
+        context['questions'] = Question.objects.filter(lesson__course=self.get_course)
 
         return context
 
@@ -58,10 +56,11 @@ class QuestionRenderCreateView(QuestionMixin):
 
 
 class QuestionCreateView(QuestionMixin):
+    template_name = 'hx/question/course/questions.html'
     http_method_names = ['post']
 
     def get_course(self):
-        return self.get_lesson.module.course
+        return self.get_lesson.course
 
     def post(self, request, *args, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -71,7 +70,7 @@ class QuestionCreateView(QuestionMixin):
 
         Question.objects.create(lesson=self.get_lesson, user=request.user, title=title, content=content)
 
-        context['questions'] = Question.objects.filter(lesson__module__course=self.get_course())
+        context['questions'] = Question.objects.filter(lesson__course=self.get_course())
 
         return self.render_to_response(context)
 
@@ -86,9 +85,9 @@ class QuestionSearchView(QuestionMixin):
         search = request.POST.get('search')
 
         if search == "":
-            return redirect(reverse('question:course', kwargs={'course_id': self.get_course.id}))
+            return course_all_questions_view(request, self.get_course.id)
 
-        context['questions'] = Question.objects.filter(lesson__module__course=self.get_course). \
+        context['questions'] = Question.objects.filter(lesson__course=self.get_course). \
             filter(Q(title__icontains=search) | Q(content__icontains=search))
 
         return self.render_to_response(context)

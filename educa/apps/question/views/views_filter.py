@@ -11,8 +11,8 @@ from educa.apps.question.models import Question
 
 def course_all_questions_view(request, course_id):
     course = get_object_or_404(Course, id=course_id)
-    questions = Question.objects.filter(lesson__module__course=course)
-    return render(request, 'hx/question/course/all_questions.html',
+    questions = Question.objects.filter(lesson__course=course)
+    return render(request, 'hx/question/filter/all_questions.html',
                   context={'questions': questions, 'course': course})
 
 
@@ -55,7 +55,7 @@ class FilterQuestionIAsk(FilterQuestionMixin):
     template_name = 'hx/question/filter/question_i_did.html'
 
     def get_questions(self):
-        return Question.objects.filter(lesson__module__course=self.get_course, user=self.request.user)
+        return Question.objects.filter(lesson__course=self.get_course, user=self.request.user)
 
 
 class FilterQuestionMoreAnswers(FilterQuestionMixin):
@@ -63,7 +63,7 @@ class FilterQuestionMoreAnswers(FilterQuestionMixin):
 
     def get_questions(self):
         return Question.objects. \
-            filter(lesson__module__course=self.get_course). \
+            filter(lesson__course=self.get_course). \
             annotate(total=Count('answers')). \
             order_by('-total')
 
@@ -72,7 +72,7 @@ class FilterQuestionMoreRecent(FilterQuestionMixin):
     template_name = 'hx/question/filter/question_more_recent.html'
 
     def get_questions(self):
-        return Question.objects.filter(lesson__module__course=self.get_course).order_by('-updated')
+        return Question.objects.filter(lesson__course=self.get_course).order_by('-updated')
 
 
 class FilterQuestionWithoutAnswer(FilterQuestionMixin):
@@ -80,6 +80,6 @@ class FilterQuestionWithoutAnswer(FilterQuestionMixin):
 
     def get_questions(self):
         return Question.objects. \
-            filter(lesson__module__course=self.get_course). \
+            filter(lesson__course=self.get_course). \
             annotate(total=Count('answers')). \
             filter(total__exact=0)

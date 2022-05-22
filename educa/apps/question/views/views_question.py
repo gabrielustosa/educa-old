@@ -83,4 +83,4 @@ class QuestionDeleteView(QuestionViewMixin):
     def post(self, request, *args, **kwargs):
         self.get_question.delete()
 
-        return course_all_questions_view(request, self.get_question.lesson.module.course.id)
+        return course_all_questions_view(request, self.get_question.lesson.course.id)

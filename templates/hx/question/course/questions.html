@@ -1,4 +1,4 @@
-<div id="question-nav" class="container pt-3">
+<div id="question-nav">
     <div class="pt-3">
         <div class="input-group rounded">
             <input hx-post="{% url 'question:search' course.id %}" hx-target="#question"
@@ -17,7 +17,7 @@
                 <ul class="dropdown-menu">
                     <li>
                         <a class="dropdown-item"
-                           hx-get="{% url 'question:course' course.id %}"
+                           hx-get="{% url 'question_filter:all_questions' course.id %}"
                            hx-target="#question">
                             Todas as aulas
                         </a>
@@ -75,7 +75,7 @@
             </div>
         </div>
         <div id="question" class="pt-3">
-            {% include 'hx/question/course/all_questions.html' %}
+            {% include 'hx/question/filter/all_questions.html' %}
         </div>
     </div>
 </div>

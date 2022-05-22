@@ -1,5 +1,4 @@
 from django.contrib.auth import authenticate, login
-from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
@@ -8,7 +7,6 @@ from django.views.generic import CreateView, TemplateView
 from educa.apps.content.models import Content
 from educa.apps.course.models import Course
 from educa.apps.lesson.models import Lesson
-from educa.apps.module.models import Module
 from educa.apps.student.forms import UserCreateForm
 
 
@@ -70,7 +68,7 @@ def course_content_search_view(request, course_id):
     if search == "":
         return HttpResponse("<h5>Iniciar uma nova pesquisa</h5> <p>Para encontrar aulas ou módulos</p>")
 
-    lessons = Lesson.objects.filter(module__course=course, title__icontains=search).all()
+    lessons = Lesson.objects.filter(course=course, title__icontains=search).all()
 
     if not lessons.exists():
         return HttpResponse("<h5>Não foi encontrado nenhum resultado para sua busca</h5>")

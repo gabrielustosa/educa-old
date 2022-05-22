@@ -32,7 +32,9 @@
                     {% include 'hx/course/overview.html' %}
                 </div>
             </div>
-            {% include 'student/course/accordion.html' with modules=course.modules %}
+            <div class="col" style="padding: 0;">
+                {% include 'student/course/accordion.html' with modules=course.modules %}
+            </div>
         </div>
     </div>
     <div id="modal">

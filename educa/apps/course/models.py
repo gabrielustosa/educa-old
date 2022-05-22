@@ -40,8 +40,8 @@ class Course(models.Model):
 
     def get_total_lessons(self):
         from educa.apps.lesson.models import Lesson
-        return Lesson.objects.filter(module__course=self).count()
+        return Lesson.objects.filter(course=self).count()
 
     def get_total_questions(self):
         from educa.apps.question.models import Question
-        return Question.objects.filter(lesson__module__course=self).count()
+        return Question.objects.filter(lesson__ourse=self).count()
