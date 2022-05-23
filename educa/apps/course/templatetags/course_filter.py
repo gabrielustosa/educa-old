@@ -1,9 +1,8 @@
 from django import template
 
-from educa.apps.course.models import Course, CourseRelation
-from educa.apps.lesson.models import Lesson
+from educa.apps.course.models import CourseRelation
 from educa.apps.rating.models import Rating
-from educa.utils import content_is_instance, get_model
+from educa.utils import get_model
 
 register = template.Library()
 

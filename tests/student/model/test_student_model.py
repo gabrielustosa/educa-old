@@ -5,6 +5,7 @@ import pytest
 from tests.factories.user import UserFactory
 
 
+@pytest.mark.fast
 @pytest.mark.django_db
 class TestStudentModel(TestCase):
     @classmethod

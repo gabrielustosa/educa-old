@@ -1,3 +1,4 @@
+import pytest
 from django.urls import reverse
 from selenium.webdriver import Keys
 
@@ -5,6 +6,7 @@ from tests.base import FunctionalTestBase
 from tests.factories.user import UserFactory
 
 
+@pytest.mark.functional_test
 class TestFunctionalRegister(FunctionalTestBase):
 
     def test_user_can_register(self):

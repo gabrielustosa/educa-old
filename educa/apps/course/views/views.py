@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.decorators.http import require_POST
@@ -18,9 +18,11 @@ class CourseListView(ListView):
 
 class CourseOwnerListView(
     LoginRequiredMixin,
+    PermissionRequiredMixin,
     CourseListView,
 ):
     template_name = 'course/mine.html'
+    permission_required = 'course.add_course'
 
     def get_queryset(self):
         queryset = super(CourseOwnerListView, self).get_queryset()
