@@ -29,10 +29,10 @@ class FunctionalTestBase(StaticLiveServerTestCase):
 
 
 class TestAuthenticationBase(TestCase):
-    def login(self, username='admin', password='admin', superuser=False):
+    def login(self, username='admin', password='admin', is_superuser=False):
         user = UserFactory(username=username)
         user.set_password(password)
-        if superuser:
+        if is_superuser:
             user.is_superuser = True
             user.is_staff = True
         user.save()

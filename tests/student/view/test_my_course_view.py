@@ -19,12 +19,12 @@ class TestMyCourseView(TestAuthenticationBase):
         view = resolve(reverse('course:mine'))
         self.assertIs(view.func.view_class, CourseOwnerListView)
 
-    def test_if_anonymous_user_can_view(self):
+    def test_if_anonymous_user_cant_view_my_courses(self):
         response = self.client.get(reverse('course:mine'))
         self.assertEqual(response.status_code, 302)
 
     def test_my_course_view_loads_correct_template(self):
-        self.login(superuser=True)
+        self.login(is_superuser=True)
         response = self.client.get(reverse('course:mine'))
         self.assertTemplateUsed(response, 'course/mine.html')
 
@@ -33,7 +33,7 @@ class TestMyCourseView(TestAuthenticationBase):
 
         CourseFactory(owner=user)
 
-        self.login(superuser=True)
+        self.login(is_superuser=True)
         response = self.client.get(reverse('course:mine'))
         response_context_courses = response.context['courses']
 
@@ -44,19 +44,19 @@ class TestMyCourseView(TestAuthenticationBase):
         response = self.client.get(reverse('course:create'))
         self.assertEqual(response.status_code, 403)
 
-    def test_owner_cant_update_course_is_not_his(self):
+    def test_owner_cant_update_course_if_is_not_his(self):
         user = UserFactory(username='teste')
 
         course = CourseFactory(owner=user)
-        self.login(superuser=True)
+        self.login(is_superuser=True)
         response = self.client.get(reverse('course:update', kwargs={'course_id': course.id}))
         self.assertEqual(response.status_code, 403)
 
-    def test_owner_cant_delete_course_is_not_his(self):
+    def test_owner_cant_delete_course_if_is_not_his(self):
         user = UserFactory(username='teste')
 
         course = CourseFactory(owner=user)
-        self.login(superuser=True)
+        self.login(is_superuser=True)
         response = self.client.get(reverse('course:delete', kwargs={'course_id': course.id}))
         self.assertEqual(response.status_code, 403)
 

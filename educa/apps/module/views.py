@@ -2,12 +2,21 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
+from django.utils.functional import cached_property
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import CreateView, TemplateView
+from django.views.generic import CreateView, TemplateView, UpdateView, DeleteView
 
 from educa.apps.course.models import Course
 from educa.apps.lesson.models import Lesson
 from educa.apps.module.models import Module
+
+
+class ModuleOwnerMixin:
+    def dispatch(self, request, *args, **kwargs):
+        course = self.get_course()
+        if course.owner != request.user:
+            raise PermissionDenied()
+        return super().dispatch(request, *args, **kwargs)
 
 
 class ModuleCreateView(
@@ -33,21 +42,60 @@ class ModuleCreateView(
 class ModuleDetailView(
     LoginRequiredMixin,
     PermissionRequiredMixin,
+    ModuleOwnerMixin,
     TemplateView,
 ):
     template_name = 'module/detail.html'
     permission_required = 'module.view_module'
 
+    def get_course(self):
+        return self.get_module.course
+
+    @cached_property
     def get_module(self):
         module_id = get_object_or_404(Module, id=self.kwargs.get('module_id'))
         return module_id
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        module = self.get_module()
+        module = self.get_module
         context['lessons'] = Lesson.objects.filter(module=module).order_by('order')
         context['module'] = module
         return context
+
+
+class ModuleUpdateView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    ModuleOwnerMixin,
+    UpdateView,
+):
+    template_name = 'module/update.html'
+    model = Module
+    fields = ['title', 'description']
+    permission_required = 'module.change_course'
+    pk_url_kwarg = 'module_id'
+
+    def get_course(self):
+        return self.get_object().course
+
+
+class ModuleDeleteView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    ModuleOwnerMixin,
+    DeleteView,
+):
+    template_name = 'module/delete.html'
+    model = Module
+    permission_required = 'module.delete_course'
+    pk_url_kwarg = 'module_id'
+
+    def get_course(self):
+        return self.get_object().course
+
+    def get_success_url(self):
+        return reverse_lazy('module:detail', kwargs={'module_id': self.kwargs.get('module_id')})
 
 
 @csrf_exempt
