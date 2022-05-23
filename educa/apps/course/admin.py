@@ -1,8 +1,13 @@
 from django.contrib import admin
 
-from educa.apps.course.models import Course
+from educa.apps.course.models import Course, CourseRelation
 from educa.apps.module.models import Module
 from educa.apps.subject.models import Subject
+
+
+@admin.register(CourseRelation)
+class CourseRelation(admin.ModelAdmin):
+    list_display = ('id',)
 
 
 @admin.register(Subject)

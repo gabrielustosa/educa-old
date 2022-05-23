@@ -1,6 +1,6 @@
 from django import template
 
-from educa.apps.course.models import Course
+from educa.apps.course.models import Course, CourseRelation
 from educa.apps.lesson.models import Lesson
 from educa.apps.rating.models import Rating
 from educa.utils import content_is_instance, get_model
@@ -28,7 +28,7 @@ def model_verbose(obj):
 def student_is_enrolled(user, course_id):
     if user.is_anonymous:
         return False
-    return Course.objects.filter(id=course_id).filter(students=user).exists()
+    return CourseRelation.objects.filter(course__id=course_id, user=user).exists()
 
 
 @register.filter
@@ -44,3 +44,8 @@ def hasnt_rating(user, course):
 @register.filter()
 def range_list(value):
     return [v for v in range(value)]
+
+
+@register.filter()
+def get_current_lesson(user, course):
+    return CourseRelation.objects.filter(user=user, course=course).first().current_lesson

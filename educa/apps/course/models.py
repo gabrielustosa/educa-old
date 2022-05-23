@@ -25,6 +25,7 @@ class Course(models.Model):
     students = models.ManyToManyField(
         User,
         related_name='courses',
+        through='CourseRelation',
         blank=True
     )
 
@@ -38,6 +39,10 @@ class Course(models.Model):
     def __str__(self):
         return self.title
 
+    def get_first_lesson_id(self):
+        from educa.apps.lesson.models import Lesson
+        return Lesson.objects.filter(course=self).order_by('order').first().id
+
     def get_total_lessons(self):
         from educa.apps.lesson.models import Lesson
         return Lesson.objects.filter(course=self).count()
@@ -45,3 +50,10 @@ class Course(models.Model):
     def get_total_questions(self):
         from educa.apps.question.models import Question
         return Question.objects.filter(lesson__ourse=self).count()
+
+
+class CourseRelation(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    current_lesson = models.PositiveSmallIntegerField()
+    subriscred_at = models.DateTimeField(auto_now_add=True)

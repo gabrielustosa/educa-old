@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView, TemplateView
 
-from educa.apps.course.models import Course
+from educa.apps.course.models import Course, CourseRelation
 from educa.apps.rating.models import Rating
 
 
@@ -46,9 +46,9 @@ def course_enrroll_view(request, course_id):
     if request.user.is_anonymous:
         messages.error(request, 'Você precisa estar logado para se inscrever')
         return redirect(reverse('course:detail', kwargs={'course_id': course_id}))
-    if Course.objects.filter(id=course_id).filter(students=request.user).exists():
+    if CourseRelation.objects.filter(course=course, user=request.user).exists():
         messages.error(request, 'Você já está inscrito nesse curso.')
         return redirect(reverse('course:detail', kwargs={'course_id': course_id}))
-    course.students.add(request.user)
+    CourseRelation.objects.create(course=course, user=request.user, current_lesson=course.get_first_lesson_id())
     messages.success(request, f'Parabéns! Você agora você está inscrito no curso {course.title}!')
     return redirect(reverse('course:detail', kwargs={'course_id': course_id}))

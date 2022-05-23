@@ -1,11 +1,13 @@
+import json
+
 from django.contrib.auth import authenticate, login
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView
 
 from educa.apps.content.models import Content
-from educa.apps.course.models import Course
+from educa.apps.course.models import Course, CourseRelation
 from educa.apps.lesson.models import Lesson
 from educa.apps.student.forms import UserCreateForm
 
@@ -52,7 +54,6 @@ def select_lesson_view(request, lesson_id):
 
 def lesson_note_view(request, content_id):
     item = Content.objects.get(id=content_id).item
-
     return render(request, 'hx/modal.html', context={'content': item.content, 'title': 'Notas'})
 
 
@@ -66,7 +67,7 @@ def course_content_search_view(request, course_id):
     search = request.POST.get('search')
 
     if search == "":
-        return HttpResponse("<h5>Iniciar uma nova pesquisa</h5> <p>Para encontrar aulas ou módulos</p>")
+        return HttpResponse("<h5>Iniciar uma nova pesquisa</h5> <p>Para encontrar aulas deste curso.</p>")
 
     lessons = Lesson.objects.filter(course=course, title__icontains=search).all()
 
@@ -74,3 +75,9 @@ def course_content_search_view(request, course_id):
         return HttpResponse("<h5>Não foi encontrado nenhum resultado para sua busca</h5>")
 
     return render(request, 'hx/course/search_content.html', context={'lessons': lessons, 'search': search})
+
+
+def course_update_current_lesson(request, course_id):
+    lesson_id = json.loads(request.body)['lesson_id']
+    CourseRelation.objects.filter(course__id=course_id, user=request.user).update(current_lesson=lesson_id)
+    return JsonResponse({'saved': 'ok'})

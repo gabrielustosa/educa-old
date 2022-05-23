@@ -40,8 +40,13 @@
                     <div class="card-body">
                         <h5 class="card-title text-start">{{ course.title }}</h5>
                         {% if request.user|student_is_enrolled:course.id %}
-                            <a href="{% url 'student:view' course.slug 20 %}" class="btn btn-primary mt-3"
-                               style="width: 16rem;">Acessar</a>
+                            {% with current_lesson=request.user|get_current_lesson:course %}
+                                <a href="{% url 'student:view' course.slug current_lesson %}"
+                                   class="btn btn-primary mt-3"
+                                   style="width: 16rem;">
+                                    Acessar
+                                </a>
+                            {% endwith %}
                         {% else %}
                             <form method="post" action="{% url 'course:enrroll' course.id %}">
                                 {% csrf_token %}

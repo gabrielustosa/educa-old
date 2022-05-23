@@ -66,6 +66,15 @@
                 setLessonID()
                 let course_slug = "{{ course.slug }}"
                 window.history.pushState("", "", `/students/course/${course_slug}/lesson/${document.lesson_id}/`);
+                fetch("{% url 'student:update_lesson' course.id %}", {
+                    method: 'post',
+                    body: JSON.stringify({'lesson_id': document.lesson_id}),
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                }).then((response) => response.json())
             }
         });
         htmx.on("htmx:afterSwap", e => {
