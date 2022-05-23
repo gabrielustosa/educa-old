@@ -15,7 +15,7 @@ class Lesson(models.Model):
         on_delete=models.CASCADE
     )
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    order = OrderField(blank=True, for_fields=['course'])
+    order = OrderField(blank=True, for_fields=['module'])
 
     def __str__(self):
         return self.title

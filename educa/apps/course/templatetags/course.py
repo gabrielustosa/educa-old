@@ -49,3 +49,8 @@ def range_list(value):
 @register.filter()
 def get_current_lesson(user, course):
     return CourseRelation.objects.filter(user=user, course=course).first().current_lesson
+
+
+@register.filter()
+def sort_order(query):
+    return query.order_by('order')

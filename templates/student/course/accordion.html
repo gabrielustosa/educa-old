@@ -14,7 +14,7 @@
                 <div id="collapse-{{ module.id }}" class="accordion-collapse collapse"
                      data-bs-parent="#accordion-{{ module.id }}">
                     <div class="accordion-body">
-                        {% for lesson in module.lessons.all %}
+                        {% for lesson in module.lessons|sort_order %}
                             <div class="position-relative">
                                 <div class="py-3 my-3 border border-dark"
                                      hx-get="{% url 'student:select_video' lesson.id %}"

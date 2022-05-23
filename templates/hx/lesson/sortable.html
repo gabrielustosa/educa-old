@@ -1,6 +1,6 @@
 {% for lesson in lessons %}
     <div class="mx-auto border border-dark mb-2" style="width: 10rem;">
-        <input type='hidden' name='lesson_id' value='{{ lesson.id }}'>
+        <input type='hidden' name='lesson' value='{{ lesson.id }}'>
         <div class="ps-3">
             <span class="d-block"> Aula #{{ lesson.order }}</span>
             <span class="ps-3">{{ lesson.title }}</span>

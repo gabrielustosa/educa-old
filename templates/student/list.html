@@ -11,13 +11,15 @@
             {% for course in courses %}
                 <div class="col pb-3">
                     <div class="card mt-3" style="width: 13rem;">
-                        <a href="{% url 'student:view' course.slug 20 %}" class="text-decoration-none">
-                            <img class="card-img-top" src="{{ course.image.url }}" alt="Post image">
-                            <div class="card-body" style="color: black;">
-                                <h5 class="card-title">{{ course.title }}</h5>
-                                <p class="card-text" style="font-size: 16px;">{{ course.description }}</p>
-                            </div>
-                        </a>
+                        {% with current_lesson=request.user|get_current_lesson:course %}
+                            <a href="{% url 'student:view' course.slug current_lesson %}" class="text-decoration-none">
+                                <img class="card-img-top" src="{{ course.image.url }}" alt="Post image">
+                                <div class="card-body" style="color: black;">
+                                    <h5 class="card-title">{{ course.title }}</h5>
+                                    <p class="card-text" style="font-size: 16px;">{{ course.description }}</p>
+                                </div>
+                            </a>
+                        {% endwith %}
                     </div>
                 </div>
             {% endfor %}
