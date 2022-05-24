@@ -1,11 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.decorators.csrf import csrf_exempt
+from django.utils.functional import cached_property
 from django.views.generic import TemplateView, CreateView, DeleteView, UpdateView
 
 from educa.apps.content.models import Content
 from educa.apps.lesson.models import Lesson
+from educa.apps.mixin import CourseOwnerMixin
 from educa.apps.module.models import Module
 from educa.utils import content_is_instance
 
@@ -13,6 +14,7 @@ from educa.utils import content_is_instance
 class LessonCreateView(
     LoginRequiredMixin,
     PermissionRequiredMixin,
+    CourseOwnerMixin,
     CreateView,
 ):
     template_name = 'lesson/create.html'
@@ -20,49 +22,42 @@ class LessonCreateView(
     fields = ['title', 'video']
     permission_required = 'lesson.add_lesson'
 
+    @cached_property
     def get_module(self):
         module_id = self.kwargs.get('module_id')
         module = get_object_or_404(Module, id=module_id)
         return module
 
     def form_valid(self, form):
-        form.instance.module = self.get_module()
-        form.instance.course = self.get_module().course
+        module = self.get_module
+        form.instance.module = module
+        form.instance.course = module.course
         return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy('module:detail', kwargs={'module_id': self.kwargs.get('module_id')})
 
-
-class LessonDeleteView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    DeleteView,
-):
-    template_name = 'lesson/delete.html'
-    model = Lesson
-    permission_required = 'lessons.delete_lesson'
-
-    def get_success_url(self):
-        module_id = self.get_object().module.id
-        return reverse_lazy('module:detail', kwargs={'module_id': module_id})
+    def get_course(self):
+        return self.get_module.course
 
 
 class LessonDetailView(
     LoginRequiredMixin,
     PermissionRequiredMixin,
+    CourseOwnerMixin,
     TemplateView,
 ):
     template_name = 'lesson/detail.html'
     permission_required = 'lesson.view_lesson'
 
+    @cached_property
     def get_lesson(self):
         lesson_id = get_object_or_404(Lesson, id=self.kwargs.get('lesson_id'))
         return lesson_id
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        lesson = self.get_lesson()
+        lesson = self.get_lesson
         contents = Content.objects.filter(lesson=lesson).order_by('order')
         contents_list = []
         for content in contents:
@@ -72,36 +67,44 @@ class LessonDetailView(
         context['lesson'] = lesson
         return context
 
+    def get_course(self):
+        return self.get_lesson.course
+
+
+class LessonDeleteView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    CourseOwnerMixin,
+    DeleteView,
+):
+    template_name = 'lesson/delete.html'
+    model = Lesson
+    permission_required = 'lessons.delete_lesson'
+    pk_url_kwarg = 'lesson_id'
+
+    def get_success_url(self):
+        module_id = self.get_object().module.id
+        return reverse_lazy('module:detail', kwargs={'module_id': module_id})
+
+    def get_course(self):
+        return self.get_object().course
+
 
 class LessonUpdateView(
     LoginRequiredMixin,
     PermissionRequiredMixin,
+    CourseOwnerMixin,
     UpdateView,
 ):
     template_name = 'lesson/create.html'
     model = Lesson
     fields = ['title', 'video']
     permission_required = 'lesson.change_lesson'
+    pk_url_kwarg = 'lesson_id'
 
     def get_success_url(self):
         module_id = self.get_object().module.id
         return reverse_lazy('module:detail', kwargs={'module_id': module_id})
 
-
-@csrf_exempt
-def lesson_order_view(request, module_id):
-    module = Module.objects.get(id=module_id)
-    lessons = request.POST.getlist('lesson')
-    for order, lesson_id in enumerate(lessons, start=1):
-        Lesson.objects.filter(id=lesson_id).update(order=order)
-    return render(request, 'hx/lesson/sortable.html',
-                  context={'lessons': Lesson.objects.filter(module=module).order_by('order').all()})
-
-
-def lesson_content_view(request, lesson_id, class_name):
-    lesson = Lesson.objects.get(id=lesson_id)
-    contents = []
-    for content in lesson.contents.all():
-        if content_is_instance(content, class_name):
-            contents.append(content)
-    return render(request, 'hx/lesson/dynamic_content.html', context={'contents': contents, 'lesson': lesson})
+    def get_course(self):
+        return self.get_object().course

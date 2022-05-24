@@ -8,20 +8,14 @@ from django.views.generic import CreateView, TemplateView, UpdateView, DeleteVie
 
 from educa.apps.course.models import Course
 from educa.apps.lesson.models import Lesson
+from educa.apps.mixin import CourseOwnerMixin
 from educa.apps.module.models import Module
 
 
-class ModuleOwnerMixin:
-    def dispatch(self, request, *args, **kwargs):
-        course = self.get_course()
-        if course.owner != request.user:
-            raise PermissionDenied()
-        return super().dispatch(request, *args, **kwargs)
-
-
-class ModuleCreateView(
+class CourseCreateView(
     LoginRequiredMixin,
     PermissionRequiredMixin,
+    CourseOwnerMixin,
     CreateView,
 ):
     template_name = 'module/create.html'
@@ -39,10 +33,10 @@ class ModuleCreateView(
         return super().form_valid(form)
 
 
-class ModuleDetailView(
+class CourseDetailView(
     LoginRequiredMixin,
     PermissionRequiredMixin,
-    ModuleOwnerMixin,
+    CourseOwnerMixin,
     TemplateView,
 ):
     template_name = 'module/detail.html'
@@ -64,10 +58,10 @@ class ModuleDetailView(
         return context
 
 
-class ModuleUpdateView(
+class CourseUpdateView(
     LoginRequiredMixin,
     PermissionRequiredMixin,
-    ModuleOwnerMixin,
+    CourseOwnerMixin,
     UpdateView,
 ):
     template_name = 'module/update.html'
@@ -80,10 +74,10 @@ class ModuleUpdateView(
         return self.get_object().course
 
 
-class ModuleDeleteView(
+class CourseDeleteView(
     LoginRequiredMixin,
     PermissionRequiredMixin,
-    ModuleOwnerMixin,
+    CourseOwnerMixin,
     DeleteView,
 ):
     template_name = 'module/delete.html'

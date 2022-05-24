@@ -1,5 +1,7 @@
+import pytest
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import TestCase
+from django.urls import reverse, resolve
 
 from selenium.webdriver.common.by import By
 
@@ -28,7 +30,13 @@ class FunctionalTestBase(StaticLiveServerTestCase):
         )
 
 
-class TestAuthenticationBase(TestCase):
+class TestCustomBase(TestCase):
+    def get_response(self, url, **kwargs):
+        return self.client.get(reverse(url, **kwargs))
+
+    def get_view(self, url, **kwargs):
+        return resolve(reverse(url, **kwargs))
+
     def login(self, username='admin', password='admin', is_superuser=False):
         user = UserFactory(username=username)
         user.set_password(password)

@@ -41,23 +41,23 @@
                 </div>
             </div>
             <div class="col">
-                <h3 class="text-center">Ordem das aulas</h3>
+                {% if lessons %}
+                    <h3 class="text-center">Ordem das aulas</h3>
+                {% endif %}
                 <form class="sortable" hx-post="{% url 'lesson:order' module.id %}" hx-trigger="end">
                     {% csrf_token %}
                     {% include 'hx/lesson/sortable.html' %}
                 </form>
-                <div class="pt-2 text-center">
+                <div class="position-absolute bottom-0 end-0 p-3">
                     <a href="{% url 'lesson:create' module.id %}" class="btn btn-primary btn-sm">
                         Criar nova Aula
                     </a>
                 </div>
             </div>
         </div>
-        <div class="position-relative p">
-            <div class="position-absolute bottom-0 start-0">
-                <a href="{% url 'module:update' module.id %}" class="btn btn-primary btn-sm">Editar módulo</a>
-                <a href="{% url 'module:delete' module.id %}" class="btn btn-primary btn-sm">Deletar módulo</a>
-            </div>
+        <div class="position-absolute bottom-0 start-0 p-3">
+            <a href="{% url 'module:update' module.id %}" class="btn btn-primary btn-sm">Editar módulo</a>
+            <a href="{% url 'module:delete' module.id %}" class="btn btn-primary btn-sm">Deletar módulo</a>
         </div>
     </div>
 {% endblock %}

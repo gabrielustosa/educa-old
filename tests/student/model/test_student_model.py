@@ -8,10 +8,6 @@ from tests.factories.user import UserFactory
 @pytest.mark.fast
 @pytest.mark.django_db
 class TestStudentModel(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.User = UserFactory._meta.model
-
     def test_user_crud(self):
         user = UserFactory()
 
