@@ -13,11 +13,11 @@ class StudentRegisterViewTest(TestCustomBase):
         self.assertEqual(view.func.view_class, StudentRegisterView)
 
     def test_student_register_view_returns_status_code_200(self):
-        response = self.get_response('register')
+        response = self.response_get('register')
         self.assertEqual(response.status_code, 200)
 
     def test_student_register_view_loads_correct_template(self):
-        response = self.get_response('register')
+        response = self.response_get('register')
         self.assertTemplateUsed(response, 'registration/register.html')
 
 
@@ -28,9 +28,9 @@ class StudentLoginViewTest(TestCustomBase):
         self.assertEqual(view.func.view_class, LoginView)
 
     def test_student_register_view_returns_status_code_200_OK(self):
-        response = self.get_response('login')
+        response = self.response_get('login')
         self.assertEqual(response.status_code, 200)
 
     def test_student_register_view_loads_correct_template(self):
-        response = self.get_response('login')
+        response = self.response_get('login')
         self.assertTemplateUsed(response, 'registration/login.html')

@@ -22,12 +22,12 @@ class TestModuleView(TestCustomBase):
 
     def test_module_detail_view_returns_status_code_200(self):
         self.login(is_superuser=True)
-        response = self.get_response('module:detail', kwargs={'module_id': self.module.id})
+        response = self.response_get('module:detail', kwargs={'module_id': self.module.id})
         self.assertEqual(response.status_code, 200)
 
     def test_detail_view_loads_correct_template(self):
         self.login(is_superuser=True)
-        response = self.get_response('module:detail', kwargs={'module_id': self.module.id})
+        response = self.response_get('module:detail', kwargs={'module_id': self.module.id})
         self.assertTemplateUsed(response, 'module/detail.html')
 
     def test_module_detail_view_loads_only_lessons_own_module(self):
@@ -37,15 +37,19 @@ class TestModuleView(TestCustomBase):
 
         self.login(is_superuser=True)
 
-        response = self.get_response('module:detail', kwargs={'module_id': module_2.id})
+        response = self.response_get('module:detail', kwargs={'module_id': module_2.id})
         response_context_lessons = response.context['lessons']
 
         self.assertEqual(len(response_context_lessons), 0)
 
+    def test_anonymous_user_can_view_module_detail(self):
+        response = self.response_get('module:detail', kwargs={'module_id': self.module.id})
+        self.assertEqual(response.status_code, 302)
+
     def test_user_without_permission_can_view_module_detail(self):
         self.login()
 
-        response = self.get_response('module:detail', kwargs={'module_id': self.module.id})
+        response = self.response_get('module:detail', kwargs={'module_id': self.module.id})
         self.assertEqual(response.status_code, 403)
 
     def test_owner_cant_view_module_detail_if_is_not_his_own(self):
@@ -54,5 +58,5 @@ class TestModuleView(TestCustomBase):
 
         self.login(is_superuser=True)
 
-        response = self.get_response('module:detail', kwargs={'module_id': module.id})
+        response = self.response_get('module:detail', kwargs={'module_id': module.id})
         self.assertEqual(response.status_code, 403)

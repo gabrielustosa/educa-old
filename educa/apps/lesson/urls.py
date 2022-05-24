@@ -10,6 +10,5 @@ urlpatterns = [
     path('detail/<int:lesson_id>/', views_manage.LessonDetailView.as_view(), name='detail'),
     path('update/<int:lesson_id>/', views_manage.LessonUpdateView.as_view(), name='update'),
     path('delete/<int:lesson_id>/', views_manage.LessonDeleteView.as_view(), name='delete'),
-    path('content/<int:lesson_id>/<str:class_name>/', views.lesson_content_view, name='content'),
-    path('order/<int:module_id>/', views.lesson_order_view, name='order'),
+    path('order/<int:module_id>/', views.LessonOrderView.as_view(), name='order'),
 ]

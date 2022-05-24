@@ -21,7 +21,7 @@ class TestLessonCrudView(TestCustomBase):
 
         self.login(is_superuser=True)
 
-        response = self.get_response('lesson:create', kwargs={'module_id': lesson.module.id})
+        response = self.response_get('lesson:create', kwargs={'module_id': lesson.module.id})
         self.assertEqual(response.status_code, 200)
 
     def test_lesson_create_view_loads_correct_template(self):
@@ -29,7 +29,7 @@ class TestLessonCrudView(TestCustomBase):
 
         self.login(is_superuser=True)
 
-        response = self.get_response('lesson:create', kwargs={'module_id': lesson.module.id})
+        response = self.response_get('lesson:create', kwargs={'module_id': lesson.module.id})
         self.assertTemplateUsed(response, 'lesson/create.html')
 
     def test_lesson_delete_view_is_correct(self):
@@ -45,7 +45,7 @@ class TestLessonCrudView(TestCustomBase):
 
         self.login(is_superuser=True)
 
-        response = self.get_response('lesson:delete', kwargs={'lesson_id': lesson.id})
+        response = self.response_get('lesson:delete', kwargs={'lesson_id': lesson.id})
         self.assertEqual(response.status_code, 200)
 
     def test_lesson_delete_loads_correct_template(self):
@@ -53,7 +53,7 @@ class TestLessonCrudView(TestCustomBase):
 
         self.login(is_superuser=True)
 
-        response = self.get_response('lesson:delete', kwargs={'lesson_id': lesson.id})
+        response = self.response_get('lesson:delete', kwargs={'lesson_id': lesson.id})
         self.assertTemplateUsed(response, 'lesson/delete.html')
 
     def test_lesson_update_view_is_correct(self):
@@ -69,7 +69,7 @@ class TestLessonCrudView(TestCustomBase):
 
         self.login(is_superuser=True)
 
-        response = self.get_response('lesson:update', kwargs={'lesson_id': lesson.id})
+        response = self.response_get('lesson:update', kwargs={'lesson_id': lesson.id})
         self.assertEqual(response.status_code, 200)
 
     def test_lesson_update_loads_correct_template(self):
@@ -77,5 +77,5 @@ class TestLessonCrudView(TestCustomBase):
 
         self.login(is_superuser=True)
 
-        response = self.get_response('lesson:update', kwargs={'lesson_id': lesson.id})
+        response = self.response_get('lesson:update', kwargs={'lesson_id': lesson.id})
         self.assertTemplateUsed(response, 'lesson/create.html')

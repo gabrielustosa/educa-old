@@ -23,7 +23,7 @@ class TestModuleCrudView(TestCustomBase):
 
         self.login(is_superuser=True)
 
-        response = self.get_response('module:create', kwargs={'course_id': course.id})
+        response = self.response_get('module:create', kwargs={'course_id': course.id})
         self.assertEqual(response.status_code, 200)
 
     def test_module_create_view_loads_correct_template(self):
@@ -31,7 +31,7 @@ class TestModuleCrudView(TestCustomBase):
 
         self.login(is_superuser=True)
 
-        response = self.get_response('module:create', kwargs={'course_id': course.id})
+        response = self.response_get('module:create', kwargs={'course_id': course.id})
         self.assertTemplateUsed(response, 'module/create.html')
 
     def test_module_delete_view_is_correct(self):
@@ -47,7 +47,7 @@ class TestModuleCrudView(TestCustomBase):
 
         self.login(is_superuser=True)
 
-        response = self.get_response('module:delete', kwargs={'module_id': module.id})
+        response = self.response_get('module:delete', kwargs={'module_id': module.id})
         self.assertEqual(response.status_code, 200)
 
     def test_create_delete_loads_correct_template(self):
@@ -55,7 +55,7 @@ class TestModuleCrudView(TestCustomBase):
 
         self.login(is_superuser=True)
 
-        response = self.get_response('module:delete', kwargs={'module_id': module.id})
+        response = self.response_get('module:delete', kwargs={'module_id': module.id})
         self.assertTemplateUsed(response, 'module/delete.html')
 
     def test_module_update_view_is_correct(self):
@@ -71,7 +71,7 @@ class TestModuleCrudView(TestCustomBase):
 
         self.login(is_superuser=True)
 
-        response = self.get_response('module:update', kwargs={'module_id': module.id})
+        response = self.response_get('module:update', kwargs={'module_id': module.id})
         self.assertEqual(response.status_code, 200)
 
     def test_module_update_loads_correct_template(self):
@@ -79,5 +79,5 @@ class TestModuleCrudView(TestCustomBase):
 
         self.login(is_superuser=True)
 
-        response = self.get_response('module:update', kwargs={'module_id': module.id})
+        response = self.response_get('module:update', kwargs={'module_id': module.id})
         self.assertTemplateUsed(response, 'module/update.html')

@@ -1,4 +1,3 @@
-import pytest
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import TestCase
 from django.urls import reverse, resolve
@@ -31,7 +30,12 @@ class FunctionalTestBase(StaticLiveServerTestCase):
 
 
 class TestCustomBase(TestCase):
-    def get_response(self, url, **kwargs):
+    def response_post(self, url, data=None, **kwargs):
+        if data is None:
+            data = {}
+        return self.client.post(reverse(url, **kwargs), data)
+
+    def response_get(self, url, **kwargs):
         return self.client.get(reverse(url, **kwargs))
 
     def get_view(self, url, **kwargs):

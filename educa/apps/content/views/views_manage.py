@@ -6,12 +6,14 @@ from django.views.generic import TemplateView, DeleteView
 
 from educa.apps.content.models import Content
 from educa.apps.lesson.models import Lesson
+from educa.apps.mixin import CourseOwnerMixin
 from educa.utils import get_model
 
 
 class ContentCreateUpdateView(
     LoginRequiredMixin,
     PermissionRequiredMixin,
+    CourseOwnerMixin,
     TemplateView,
 ):
     template_name = 'content/create.html'
@@ -30,7 +32,6 @@ class ContentCreateUpdateView(
         return form(*args, **kwargs)
 
     def setup(self, request, *args, **kwargs):
-        self.lesson = get_object_or_404(Lesson, id=kwargs.get('lesson_id'))
         self.model = get_model(kwargs.get('model_name'))
         object_id = kwargs.get('object_id')
         if object_id:
@@ -69,16 +70,25 @@ class ContentCreateUpdateView(
 
         return render(request, self.template_name, context=context)
 
+    def get_course(self):
+        self.lesson = get_object_or_404(Lesson, id=self.kwargs.get('lesson_id'))
+        return self.lesson.course
+
 
 class ContentDeleteView(
     LoginRequiredMixin,
     PermissionRequiredMixin,
+    CourseOwnerMixin,
     DeleteView,
 ):
     template_name = 'content/delete.html'
     model = Content
     permission_required = 'content.delete_content'
+    pk_url_kwarg = 'lesson_id'
 
     def get_success_url(self):
         lesson_id = self.get_object().lesson.id
         return reverse_lazy('lesson:detail', kwargs={'lesson_id': lesson_id})
+
+    def get_course(self):
+        return self.get_object().lesson.course
