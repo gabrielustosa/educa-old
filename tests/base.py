@@ -150,7 +150,7 @@ class CourseLessonMixin(ContentMixin):
         for i in range(5):
             module = ModuleFactory(course=self.course, title=f'title-{i}')
             for n in range(5):
-                lesson = LessonFactory(module=module, title=f'title-{n}')
+                lesson = LessonFactory(course=self.course, module=module, title=f'title-{n}')
                 for j in range(5):
                     content_type_list = ['text', 'image', 'file', 'link']
                     self.create_content(content_type=choice(content_type_list), lesson=lesson, title=f'title-{j}')
