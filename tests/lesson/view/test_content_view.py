@@ -1,64 +1,9 @@
 import pytest
 from parameterized import parameterized
 
-from educa.apps.content.models import Text, Content, File, Image, Link
-from tests.base import TestCustomBase
+from tests.base import TestCustomBase, ContentMixin
 from tests.factories.lesson import LessonFactory
 from tests.factories.user import UserFactory
-
-
-@pytest.mark.django_db
-class ContentMixin:
-    def create_content(
-            self,
-            content_type,
-            owner=None,
-            lesson=None,
-            title='teste',
-            content='teste',
-            file='teste',
-            image='teste',
-            url='teste',
-    ):
-        if not owner:
-            owner = UserFactory(username='teste')
-        if not lesson:
-            lesson = LessonFactory(course__owner=owner)
-        obj = None
-        match content_type:
-            case 'text':
-                obj = Text.objects.create(title=title, content=content, owner=owner)
-                Content.objects.create(item=obj, lesson=lesson)
-            case 'file':
-                obj = File.objects.create(title=title, file=file, owner=owner)
-                Content.objects.create(item=obj, lesson=lesson)
-            case 'image':
-                obj = Image.objects.create(title=title, image=image, owner=owner)
-                Content.objects.create(item=obj, lesson=lesson)
-            case 'link':
-                obj = Link.objects.create(title=title, url=url, owner=owner)
-                Content.objects.create(item=obj, lesson=lesson)
-        return obj
-
-    def create_content_in_batch(
-            self,
-            content_type,
-            batch=1,
-            owner=None,
-            lesson=None,
-            title='teste',
-            content='teste',
-            file='teste',
-            image='teste',
-            url='teste',
-    ):
-        for i in range(batch):
-            self.create_content(
-                content_type=content_type, owner=owner,
-                lesson=lesson, title=title,
-                content=content, file=file,
-                image=image, url=url
-            )
 
 
 @pytest.mark.fast

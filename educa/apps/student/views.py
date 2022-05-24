@@ -1,14 +1,17 @@
 import json
 
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
+from django.utils.functional import cached_property
 from django.views.generic import CreateView, TemplateView
 
 from educa.apps.content.models import Content
 from educa.apps.course.models import Course, CourseRelation
 from educa.apps.lesson.models import Lesson
+from educa.apps.mixin import CourseOwnerMixin, CourseEnrrolledMixin
 from educa.apps.student.forms import UserCreateForm
 
 
@@ -39,12 +42,23 @@ class StudentCourseListView(TemplateView):
         return context
 
 
-def student_course_view(request, course_slug, lesson_id):
-    context = {}
-    course = get_object_or_404(Course, slug=course_slug)
-    context['course'] = course
-    context['current_lesson'] = get_object_or_404(Lesson, id=lesson_id)
-    return render(request, 'student/view.html', context=context)
+class StudentCourseView(
+    LoginRequiredMixin,
+    CourseEnrrolledMixin,
+    TemplateView,
+):
+    template_name = 'student/view.html'
+
+    def get_course(self):
+        return get_object_or_404(Course, slug=self.kwargs.get('course_slug'))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        course = self.get_course()
+        context['course'] = course
+        context['modules'] = course.modules.all()
+        context['current_lesson'] = get_object_or_404(Lesson, id=self.kwargs.get('lesson_id'))
+        return context
 
 
 def select_lesson_view(request, lesson_id):

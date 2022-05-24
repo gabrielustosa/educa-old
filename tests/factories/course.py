@@ -2,8 +2,8 @@ import factory
 from django.utils.text import slugify
 
 from educa.apps.course.models import Course
-from subject import SubjectFactory
-from user import UserFactory
+from tests.factories.subject import SubjectFactory
+from tests.factories.user import UserFactory
 
 
 class CourseFactory(factory.django.DjangoModelFactory):
@@ -20,4 +20,4 @@ class CourseFactory(factory.django.DjangoModelFactory):
 
     @factory.lazy_attribute
     def slug(self):
-        return slugify(self.title)
+        return slugify(f'{self.title}-{factory.Faker("pyint", min_value=0, max_value=2541254)}')
