@@ -13,17 +13,17 @@
                 <div class="mt-4 shadow-lg">
                     <h5 class="text-center">Conteúdos</h5>
                     <div class="d-flex justify-content-between m-2">
-                        <a href="#" class="text-dark" hx-get="{% url 'lesson:content' lesson.id 'text' %}"
-                           hx-target="#content">
+                        <a class="text-dark" hx-get="{% url 'lesson:content' lesson.id 'text' %}" hx-target="#content">
                             Texto
                         </a>
-                        <a href="#" class="text-dark" hx-get="{% url 'lesson:content' lesson.id 'file' %}"
-                           hx-target="#content">
+                        <a class="text-dark" hx-get="{% url 'lesson:content' lesson.id 'file' %}" hx-target="#content">
                             Arquivo
                         </a>
-                        <a href="#" class="text-dark" hx-get="{% url 'lesson:content' lesson.id 'image' %}"
-                           hx-target="#content">
+                        <a class="text-dark" hx-get="{% url 'lesson:content' lesson.id 'image' %}" hx-target="#content">
                             Imagem
+                        </a>
+                        <a class="text-dark" hx-get="{% url 'lesson:content' lesson.id 'link' %}" hx-target="#content">
+                            Link
                         </a>
                     </div>
                     <div id="content">
@@ -43,6 +43,9 @@
                         </a>
                         <a href="{% url 'content:create' lesson.id 'image' %}" class="btn btn-sm btn-primary">
                             Imagem
+                        </a>
+                        <a href="{% url 'content:create' lesson.id 'link' %}" class="btn btn-sm btn-primary">
+                            Link
                         </a>
                     </div>
                 </div>

@@ -55,6 +55,15 @@
                                                             </a>
                                                         </li>
                                                     {% endif %}
+                                                    {% if item|item_is_instance:'link' %}
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                               href="{{ item.url }}"
+                                                               target="_blank">
+                                                                {{ item.title }}
+                                                            </a>
+                                                        </li>
+                                                    {% endif %}
                                                 {% endwith %}
                                             {% endfor %}
                                         </ul>

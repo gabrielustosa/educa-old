@@ -1,6 +1,6 @@
 import pytest
 
-from educa.apps.module.views import CourseDetailView
+from educa.apps.module.views import ModuleDetailView
 
 from tests.factories.course import CourseFactory
 from tests.factories.lesson import LessonFactory
@@ -18,14 +18,14 @@ class TestModuleView(TestCustomBase):
 
     def test_module_detail_view_is_correct(self):
         view = self.get_view('module:detail', kwargs={'module_id': self.module.id})
-        self.assertIs(view.func.view_class, CourseDetailView)
+        self.assertIs(view.func.view_class, ModuleDetailView)
 
-    def test_module_datil_view_returns_status_code_200(self):
+    def test_module_detail_view_returns_status_code_200(self):
         self.login(is_superuser=True)
         response = self.get_response('module:detail', kwargs={'module_id': self.module.id})
         self.assertEqual(response.status_code, 200)
 
-    def test_my_course_view_loads_correct_template(self):
+    def test_detail_view_loads_correct_template(self):
         self.login(is_superuser=True)
         response = self.get_response('module:detail', kwargs={'module_id': self.module.id})
         self.assertTemplateUsed(response, 'module/detail.html')

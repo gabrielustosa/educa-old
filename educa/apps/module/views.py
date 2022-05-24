@@ -12,7 +12,7 @@ from educa.apps.mixin import CourseOwnerMixin
 from educa.apps.module.models import Module
 
 
-class CourseCreateView(
+class ModuleCreateView(
     LoginRequiredMixin,
     PermissionRequiredMixin,
     CourseOwnerMixin,
@@ -33,7 +33,7 @@ class CourseCreateView(
         return super().form_valid(form)
 
 
-class CourseDetailView(
+class ModuleDetailView(
     LoginRequiredMixin,
     PermissionRequiredMixin,
     CourseOwnerMixin,
@@ -58,7 +58,7 @@ class CourseDetailView(
         return context
 
 
-class CourseUpdateView(
+class ModuleUpdateView(
     LoginRequiredMixin,
     PermissionRequiredMixin,
     CourseOwnerMixin,
@@ -74,7 +74,7 @@ class CourseUpdateView(
         return self.get_object().course
 
 
-class CourseDeleteView(
+class ModuleDeleteView(
     LoginRequiredMixin,
     PermissionRequiredMixin,
     CourseOwnerMixin,

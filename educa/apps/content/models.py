@@ -66,3 +66,10 @@ class Image(ItemBase):
 
     class Meta:
         verbose_name = 'Imagem'
+
+
+class Link(ItemBase):
+    url = models.URLField(verbose_name='Link')
+
+    class Meta:
+        verbose_name = 'Link'
