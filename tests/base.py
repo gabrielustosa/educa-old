@@ -78,6 +78,7 @@ class ContentMixin:
 class TestFunctionalBase(StaticLiveServerTestCase):
     def setUp(self) -> None:
         self.browser = make_chrome_browser()
+        self.wait = WebDriverWait(self.browser, 20)
         return super().setUp()
 
     def tearDown(self) -> None:
@@ -127,8 +128,7 @@ class TestFunctionalBase(StaticLiveServerTestCase):
                 time.sleep(0.5)
 
     def wait_element_exists(self, element_id):
-        wait = WebDriverWait(self.browser, 20)
-        return wait.until(expected_conditions.visibility_of_element_located((By.ID, element_id)))
+        return self.wait.until(expected_conditions.visibility_of_element_located((By.ID, element_id)))
 
 
 class TestCustomBase(TestCase):

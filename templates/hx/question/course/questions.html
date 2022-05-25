@@ -11,19 +11,21 @@
         </div>
         <div class="d-flex justify-content-between pt-3">
             <div class="btn-group">
-                <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown">
+                <button id="filter-by" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown">
                     Todas as aulas
                 </button>
                 <ul class="dropdown-menu">
                     <li>
-                        <a class="dropdown-item"
+                        <a id="filter-all"
+                           class="dropdown-item"
                            hx-get="{% url 'question_filter:all_questions' course.id %}"
                            hx-target="#question">
                             Todas as aulas
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item"
+                        <a id="filter-lesson"
+                           class="dropdown-item"
                            hx-get="{% url 'question_filter:lesson' lesson_id %}"
                            hx-target="#question">
                             Aula atual
@@ -32,33 +34,37 @@
                 </ul>
             </div>
             <div class="btn-group">
-                <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown">
+                <button id="filter" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown">
                     Filtrar perguntas
                 </button>
                 <ul class="dropdown-menu">
                     <li>
-                        <a class="dropdown-item"
+                        <a id="filter-i-did"
+                           class="dropdown-item"
                            hx-get="{% url 'question_filter:i_ask' course.id %}"
                            hx-target="#question">
                             Perguntas que eu fiz
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item"
+                        <a id="filter-more-answers"
+                           class="dropdown-item"
                            hx-get="{% url 'question_filter:more_answers' course.id %}"
                            hx-target="#question">
                             Perguntas com mais respostas
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item"
+                        <a id="filter-more-recent"
+                           class="dropdown-item"
                            hx-get="{% url 'question_filter:more_recent' course.id %}"
                            hx-target="#question">
                             Perguntas mais recentes
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item"
+                        <a id="filter-without-answer"
+                           class="dropdown-item"
                            hx-get="{% url 'question_filter:without_answer' course.id %}"
                            hx-target="#question">
                             Perguntas sem respostas
