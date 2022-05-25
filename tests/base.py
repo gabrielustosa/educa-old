@@ -93,19 +93,15 @@ class FunctionalTestBase(StaticLiveServerTestCase):
             element_id
         )
 
-    def login(self, username='admin', password='admin', is_superuser=False, user=None):
+    def login(self, username='admin', password='admin', is_superuser=False):
         form = self.get_element_by_id('login')
 
-        if not user:
-            user = UserFactory(username=username)
-            user.set_password(password)
-            if is_superuser:
-                user.is_superuser = True
-                user.is_staff = True
-            user.save()
-        else:
-            user.set_password(password)
-            user.save()
+        user = UserFactory(username=username)
+        user.set_password(password)
+        if is_superuser:
+            user.is_superuser = True
+            user.is_staff = True
+        user.save()
 
         username_field = self.get_by_input_name(form, 'username')
         username_field.send_keys(username)
@@ -145,21 +141,13 @@ class TestCustomBase(TestCase):
 
 
 class CourseLessonMixin(ContentMixin):
-    def setUp(self):
-        self.course = CourseFactory()
+    def load_course(self):
+        course = CourseFactory()
         for i in range(5):
-            module = ModuleFactory(course=self.course, title=f'title-{i}')
+            module = ModuleFactory(course=course, title=f'title-{i}')
             for n in range(5):
-                lesson = LessonFactory(course=self.course, module=module, title=f'title-{n}')
+                lesson = LessonFactory(course=course, module=module, title=f'title-{n}')
                 for j in range(5):
                     content_type_list = ['text', 'image', 'file', 'link']
                     self.create_content(content_type=choice(content_type_list), lesson=lesson, title=f'title-{j}')
-        return super().setUp()
-
-    @staticmethod
-    def get_lesson_by_id(lesson_id):
-        return Lesson.objects.get(id=lesson_id)
-
-    @staticmethod
-    def get_module_by_id(module_id):
-        return Module.objects.get(id=module_id)
+        return course

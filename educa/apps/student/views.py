@@ -2,16 +2,15 @@ import json
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
-from django.utils.functional import cached_property
 from django.views.generic import CreateView, TemplateView
 
 from educa.apps.content.models import Content
 from educa.apps.course.models import Course, CourseRelation
 from educa.apps.lesson.models import Lesson
-from educa.apps.mixin import CourseOwnerMixin, CourseEnrrolledMixin
 from educa.apps.student.forms import UserCreateForm
 
 
@@ -44,7 +43,6 @@ class StudentCourseListView(TemplateView):
 
 class StudentCourseView(
     LoginRequiredMixin,
-    CourseEnrrolledMixin,
     TemplateView,
 ):
     template_name = 'student/view.html'
