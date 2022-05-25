@@ -67,7 +67,8 @@
                 </ul>
             </div>
             <div>
-                <button class="btn btn-dark"
+                <button id="ask-button"
+                        class="btn btn-dark"
                         hx-get="{% url 'question:render_create' course.id %}"
                         hx-target="#question-nav">
                     Fazer uma pergunta

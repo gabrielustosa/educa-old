@@ -10,18 +10,19 @@
                 {% if confirm %}
                     {% csrf_token %}
                     <div class="pt-3">
-                        <button{% if answer %}
-                            hx-post="{% url 'answer:delete' answer.id %}"
-                            hx-target="#answers"
-                        {% elif question %}
-                            hx-post="{% url 'question_view:delete' question.id %}"
-                            hx-target="#question"
-                        {% elif notice %}
-                            hx-post="{% url 'notice:delete' notice.id %}"
-                            hx-target="#notice"
-                        {% endif %}
-                            data-bs-dismiss="modal"
-                            class="btn btn-danger">
+                        <button id="confirm"
+                                data-bs-dismiss="modal"
+                                class="btn btn-danger"
+                                {% if answer %}
+                                hx-post="{% url 'answer:delete' answer.id %}"
+                                hx-target="#answers"
+                                {% elif question %}
+                                hx-post="{% url 'question_view:delete' question.id %}"
+                                hx-target="#question"
+                                {% elif notice %}
+                                hx-post="{% url 'notice:delete' notice.id %}"
+                                hx-target="#notice"
+                                {% endif %}>
                             Confirmar
                         </button>
                     </div>

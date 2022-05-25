@@ -1,16 +1,18 @@
-from random import choice
-
 import pytest
+import time
+
+from random import choice
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import TestCase
 from django.urls import reverse, resolve
+
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver import Keys
-
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.wait import WebDriverWait
 
-from educa.apps.lesson.models import Lesson
-from educa.apps.module.models import Module
 from tests.factories.course import CourseFactory
 from tests.factories.lesson import LessonFactory
 from tests.factories.module import ModuleFactory
@@ -73,7 +75,7 @@ class ContentMixin:
             )
 
 
-class FunctionalTestBase(StaticLiveServerTestCase):
+class TestFunctionalBase(StaticLiveServerTestCase):
     def setUp(self) -> None:
         self.browser = make_chrome_browser()
         return super().setUp()
@@ -87,14 +89,13 @@ class FunctionalTestBase(StaticLiveServerTestCase):
             By.XPATH, f'//input[@name="{name}"]'
         )
 
-    def get_element_by_id(self, element_id):
-        return self.browser.find_element(
-            By.ID,
-            element_id
+    def get_by_textarea_name(self, web_element, name):
+        return web_element.find_element(
+            By.XPATH, f'//textarea[@name="{name}"]'
         )
 
     def login(self, username='admin', password='admin', is_superuser=False):
-        form = self.get_element_by_id('login')
+        form = self.browser.find_element(By.ID, 'login')
 
         user = UserFactory(username=username)
         user.set_password(password)
@@ -109,10 +110,25 @@ class FunctionalTestBase(StaticLiveServerTestCase):
         password_field = self.get_by_input_name(form, 'password')
         password_field.send_keys(password)
 
-        submit = self.get_element_by_id('submit')
+        submit = self.browser.find_element(By.ID, 'submit')
         submit.send_keys(Keys.ENTER)
 
         return user
+
+    def wait_element_to_be_clickable(self, element_id, max_wait=20):
+        start_time = time.time()
+        while True:
+            try:
+                self.browser.find_element(By.ID, element_id).click()
+                return
+            except (AssertionError, WebDriverException) as e:
+                if time.time() - start_time > max_wait:
+                    raise e
+                time.sleep(0.5)
+
+    def wait_element_exists(self, element_id):
+        wait = WebDriverWait(self.browser, 20)
+        return wait.until(expected_conditions.visibility_of_element_located((By.ID, element_id)))
 
 
 class TestCustomBase(TestCase):
@@ -140,7 +156,7 @@ class TestCustomBase(TestCase):
         return user
 
 
-class CourseLessonMixin(ContentMixin):
+class TestCourseLessonMixin(ContentMixin):
     def load_course(self):
         course = CourseFactory()
         for i in range(5):
@@ -151,3 +167,27 @@ class CourseLessonMixin(ContentMixin):
                     content_type_list = ['text', 'image', 'file', 'link']
                     self.create_content(content_type=choice(content_type_list), lesson=lesson, title=f'title-{j}')
         return course
+
+
+class TestCourseLessonBase(TestFunctionalBase, TestCourseLessonMixin):
+    def access_course_view(self, course):
+        self.browser.get(self.live_server_url + reverse('student:view',
+                                                        kwargs={'course_slug': course.slug,
+                                                                'lesson_id': course.get_first_lesson_id()}))
+
+    def ask_question(self):
+        self.wait_element_to_be_clickable('questions-answers')
+
+        self.wait_element_to_be_clickable('ask-button')
+
+        body = self.browser.find_element(By.TAG_NAME, 'body')
+
+        title = 'This is a test title.'
+        title_input = self.get_by_input_name(body, 'title')
+        title_input.send_keys(title)
+
+        content = 'This is a test content.'
+        content_input = self.get_by_textarea_name(body, 'content')
+        content_input.send_keys(content)
+
+        self.wait_element_to_be_clickable('ask')

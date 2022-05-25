@@ -6,21 +6,23 @@
             </div>
             <div>
                 {% if question.user == request.user %}
-                    <div class="dropdown">
+                    <div id="options" class="dropdown">
                         <span data-bs-toggle="dropdown">
                             <i class="bi bi-three-dots-vertical"></i>
                         </span>
                         <ul class="dropdown-menu">
                             <li>
-                                <span class="dropdown-item"
+                                <span id="edit-question"
+                                      class="dropdown-item"
                                       hx-get="{% url 'question_view:render_update' question.id %}"
                                       hx-target="#question-content">
                                     Editar
                                 </span>
                             </li>
                             <li>
-                                <span class="dropdown-item"
-                                      hx-get="{% url 'question_view:confirm' question.id %}"
+                                <span id="delete-question"
+                                      class="dropdown-item"
+                                      hx-get="{% url 'question_view:confirm_delete' question.id %}"
                                       hx-target="#modal">
                                     Apagar
                                 </span>

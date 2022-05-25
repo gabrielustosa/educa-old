@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.functional import cached_property
 from django.views.generic import TemplateView
 
+from educa.apps.mixin import QuestionOwnerMixin
 from educa.apps.question.models import Question, Answer
 from educa.apps.question.views.views_filter import course_all_questions_view
 
@@ -37,7 +38,7 @@ class QuestionView(QuestionViewMixin):
         return context
 
 
-class QuestionRenderUpdateView(QuestionViewMixin):
+class QuestionRenderUpdateView(QuestionViewMixin, QuestionOwnerMixin):
     template_name = 'hx/question/render/update.html'
 
     def get_context_data(self, **kwargs):
@@ -49,9 +50,12 @@ class QuestionRenderUpdateView(QuestionViewMixin):
         return context
 
 
-class QuestionUpdateView(QuestionViewMixin):
+class QuestionUpdateView(QuestionOwnerMixin, QuestionViewMixin):
     template_name = 'hx/question/content.html'
     http_method_names = ['post']
+
+    def get_current_question(self):
+        return self.get_question
 
     def post(self, request, *args, **kwargs):
         context = super().get_context_data(**kwargs)

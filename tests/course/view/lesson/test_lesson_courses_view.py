@@ -1,13 +1,10 @@
-from django.test import TestCase
-
 from educa.apps.course.models import CourseRelation
 from educa.apps.student.views import StudentCourseView
-from tests.base import CourseLessonMixin, TestCustomBase
-from tests.factories.course import CourseFactory
+from tests.base import TestCourseLessonMixin, TestCustomBase
 from tests.factories.user import UserFactory
 
 
-class TestCourseLessonView(TestCustomBase, CourseLessonMixin):
+class TestCourseLessonView(TestCustomBase, TestCourseLessonMixin):
 
     def setUp(self):
         user = UserFactory(username='tester', password='tester')

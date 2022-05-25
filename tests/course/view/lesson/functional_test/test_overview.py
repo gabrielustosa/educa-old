@@ -1,22 +1,21 @@
 import pytest
-from django.urls import reverse
+
 from selenium.webdriver.common.by import By
 
-from tests.base import FunctionalTestBase, CourseLessonMixin
+from tests.base import TestCourseLessonBase
 
 
 @pytest.mark.functional_test
 @pytest.mark.django_db
-class TestFunctionalCourseOverview(FunctionalTestBase, CourseLessonMixin):
+class TestCourseOverview(TestCourseLessonBase):
 
     def test_user_can_view_overview(self):
         course = self.load_course()
-        self.browser.get(self.live_server_url + reverse('student:view',
-                                                        kwargs={'course_slug': course.slug,
-                                                                'lesson_id': course.get_first_lesson_id()}))
-        self.login(is_superuser=True, username='tester', password='tester')
+        self.access_course_view(course)
 
-        search = self.get_element_by_id('overview')
+        self.login()
+
+        search = self.browser.find_element(By.ID, 'overview')
         search.click()
 
         self.assertIn(

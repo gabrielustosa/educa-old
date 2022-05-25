@@ -1,24 +1,21 @@
 import pytest
 
-from django.urls import reverse
 from selenium.webdriver.common.by import By
 
-from tests.base import FunctionalTestBase, CourseLessonMixin
+from tests.base import TestCourseLessonBase
 
 
 @pytest.mark.functional_test
 @pytest.mark.django_db
-class TestFunctionalCourseSearch(FunctionalTestBase, CourseLessonMixin):
+class TestCourseSearch(TestCourseLessonBase):
 
     def test_user_can_search(self):
         course = self.load_course()
-        self.browser.get(self.live_server_url + reverse('student:view',
-                                                        kwargs={'course_slug': course.slug,
-                                                                'lesson_id': course.get_first_lesson_id()}))
+        self.access_course_view(course)
 
-        self.login(is_superuser=True, username='tester', password='tester')
+        self.login()
 
-        search = self.get_element_by_id('search')
+        search = self.browser.find_element(By.ID, 'search')
         search.click()
 
         body = self.browser.find_element(By.TAG_NAME, 'body')

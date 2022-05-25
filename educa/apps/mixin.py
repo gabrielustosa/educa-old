@@ -1,7 +1,5 @@
 from django.core.exceptions import PermissionDenied
 
-from educa.apps.course.models import Course
-
 
 class CourseOwnerMixin:
     def dispatch(self, request, *args, **kwargs):
@@ -11,3 +9,9 @@ class CourseOwnerMixin:
         return super().dispatch(request, *args, **kwargs)
 
 
+class QuestionOwnerMixin:
+    def dispatch(self, request, *args, **kwargs):
+        question = self.get_question
+        if question.user != request.user:
+            raise PermissionDenied()
+        return super().dispatch(request, *args, **kwargs)
