@@ -1,10 +1,7 @@
-from time import sleep
-
 import pytest
 
-from selenium.webdriver.common.by import By
-
 from tests.base import TestCourseLessonBase
+from tests.factories.answer import AnswerFactory
 
 
 @pytest.mark.slow
@@ -42,7 +39,7 @@ class TestAnswerQuestion(TestCourseLessonBase):
 
         question = self.create_question(course)[0]
 
-        self.create_answer(question)
+        AnswerFactory(question=question)
 
         self.wait_element_to_be_clickable('questions-answers')
 
@@ -74,7 +71,7 @@ class TestAnswerQuestion(TestCourseLessonBase):
 
         question = self.create_question(course)[0]
 
-        answer = self.create_answer(question)[0]
+        answer = AnswerFactory(question=question)
 
         self.wait_element_to_be_clickable('questions-answers')
 

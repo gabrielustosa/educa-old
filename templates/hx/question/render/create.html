@@ -1,24 +1,22 @@
 {% load bootstrap5 %}
 
 <div class="container">
-    <div>
-        <button class="btn btn-dark"
-                hx-get="{% url 'question:course' course.id %}"
-                hx-target="#content">
-            Voltar para todas as perguntas
-        </button>
-        <div id="question-ask">
-            {% csrf_token %}
-            {% bootstrap_form form %}
-            {% buttons %}
-                <button id="ask"
-                        class="btn btn-dark"
-                        hx-post="{% url 'question:create' lesson_id %}"
-                        hx-target="#content"
-                        hx-parent="#question-ask">
-                    Publicar
-                </button>
-            {% endbuttons %}
-        </div>
+    <button class="btn btn-dark"
+            hx-get="{% url 'question:course' course.id %}"
+            hx-target="#content">
+        Voltar para todas as perguntas
+    </button>
+    <div id="question-ask">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button id="ask"
+                    class="btn btn-dark"
+                    hx-post="{% url 'question:create' lesson_id %}"
+                    hx-target="#content"
+                    hx-parent="#question-ask">
+                Publicar
+            </button>
+        {% endbuttons %}
     </div>
 </div>

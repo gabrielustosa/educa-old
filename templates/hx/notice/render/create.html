@@ -4,9 +4,10 @@
     {% csrf_token %}
     {% bootstrap_form form %}
     {% buttons %}
-        <button class="btn btn-dark"
+        <button id="send"
+                class="btn btn-dark"
                 hx-post="{% url 'notice:create' course.id %}"
-                hx-target="#notice"
+                hx-target="#content"
                 hx-parent="#notice-create">
             Publicar
         </button>

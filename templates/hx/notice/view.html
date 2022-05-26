@@ -1,9 +1,10 @@
 <div id="notice">
     {% if request.user == course.owner %}
         <div class="d-flex justify-content-end">
-            <button class="btn btn-dark"
+            <button id="create-notice"
+                    class="btn btn-dark"
                     hx-get="{% url 'notice:render_create' course.id %}"
-                    hx-target="#notice">
+                    hx-target="#content">
                 Novo aviso
             </button>
         </div>
@@ -16,19 +17,21 @@
             <div>
                 {% if request.user == course.owner %}
                     <div class="dropdown">
-                        <span data-bs-toggle="dropdown">
+                        <span id="options" data-bs-toggle="dropdown">
                             <i class="bi bi-three-dots-vertical"></i>
                         </span>
                         <ul class="dropdown-menu">
                             <li>
-                                <span class="dropdown-item"
+                                <span id="edit"
+                                      class="dropdown-item"
                                       hx-get="{% url 'notice:render_update' notice.id %}"
                                       hx-target="#notice-content">
                                     Editar
                                 </span>
                             </li>
                             <li>
-                                <span class="dropdown-item"
+                                <span id="delete"
+                                      class="dropdown-item"
                                       hx-get="{% url 'notice:confirm' notice.id %}"
                                       hx-target="#modal">
                                     Apagar

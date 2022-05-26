@@ -1,37 +1,35 @@
 <div>
-    <div>
-        <div class="d-flex justify-content-between">
-            <div id="question-content">
-                {% include 'hx/question/content.html' %}
-            </div>
-            <div>
-                {% if question.user == request.user %}
-                    <div id="options" class="dropdown">
+    <div class="d-flex justify-content-between">
+        <div id="question-content">
+            {% include 'hx/question/content.html' %}
+        </div>
+        <div>
+            {% if question.user == request.user %}
+                <div id="options" class="dropdown">
                         <span data-bs-toggle="dropdown">
                             <i class="bi bi-three-dots-vertical"></i>
                         </span>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <span id="edit-question"
-                                      class="dropdown-item"
-                                      hx-get="{% url 'question_view:render_update' question.id %}"
-                                      hx-target="#question-content">
+                    <ul class="dropdown-menu">
+                        <li>
+                            <span id="edit-question"
+                                  class="dropdown-item"
+                                  hx-get="{% url 'question_view:render_update' question.id %}"
+                                  hx-target="#question-content">
                                     Editar
-                                </span>
-                            </li>
-                            <li>
-                                <span id="delete-question"
-                                      class="dropdown-item"
-                                      hx-get="{% url 'question_view:confirm_delete' question.id %}"
-                                      hx-target="#modal">
+                            </span>
+                        </li>
+                        <li>
+                            <span id="delete-question"
+                                  class="dropdown-item"
+                                  hx-get="{% url 'question_view:confirm_delete' question.id %}"
+                                  hx-target="#modal">
                                     Apagar
-                                </span>
-                            </li>
-                        </ul>
-                    </div>
-                {% endif %}
-            </div>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            {% endif %}
         </div>
-        {% include 'hx/question/answer/answer.html' %}
     </div>
+    {% include 'hx/question/answer/answer.html' %}
 </div>

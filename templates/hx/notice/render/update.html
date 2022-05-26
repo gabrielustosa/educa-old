@@ -4,9 +4,10 @@
     {% csrf_token %}
     {% bootstrap_form form %}
     {% buttons %}
-        <button class="btn btn-dark"
+        <button id="save"
+                class="btn btn-dark"
                 hx-post="{% url 'notice:update' notice.id %}"
-                hx-target="#notice"
+                hx-target="#content"
                 hx-parent="#notice-update">
             Salvar
         </button>
