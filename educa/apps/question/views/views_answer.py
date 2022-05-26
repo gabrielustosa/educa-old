@@ -1,11 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import modelform_factory
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils.functional import cached_property
 from django.views.generic import TemplateView
 
 from educa.apps.question.models import Answer
 from educa.apps.question.views.views_question import QuestionViewMixin
+from educa.utils import render_error
 
 
 class AnswerCreateView(QuestionViewMixin):
@@ -16,6 +18,15 @@ class AnswerCreateView(QuestionViewMixin):
         context = super().get_context_data(**kwargs)
 
         content = self.request.POST.get('content')
+
+        error_messages = []
+
+        if len(content) == 0:
+            error_messages.append('Os detalhes da sua resposta não podem estar vazios.')
+
+        if error_messages:
+            return HttpResponse(render_error(error_messages), status=400)
+
         Answer.objects.create(user=self.request.user, question=self.get_question, content=content)
 
         context['answers'] = Answer.objects.filter(question=self.get_question)
@@ -61,7 +72,16 @@ class AnswerUpdateView(AnswerMixin):
         context = super().get_context_data(**kwargs)
 
         answer = self.get_answer
-        answer.content = request.POST.get('content')
+        content = request.POST.get('content')
+        error_messages = []
+
+        if len(content) == 0:
+            error_messages.append('Os detalhes da sua resposta não podem estar vazios.')
+
+        if error_messages:
+            return HttpResponse(render_error(error_messages), status=400)
+
+        answer.content = content
         answer.save()
 
         return self.render_to_response(context)

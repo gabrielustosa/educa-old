@@ -6,6 +6,10 @@
             hx-target="#content">
         Voltar para todas as perguntas
     </button>
+    <div class="pt-3">
+        <ul class="text-danger" id="question-error">
+        </ul>
+    </div>
     <div id="question-ask">
         {% csrf_token %}
         {% bootstrap_form form %}
@@ -14,7 +18,8 @@
                     class="btn btn-dark"
                     hx-post="{% url 'question:create' lesson_id %}"
                     hx-target="#content"
-                    hx-parent="#question-ask">
+                    hx-parent="#question-ask"
+                    hx-error="#question-error">
                 Publicar
             </button>
         {% endbuttons %}

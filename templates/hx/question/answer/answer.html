@@ -18,7 +18,8 @@
                         class="btn btn-dark"
                         hx-post="{% url 'answer:create' question.id %}"
                         hx-target="#answers"
-                        hx-parent="#answer-question">
+                        hx-parent="#answer-question"
+                        hx-error="#question-error">
                     Responder
                 </button>
             {% endbuttons %}

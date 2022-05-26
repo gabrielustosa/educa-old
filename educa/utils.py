@@ -13,3 +13,12 @@ def content_is_instance(content, class_name):
 
 def get_lesson_id(request):
     return request.GET.get('lesson_id') if request.GET.get('lesson_id') else request.POST.get('lesson_id')
+
+
+def render_error(error_messages):
+    new_list = []
+    for error in error_messages:
+        new_list.append(error)
+        if error != error_messages[len(error_messages) - 1]:
+            new_list.append('&')
+    return new_list

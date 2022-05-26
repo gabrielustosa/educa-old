@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.forms import modelform_factory
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils.functional import cached_property
 from django.views.generic import TemplateView
@@ -9,7 +10,7 @@ from educa.apps.course.models import Course
 from educa.apps.lesson.models import Lesson
 from educa.apps.question.models import Question
 from educa.apps.question.views.views_filter import course_all_questions_view
-from educa.utils import get_lesson_id
+from educa.utils import get_lesson_id, render_error
 
 
 class QuestionMixin(
@@ -67,6 +68,16 @@ class QuestionCreateView(QuestionMixin):
 
         title = request.POST.get('title')
         content = request.POST.get('content')
+
+        error_messages = []
+        if len(title) <= 5:
+            error_messages.append('O título deve conter mais que 5 carácteres')
+
+        if len(content) == 0:
+            error_messages.append('Os detalhes da sua pergunta não podem estar vazios.')
+
+        if error_messages:
+            return HttpResponse(render_error(error_messages), status=400)
 
         Question.objects.create(lesson=self.get_lesson, user=request.user, title=title, content=content)
 
