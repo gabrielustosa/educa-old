@@ -22,7 +22,7 @@ class AnswerCreateView(QuestionViewMixin):
         error_messages = []
 
         if len(content) == 0:
-            error_messages.append('Os detalhes da sua resposta não podem estar vazios.')
+            error_messages.append('A sua resposta não pode estar vazia.')
 
         if error_messages:
             return HttpResponse(render_error(error_messages), status=400)

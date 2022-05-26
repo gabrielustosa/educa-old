@@ -1,8 +1,12 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import modelform_factory
 from django.shortcuts import render, get_object_or_404
+from django.utils.functional import cached_property
 from django.views.decorators.http import require_POST
+from django.views.generic import TemplateView
 
 from educa.apps.course.models import Course
+from educa.apps.mixin import CourseOwnerMixin
 from educa.apps.notice.models import Notice
 
 
@@ -12,59 +16,138 @@ def notice_view(request, course_id):
     return render(request, 'hx/notice/view.html', context={'notices': notices, 'course': course})
 
 
-def notice_render_create_form_view(request, course_id):
-    course = get_object_or_404(Course, id=course_id)
-    form = modelform_factory(Notice, fields=('title', 'content'))
-    return render(request, 'hx/notice/render/create.html', context={'form': form, 'course': course})
+class NoticeRenderCreateView(
+    LoginRequiredMixin,
+    CourseOwnerMixin,
+    TemplateView,
+):
+    template_name = 'hx/notice/render/create.html'
+
+    def get_course(self):
+        return get_object_or_404(Course, id=self.kwargs.get('course_id'))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['course'] = self.get_course()
+        context['form'] = modelform_factory(Notice, fields=('title', 'content'))
+
+        return context
 
 
-@require_POST
-def notice_create_view(request, course_id):
-    course = get_object_or_404(Course, id=course_id)
+class NoticeCreateView(
+    LoginRequiredMixin,
+    CourseOwnerMixin,
+    TemplateView,
+):
+    http_method_names = ['post']
 
-    title = request.POST.get('title')
-    content = request.POST.get('content')
+    def get_course(self):
+        return get_object_or_404(Course, id=self.kwargs.get('course_id'))
 
-    Notice.objects.create(course=course, title=title, content=content)
+    def post(self, request, *args, **kwargs):
+        title = request.POST.get('title')
+        content = request.POST.get('content')
 
-    return notice_view(request, course_id)
+        Notice.objects.create(course=self.get_course(), title=title, content=content)
 
-
-def notice_render_update_form_view(request, notice_id):
-    notice = get_object_or_404(Notice, id=notice_id)
-
-    form = modelform_factory(Notice, fields=('title', 'content'))
-    form = form(instance=notice)
-
-    return render(request, 'hx/notice/render/update.html', context={'form': form, 'notice': notice})
+        return notice_view(request, self.kwargs.get('course_id'))
 
 
-def notice_update_view(request, notice_id):
-    notice = get_object_or_404(Notice, id=notice_id)
+class NoticeRenderUpdateView(
+    LoginRequiredMixin,
+    CourseOwnerMixin,
+    TemplateView,
+):
+    template_name = 'hx/notice/render/update.html'
 
-    title = request.POST.get('title')
-    content = request.POST.get('content')
+    @cached_property
+    def get_notice(self):
+        return get_object_or_404(Notice, id=self.kwargs.get('notice_id'))
 
-    notice.title = title
-    notice.content = content
-    notice.save()
+    def get_course(self):
+        return self.get_notice.course
 
-    return notice_view(request, notice.course.id)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
+        notice = self.get_notice
+        form = modelform_factory(Notice, fields=('title', 'content'))
+        context['form'] = form(instance=notice)
+        context['notice'] = notice
 
-def notice_confirm_view(request, notice_id):
-    notice = get_object_or_404(Notice, id=notice_id)
-
-    return render(request, 'hx/modal.html',
-                  context={'title': 'Confirmação',
-                           'content': 'Você tem certeza que deseja deletar seu aviso?',
-                           'confirm': True,
-                           'notice': notice})
+        return context
 
 
-def notice_delete_view(request, notice_id):
-    notice = get_object_or_404(Notice, id=notice_id)
+class NoticeUpdateView(
+    LoginRequiredMixin,
+    CourseOwnerMixin,
+    TemplateView,
+):
+    http_method_names = ['post']
 
-    notice.delete()
+    @cached_property
+    def get_notice(self):
+        return get_object_or_404(Notice, id=self.kwargs.get('notice_id'))
 
-    return notice_view(request, notice.course.id)
+    def get_course(self):
+        return self.get_notice.course
+
+    def post(self, request, *args, **kwargs):
+        notice = self.get_notice
+
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+
+        notice.title = title
+        notice.content = content
+        notice.save()
+
+        return notice_view(request, notice.course.id)
+
+
+class NoticeConfirmView(
+    LoginRequiredMixin,
+    CourseOwnerMixin,
+    TemplateView,
+):
+    template_name = 'hx/modal.html'
+
+    @cached_property
+    def get_notice(self):
+        return get_object_or_404(Notice, id=self.kwargs.get('notice_id'))
+
+    def get_course(self):
+        return self.get_notice.course
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        notice = self.get_notice
+
+        context.update({'title': 'Confirmação',
+                        'content': 'Você tem certeza que deseja deletar seu aviso?',
+                        'confirm': True,
+                        'notice': notice})
+
+        return context
+
+
+class NoticeDeleteView(
+    LoginRequiredMixin,
+    CourseOwnerMixin,
+    TemplateView,
+):
+    @cached_property
+    def get_notice(self):
+        return get_object_or_404(Notice, id=self.kwargs.get('notice_id'))
+
+    def get_course(self):
+        return self.get_notice.course
+
+    def post(self, request, *args, **kwargs):
+        notice = self.get_notice
+
+        notice.delete()
+
+        return notice_view(request, notice.course.id)
