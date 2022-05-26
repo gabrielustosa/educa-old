@@ -15,7 +15,21 @@ class TestAskQuestion(TestCourseLessonBase):
 
         self.login()
 
-        self.ask_question()
+        self.wait_element_to_be_clickable('questions-answers')
+
+        self.wait_element_to_be_clickable('ask-button')
+
+        body = self.browser.find_element(By.TAG_NAME, 'body')
+
+        title = 'This is a test title.'
+        title_input = self.get_by_input_name(body, 'title')
+        title_input.send_keys(title)
+
+        content = 'This is a test content.'
+        content_input = self.get_by_textarea_name(body, 'content')
+        content_input.send_keys(content)
+
+        self.wait_element_to_be_clickable('ask')
 
         self.assertIn(
             'This is a test title.',
@@ -37,7 +51,9 @@ class TestViewQuestion(TestCourseLessonBase):
 
         self.login()
 
-        self.ask_question()
+        self.create_question(course)
+
+        self.wait_element_to_be_clickable('questions-answers')
 
         self.wait_element_to_be_clickable('view-question')
 
@@ -57,7 +73,9 @@ class TestUpdateDeleteQuestion(TestCourseLessonBase):
 
         self.login()
 
-        self.ask_question()
+        self.create_question(course)
+
+        self.wait_element_to_be_clickable('questions-answers')
 
         self.wait_element_to_be_clickable('view-question')
 
@@ -94,7 +112,9 @@ class TestUpdateDeleteQuestion(TestCourseLessonBase):
 
         self.login()
 
-        self.ask_question()
+        self.create_question(course)
+
+        self.wait_element_to_be_clickable('questions-answers')
 
         self.wait_element_to_be_clickable('view-question')
 

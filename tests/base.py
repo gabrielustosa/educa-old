@@ -16,10 +16,12 @@ from selenium.webdriver.support.wait import WebDriverWait
 from tests.factories.course import CourseFactory
 from tests.factories.lesson import LessonFactory
 from tests.factories.module import ModuleFactory
+from tests.factories.question import QuestionFactory
 from tests.factories.user import UserFactory
 from utils.browser import make_chrome_browser
 from educa.apps.content.models import Text, Content, File, Image, Link
 
+MAX_WAIT = 20
 
 @pytest.mark.django_db
 class ContentMixin:
@@ -77,7 +79,7 @@ class ContentMixin:
 
 class TestFunctionalBase(StaticLiveServerTestCase):
     def setUp(self) -> None:
-        self.browser = make_chrome_browser('--headless')
+        self.browser = make_chrome_browser()
         self.wait = WebDriverWait(self.browser, 20)
         return super().setUp()
 
@@ -116,14 +118,14 @@ class TestFunctionalBase(StaticLiveServerTestCase):
 
         return user
 
-    def wait_element_to_be_clickable(self, element_id, max_wait=20):
+    def wait_element_to_be_clickable(self, element_id):
         start_time = time.time()
         while True:
             try:
                 self.browser.find_element(By.ID, element_id).click()
                 return
             except (AssertionError, WebDriverException) as e:
-                if time.time() - start_time > max_wait:
+                if time.time() - start_time > MAX_WAIT:
                     raise e
                 time.sleep(0.5)
 
@@ -170,24 +172,16 @@ class TestCourseLessonMixin(ContentMixin):
 
 
 class TestCourseLessonBase(TestFunctionalBase, TestCourseLessonMixin):
+
     def access_course_view(self, course):
         self.browser.get(self.live_server_url + reverse('student:view',
                                                         kwargs={'course_slug': course.slug,
                                                                 'lesson_id': course.get_first_lesson_id()}))
 
-    def ask_question(self):
-        self.wait_element_to_be_clickable('questions-answers')
-
-        self.wait_element_to_be_clickable('ask-button')
-
-        body = self.browser.find_element(By.TAG_NAME, 'body')
-
-        title = 'This is a test title.'
-        title_input = self.get_by_input_name(body, 'title')
-        title_input.send_keys(title)
-
-        content = 'This is a test content.'
-        content_input = self.get_by_textarea_name(body, 'content')
-        content_input.send_keys(content)
-
-        self.wait_element_to_be_clickable('ask')
+    def create_question(self, course, quantity=1):
+        questions = []
+        for i in range(quantity):
+            lesson = choice(course.lesson_set.all())
+            question = QuestionFactory(lesson=lesson)
+            questions.append(question)
+        return questions

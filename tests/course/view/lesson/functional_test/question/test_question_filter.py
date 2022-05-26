@@ -16,11 +16,12 @@ class TestQuestionFilter(TestCourseLessonBase):
         ('filter-by', 'filter-all', 'Todas as perguntas deste curso'),
         ('filter-by', 'filter-lesson', 'Todas as perguntas da aula'),
     ])
-    def test_user_can_filter(self, filter_id, element_id, content):
+    def test_user_can_filter_question(self, filter_id, element_id, content):
         course = self.load_course()
         self.access_course_view(course)
 
         self.login()
+        self.create_question(course, quantity=6)
 
         self.wait_element_to_be_clickable('questions-answers')
 

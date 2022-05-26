@@ -1,6 +1,6 @@
 <div id="question-nav">
     <div class="pt-3">
-        <div class="input-group rounded">
+        <div id="search-question" class="input-group rounded">
             <input hx-post="{% url 'question:search' course.id %}" hx-target="#question"
                    hx-trigger="keyup changed delay:500ms"
                    type="search" class="form-control rounded" name="search"
