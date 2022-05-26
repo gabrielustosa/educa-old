@@ -10,8 +10,9 @@
                 <button id="send"
                         class="btn btn-dark"
                         hx-post="{% url 'rating:create' course.id %}"
-                        hx-target="#content"
-                        hx-parent="#rating-create">
+                        hx-target="#rating-content"
+                        hx-parent="#rating-create"
+                        hx-error="#rating-error">
                     Avaliar
                 </button>
             {% endbuttons %}

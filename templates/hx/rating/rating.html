@@ -1,18 +1,24 @@
 {% load course_filter %}
 
-<div id="rating">
-    <div class="d-flex justify-content-end">
-        {% if request.user|hasnt_rating:course %}
-            <button id="create-rating-button"
-                    class="btn btn-dark"
-                    hx-get="{% url 'rating:render_create' course.id %}"
-                    hx-target="#content">
-                Avaliar
-            </button>
-        {% endif %}
+<div>
+    <div class="pt-3">
+        <ul class="text-danger" id="rating-error">
+        </ul>
     </div>
-    <div>
-        <h3>Avaliações</h3>
-        {% include 'hx/rating/rating_list.html' %}
+    <div id="rating-content">
+        <div class="d-flex justify-content-end">
+            {% if request.user|hasnt_rating:course %}
+                <button id="create-rating-button"
+                        class="btn btn-dark"
+                        hx-get="{% url 'rating:render_create' course.id %}"
+                        hx-target="#rating-content">
+                    Avaliar
+                </button>
+            {% endif %}
+        </div>
+        <div>
+            <h3>Avaliações</h3>
+            {% include 'hx/rating/rating_list.html' %}
+        </div>
     </div>
 </div>

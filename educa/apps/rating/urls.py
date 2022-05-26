@@ -6,6 +6,6 @@ app_name = 'rating'
 
 urlpatterns = [
     path('view/<int:course_id>/', views.rating_view, name='view'),
-    path('create/<int:course_id>/', views.rating_create_view, name='create'),
-    path('render/create/<int:course_id>/', views.rating_render_create_view, name='render_create'),
+    path('render/create/<int:course_id>/', views.RatingRenderCreateView.as_view(), name='render_create'),
+    path('create/<int:course_id>/', views.RatingCreateView.as_view(), name='create'),
 ]
