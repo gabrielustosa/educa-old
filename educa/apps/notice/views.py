@@ -53,7 +53,7 @@ class NoticeCreateView(
 
         error_messages = []
         if len(title) <= 5:
-            error_messages.append('O título deve conter mais que 5 carácteres')
+            error_messages.append('O título deve conter mais que 5 carácteres.')
 
         if len(content) == 0:
             error_messages.append('Os detalhes do seu aviso não podem estar vazios.')
@@ -113,7 +113,7 @@ class NoticeUpdateView(
 
         error_messages = []
         if len(title) <= 5:
-            error_messages.append('O título deve conter mais que 5 carácteres')
+            error_messages.append('O título deve conter mais que 5 carácteres.')
 
         if len(content) == 0:
             error_messages.append('Os detalhes do seu aviso não podem estar vazios.')

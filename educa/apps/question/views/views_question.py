@@ -69,7 +69,7 @@ class QuestionUpdateView(QuestionOwnerMixin, QuestionViewMixin):
 
         error_messages = []
         if len(title) <= 5:
-            error_messages.append('O título deve conter mais que 5 carácteres')
+            error_messages.append('O título deve conter mais que 5 carácteres.')
 
         if len(content) == 0:
             error_messages.append('Os detalhes da sua pergunta não podem estar vazios.')

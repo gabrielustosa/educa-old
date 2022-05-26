@@ -80,7 +80,7 @@ class ContentMixin:
 
 class TestFunctionalBase(StaticLiveServerTestCase):
     def setUp(self) -> None:
-        self.browser = make_chrome_browser('--headless')
+        self.browser = make_chrome_browser()
         self.wait = WebDriverWait(self.browser, 20)
         return super().setUp()
 

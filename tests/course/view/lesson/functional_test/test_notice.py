@@ -101,3 +101,72 @@ class TestNotice(TestCourseLessonBase):
             notice.content,
             self.wait_element_exists('content').text
         )
+
+    def test_error_message_notice_create(self):
+        course = self.load_course()
+        self.access_course_view(course)
+
+        self.login(is_superuser=True)
+
+        self.wait_element_to_be_clickable('notice')
+
+        self.wait_element_to_be_clickable('create-notice')
+
+        body = self.wait_element_exists('notice-create')
+
+        title = ''
+        title_input = self.get_by_input_name(body, 'title')
+        title_input.send_keys(title)
+
+        content = ''
+        content_input = self.get_by_textarea_name(body, 'content')
+        content_input.send_keys(content)
+
+        self.wait_element_to_be_clickable('send')
+
+        self.assertIn(
+            'O título deve conter mais que 5 carácteres.',
+            self.wait_element_exists('content').text
+        )
+        self.assertIn(
+            'Os detalhes do seu aviso não podem estar vazios.',
+            self.wait_element_exists('content').text
+        )
+
+    def test_error_message_notice_update(self):
+        course = self.load_course()
+        self.access_course_view(course)
+
+        self.login(is_superuser=True)
+
+        NoticeFactory(course=course)
+
+        self.wait_element_to_be_clickable('notice')
+
+        self.wait_element_to_be_clickable('options')
+
+        self.wait_element_to_be_clickable('edit')
+
+        body = self.wait_element_exists('notice-update')
+
+        title = ''
+        title_input = self.get_by_input_name(body, 'title')
+        title_input.clear()
+        title_input.send_keys(title)
+
+        content = ''
+        content_input = self.get_by_textarea_name(body, 'content')
+        content_input.clear()
+        content_input.send_keys(content)
+
+        self.wait_element_to_be_clickable('save')
+
+        self.assertIn(
+            'O título deve conter mais que 5 carácteres.',
+            self.wait_element_exists('content').text
+        )
+        self.assertIn(
+            'Os detalhes do seu aviso não podem estar vazios.',
+            self.wait_element_exists('content').text
+        )
+

@@ -87,3 +87,57 @@ class TestAnswerQuestion(TestCourseLessonBase):
             answer.content,
             self.wait_element_exists('content').text
         )
+
+    def test_error_message_answer(self):
+        course = self.load_course()
+        self.access_course_view(course)
+
+        self.login()
+
+        self.create_question(course)
+
+        self.wait_element_to_be_clickable('questions-answers')
+
+        self.wait_element_to_be_clickable('view-question')
+
+        body = self.wait_element_exists('answers')
+        search_box = self.get_by_textarea_name(body, 'content')
+        search_box.send_keys('')
+
+        self.wait_element_to_be_clickable('answer-button')
+
+        self.assertIn(
+            'A sua resposta não pode estar vazia.',
+            self.wait_element_exists('content').text
+        )
+
+    def test_error_message_answer_update(self):
+        course = self.load_course()
+        self.access_course_view(course)
+
+        self.login()
+
+        question = self.create_question(course)[0]
+
+        AnswerFactory(question=question)
+
+        self.wait_element_to_be_clickable('questions-answers')
+
+        self.wait_element_to_be_clickable('view-question')
+
+        self.wait_element_to_be_clickable('option-answer')
+
+        self.wait_element_to_be_clickable('edit-answer')
+
+        body = self.wait_element_exists('answers')
+
+        content_input = self.get_by_textarea_name(body, 'content')
+        content_input.clear()
+        content_input.send_keys('')
+
+        self.wait_element_to_be_clickable('save')
+
+        self.assertIn(
+            'Os detalhes da sua resposta não podem estar vazios.',
+            self.wait_element_exists('content').text
+        )
