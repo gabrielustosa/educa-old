@@ -7,8 +7,9 @@
         <button id="save"
                 class="btn btn-dark"
                 hx-post="{% url 'notice:update' notice.id %}"
-                hx-target="#content"
-                hx-parent="#notice-update">
+                hx-target="#notice-content"
+                hx-parent="#notice-update"
+                hx-error="#notice-error">
             Salvar
         </button>
     {% endbuttons %}

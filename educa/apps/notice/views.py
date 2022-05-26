@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import modelform_factory
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils.functional import cached_property
 from django.views.decorators.http import require_POST
@@ -8,6 +9,7 @@ from django.views.generic import TemplateView
 from educa.apps.course.models import Course
 from educa.apps.mixin import CourseOwnerMixin
 from educa.apps.notice.models import Notice
+from educa.utils import render_error
 
 
 def notice_view(request, course_id):
@@ -48,6 +50,16 @@ class NoticeCreateView(
     def post(self, request, *args, **kwargs):
         title = request.POST.get('title')
         content = request.POST.get('content')
+
+        error_messages = []
+        if len(title) <= 5:
+            error_messages.append('O título deve conter mais que 5 carácteres')
+
+        if len(content) == 0:
+            error_messages.append('Os detalhes do seu aviso não podem estar vazios.')
+
+        if error_messages:
+            return HttpResponse(render_error(error_messages), status=400)
 
         Notice.objects.create(course=self.get_course(), title=title, content=content)
 
@@ -98,6 +110,16 @@ class NoticeUpdateView(
 
         title = request.POST.get('title')
         content = request.POST.get('content')
+
+        error_messages = []
+        if len(title) <= 5:
+            error_messages.append('O título deve conter mais que 5 carácteres')
+
+        if len(content) == 0:
+            error_messages.append('Os detalhes do seu aviso não podem estar vazios.')
+
+        if error_messages:
+            return HttpResponse(render_error(error_messages), status=400)
 
         notice.title = title
         notice.content = content

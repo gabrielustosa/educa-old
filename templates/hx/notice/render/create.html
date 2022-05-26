@@ -7,8 +7,9 @@
         <button id="send"
                 class="btn btn-dark"
                 hx-post="{% url 'notice:create' course.id %}"
-                hx-target="#content"
-                hx-parent="#notice-create">
+                hx-target="#notice-content"
+                hx-parent="#notice-create"
+                hx-error="#notice-error">
             Publicar
         </button>
     {% endbuttons %}
