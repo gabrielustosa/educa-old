@@ -8,19 +8,21 @@
     </div>
     {% if answer.user == request.user %}
         <div class="dropdown">
-            <span data-bs-toggle="dropdown">
+            <span id="option-answer" data-bs-toggle="dropdown">
                 <i class="bi bi-three-dots-vertical"></i>
             </span>
             <ul class="dropdown-menu">
                 <li>
-                    <span class="dropdown-item"
+                    <span id="edit-answer"
+                          class="dropdown-item"
                           hx-get="{% url 'answer:render_update' answer.id %}"
                           hx-target="#answer-{{ answer.id }}">
                         Editar
                     </span>
                 </li>
                 <li>
-                    <span class="dropdown-item"
+                    <span id="delete-answer"
+                          class="dropdown-item"
                           hx-get="{% url 'answer:confirm' answer.id %}"
                           hx-target="#modal">
                         Apagar

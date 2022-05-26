@@ -14,7 +14,8 @@
             {% csrf_token %}
             {% bootstrap_form form %}
             {% buttons %}
-                <button class="btn btn-dark"
+                <button id="answer-button"
+                        class="btn btn-dark"
                         hx-post="{% url 'answer:create' question.id %}"
                         hx-target="#answers"
                         hx-parent="#answer-question">

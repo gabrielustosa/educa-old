@@ -9,7 +9,7 @@ from tests.base import TestCourseLessonBase
 @pytest.mark.django_db
 class TestAskQuestion(TestCourseLessonBase):
 
-    def test_user_can_ask_a_question(self):
+    def test_user_can_ask_question(self):
         course = self.load_course()
         self.access_course_view(course)
 

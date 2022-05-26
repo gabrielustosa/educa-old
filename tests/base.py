@@ -13,6 +13,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
+from tests.factories.answer import AnswerFactory
 from tests.factories.course import CourseFactory
 from tests.factories.lesson import LessonFactory
 from tests.factories.module import ModuleFactory
@@ -185,3 +186,10 @@ class TestCourseLessonBase(TestFunctionalBase, TestCourseLessonMixin):
             question = QuestionFactory(lesson=lesson)
             questions.append(question)
         return questions
+
+    def create_answer(self, question, quantity=1):
+        answers = []
+        for i in range(quantity):
+            answer = AnswerFactory(question=question)
+            answers.append(answer)
+        return answers

@@ -5,7 +5,8 @@
         {% csrf_token %}
         {% bootstrap_form form %}
         {% buttons %}
-            <button class="btn btn-dark"
+            <button id="save"
+                    class="btn btn-dark"
                     hx-post="{% url 'answer:update' answer.id %}"
                     hx-target="#aswner-view-{{ answer.id }}"
                     hx-parent="#answer-update">
