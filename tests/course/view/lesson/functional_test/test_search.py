@@ -15,8 +15,7 @@ class TestCourseSearch(TestCourseLessonBase):
 
         self.login()
 
-        search = self.browser.find_element(By.ID, 'search')
-        search.click()
+        self.wait_element_to_be_clickable('search')
 
         body = self.browser.find_element(By.TAG_NAME, 'body')
         search_box = self.get_by_input_name(body, 'search')

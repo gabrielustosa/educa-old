@@ -104,7 +104,7 @@ class TestUpdateDeleteQuestion(TestCourseLessonBase):
 
         self.wait_element_to_be_clickable('confirm')
 
-        self.assertIn(
-            'Todas as perguntas deste curso',
+        self.assertNotIn(
+            'This is a test title.',
             self.wait_element_exists('content').text
         )

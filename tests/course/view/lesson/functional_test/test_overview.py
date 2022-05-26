@@ -15,8 +15,7 @@ class TestCourseOverview(TestCourseLessonBase):
 
         self.login()
 
-        search = self.browser.find_element(By.ID, 'overview')
-        search.click()
+        self.wait_element_to_be_clickable('overview')
 
         self.assertIn(
             'Sobre este curso',
