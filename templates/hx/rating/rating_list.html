@@ -1,19 +1,19 @@
 {% load course_filter %}
 
 <div class="py-3">
-        {% for rating in ratings %}
-            <div class="card" style="width: 25rem;">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <h5 class="card-title">{{ rating.user.get_full_name }}</h5>
-                        <div>
-                            {% for n in rating.rating|range_list %}
-                                <i class="bi bi-star-fill text-warning"></i>
-                            {% endfor %}
-                        </div>
+    {% for rating in ratings %}
+        <div class="card" style="width: 25rem;">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">{{ rating.user.get_full_name }}</h5>
+                    <div>
+                        {% for n in rating.rating|range_list %}
+                            <i class="bi bi-star-fill text-warning"></i>
+                        {% endfor %}
                     </div>
-                    <p class="card-text">{{ rating.comment }}</p>
                 </div>
+                <p class="card-text">{{ rating.comment }}</p>
             </div>
-        {% endfor %}
+        </div>
+    {% endfor %}
 </div>

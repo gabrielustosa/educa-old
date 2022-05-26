@@ -1,5 +1,3 @@
-from time import sleep
-
 import pytest
 
 from tests.base import TestCourseLessonBase
@@ -87,8 +85,6 @@ class TestNotice(TestCourseLessonBase):
         notice = NoticeFactory(course=course)
 
         self.wait_element_to_be_clickable('notice')
-
-        sleep(5)
 
         self.wait_element_to_be_clickable('options')
 

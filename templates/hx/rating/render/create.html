@@ -7,9 +7,10 @@
             {% csrf_token %}
             {% bootstrap_form form %}
             {% buttons %}
-                <button class="btn btn-dark"
+                <button id="send"
+                        class="btn btn-dark"
                         hx-post="{% url 'rating:create' course.id %}"
-                        hx-target="#rating"
+                        hx-target="#content"
                         hx-parent="#rating-create">
                     Avaliar
                 </button>
