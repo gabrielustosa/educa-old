@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}
     {{ course.title }}
 {% endblock %}
@@ -40,86 +42,13 @@
     <div id="modal">
         {% include 'hx/modal.html' %}
     </div>
+    {{ course.slug|json_script:'course_slug' }}
+    {{ course.id|json_script:'course_id' }}
 {% endblock %}
 
 {% block javascript %}
-    <script>
-
-        const setLessonID = () => {
-            let lesson_element = document.getElementById('lesson_id')
-            document.lesson_id = lesson_element.getAttribute('data-value')
-        }
-
-        const getFormInputs = form => {
-            let inputs = form.querySelectorAll('input, textarea')
-            let values = {}
-            inputs.forEach(input => {
-                values[input.name] = input.value
-            })
-            return values
-        }
-
-        setLessonID()
-
-        htmx.on("htmx:afterRequest", e => {
-            if (e.detail.target.id === 'video') {
-                setLessonID()
-                let course_slug = "{{ course.slug }}"
-                window.history.pushState("", "", `/students/course/${course_slug}/lesson/${document.lesson_id}/`);
-                fetch("{% url 'student:update_lesson' course.id %}", {
-                    method: 'post',
-                    body: JSON.stringify({'lesson_id': document.lesson_id}),
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    }
-                }).then((response) => response.json())
-            }
-        });
-        htmx.on("htmx:afterSwap", e => {
-            if (e.detail.target.id === "modal") {
-                const modal = new bootstrap.Modal(document.getElementById("modal-course"))
-                modal.show()
-            }
-        })
-        htmx.on("hidden.bs.modal", () => {
-            document.getElementById("modal-course").innerHTML = ""
-        })
-
-        htmx.on("htmx:configRequest", e => {
-            if (e.detail.verb === 'post') {
-                if (e.detail.elt.hasAttribute('hx-parent')) {
-                    let parent_data = e.detail.elt.getAttribute('hx-parent')
-                    let parent = document.querySelector(parent_data)
-                    let values = getFormInputs(parent)
-                    for (const [name, value] of Object.entries(values)) {
-                        e.detail.parameters[name] = value
-                    }
-                }
-            }
-            e.detail.parameters['lesson_id'] = document.lesson_id
-        })
-
-        htmx.on('htmx:afterRequest', e => {
-            if (e.detail.requestConfig.elt.hasAttribute('hx-error')) {
-                let parent = document.querySelector(e.detail.requestConfig.elt.getAttribute('hx-error'))
-                parent.innerText = ''
-            }
-            if (e.detail.xhr.status === 400) {
-                if (e.detail.elt.hasAttribute('hx-error')) {
-                    let messages = e.detail.xhr.responseText.split('&')
-                    let parent = document.querySelector(e.detail.elt.getAttribute('hx-error'))
-                    parent.innerText = ''
-                    for (let message of messages) {
-                        let li = document.createElement('li')
-                        li.innerText = message
-                        parent.appendChild(li)
-                    }
-                    document.getElementById('menu').scrollIntoView()
-                }
-            }
-        })
-
-    </script>
+    <script src="{% static 'js/lesson.js' %}"></script>
+    <script src="{% static 'js/custom-form.js' %}"></script>
+    <script src="{% static 'js/custom-modal.js' %}"></script>
+    <script src="{% static 'js/custom-error.js' %}"></script>
 {% endblock %}

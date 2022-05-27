@@ -6,6 +6,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import CreateView, TemplateView
 
 from educa.apps.content.models import Content
@@ -89,6 +90,7 @@ def course_content_search_view(request, course_id):
     return render(request, 'hx/course/search_content.html', context={'lessons': lessons, 'search': search})
 
 
+@csrf_exempt
 def course_update_current_lesson(request, course_id):
     lesson_id = json.loads(request.body)['lesson_id']
     CourseRelation.objects.filter(course__id=course_id, user=request.user).update(current_lesson=lesson_id)
