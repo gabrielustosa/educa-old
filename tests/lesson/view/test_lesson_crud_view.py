@@ -1,6 +1,6 @@
 import pytest
 
-from educa.apps.lesson.views.views_manage import LessonCreateView, LessonDeleteView, LessonUpdateView
+from educa.apps.lesson.views.views_crud import LessonCreateView, LessonDeleteView, LessonUpdateView
 from tests.base import TestCustomBase
 from tests.factories.lesson import LessonFactory
 

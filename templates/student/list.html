@@ -12,7 +12,7 @@
                 <div class="col pb-3">
                     <div class="card mt-3" style="width: 13rem;">
                         {% with current_lesson=request.user|get_current_lesson:course %}
-                            <a href="{% url 'student:view' course.slug current_lesson %}" class="text-decoration-none">
+                            <a href="{% url 'student:view' course.id current_lesson %}" class="text-decoration-none">
                                 <img class="card-img-top" src="{{ course.image.url }}" alt="Post image">
                                 <div class="card-body" style="color: black;">
                                     <h5 class="card-title">{{ course.title }}</h5>

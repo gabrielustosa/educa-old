@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+{% load cache %}
 {% load course_filter %}
 
 {% block title %}
@@ -7,6 +8,7 @@
 {% endblock %}
 
 {% block content %}
+    {% cache 900 course_detail course.id %}
     <div class="container pt-4">
         <div class="row">
             <div class="col-8">
@@ -41,7 +43,7 @@
                         <h5 class="card-title text-start">{{ course.title }}</h5>
                         {% if request.user|student_is_enrolled:course.id %}
                             {% with current_lesson=request.user|get_current_lesson:course %}
-                                <a href="{% url 'student:view' course.slug current_lesson %}"
+                                <a href="{% url 'student:view' course.id current_lesson %}"
                                    class="btn btn-primary mt-3"
                                    style="width: 16rem;">
                                     Acessar
@@ -60,4 +62,5 @@
             </div>
         </div>
     </div>
+    {% endcache %}
 {% endblock %}

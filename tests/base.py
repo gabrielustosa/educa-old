@@ -13,7 +13,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
-from tests.factories.answer import AnswerFactory
 from tests.factories.course import CourseFactory
 from tests.factories.lesson import LessonFactory
 from tests.factories.module import ModuleFactory
@@ -23,6 +22,12 @@ from utils.browser import make_chrome_browser
 from educa.apps.content.models import Text, Content, File, Image, Link
 
 MAX_WAIT = 20
+TEST_CACHE_SETTING = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+
 
 @pytest.mark.django_db
 class ContentMixin:
@@ -128,7 +133,7 @@ class TestFunctionalBase(StaticLiveServerTestCase):
             except (AssertionError, WebDriverException) as e:
                 if time.time() - start_time > MAX_WAIT:
                     raise e
-                time.sleep(0.5)
+                time.sleep(0.3)
 
     def wait_element_exists(self, element_id):
         return self.wait.until(expected_conditions.visibility_of_element_located((By.ID, element_id)))
@@ -176,7 +181,7 @@ class TestCourseLessonBase(TestFunctionalBase, TestCourseLessonMixin):
 
     def access_course_view(self, course):
         self.browser.get(self.live_server_url + reverse('student:view',
-                                                        kwargs={'course_slug': course.slug,
+                                                        kwargs={'course_id': course.id,
                                                                 'lesson_id': course.get_first_lesson_id()}))
 
     def create_question(self, course, quantity=1):

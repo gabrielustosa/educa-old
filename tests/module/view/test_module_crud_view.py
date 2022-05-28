@@ -1,6 +1,6 @@
 import pytest
 
-from educa.apps.module.views import ModuleCreateView, ModuleDeleteView, ModuleUpdateView
+from educa.apps.module.views.views_crud import ModuleCreateView, ModuleDeleteView, ModuleUpdateView
 from tests.factories.course import CourseFactory
 from tests.factories.module import ModuleFactory
 from tests.base import TestCustomBase

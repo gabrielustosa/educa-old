@@ -1,7 +1,9 @@
 import pytest
 
+from django.test import override_settings
+
 from educa.apps.course.views.views import CourseListView
-from tests.base import TestCustomBase
+from tests.base import TestCustomBase, TEST_CACHE_SETTING
 
 from tests.factories.course import CourseFactory
 
@@ -29,6 +31,7 @@ class TestHomeView(TestCustomBase):
             response.content.decode('utf-8')
         )
 
+    @override_settings(CACHES=TEST_CACHE_SETTING)
     def test_home_template_loads_courses(self):
         course = CourseFactory()
 

@@ -10,7 +10,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col" style="padding: 0;">
-                <div id="video" class="text-center">
+                <div id="video">
                     {% include 'hx/lesson/video.html' %}
                 </div>
                 <div id="menu" class="d-flex justify-content-between">
@@ -35,14 +35,13 @@
                 </div>
             </div>
             <div class="col" style="padding: 0;">
-                {% include 'student/course/accordion.html' with modules=modules %}
+                {% include 'partials/course/accordion.html' with modules=modules %}
             </div>
         </div>
     </div>
     <div id="modal">
         {% include 'hx/modal.html' %}
     </div>
-    {{ course.slug|json_script:'course_slug' }}
     {{ course.id|json_script:'course_id' }}
 {% endblock %}
 

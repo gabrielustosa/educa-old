@@ -1,13 +1,13 @@
 from django.urls import path
 
-from . import views
+from .views import views, views_crud
 
 app_name = 'module'
 
 urlpatterns = [
-    path('create/<int:course_id>/', views.ModuleCreateView.as_view(), name='create'),
-    path('detail/<int:module_id>/', views.ModuleDetailView.as_view(), name='detail'),
-    path('update/<int:module_id>/', views.ModuleUpdateView.as_view(), name='update'),
-    path('delete/<int:module_id>/', views.ModuleDeleteView.as_view(), name='delete'),
-    path('order/<int:course_id>/', views.module_order_view, name='order'),
+    path('create/<int:course_id>/', views_crud.ModuleCreateView.as_view(), name='create'),
+    path('detail/<int:module_id>/', views_crud.ModuleDetailView.as_view(), name='detail'),
+    path('update/<int:module_id>/', views_crud.ModuleUpdateView.as_view(), name='update'),
+    path('delete/<int:module_id>/', views_crud.ModuleDeleteView.as_view(), name='delete'),
+    path('order/<int:course_id>/', views.ModuleOrderView.as_view(), name='order'),
 ]

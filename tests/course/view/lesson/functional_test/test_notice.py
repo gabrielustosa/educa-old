@@ -1,6 +1,8 @@
 import pytest
 
-from tests.base import TestCourseLessonBase
+from django.test import override_settings
+
+from tests.base import TestCourseLessonBase, TEST_CACHE_SETTING
 from tests.factories.notice import NoticeFactory
 
 
@@ -8,6 +10,7 @@ from tests.factories.notice import NoticeFactory
 @pytest.mark.django_db
 class TestNotice(TestCourseLessonBase):
 
+    @override_settings(CACHES=TEST_CACHE_SETTING)
     def test_user_can_create_notice(self):
         course = self.load_course()
         self.access_course_view(course)
@@ -39,6 +42,7 @@ class TestNotice(TestCourseLessonBase):
             self.wait_element_exists('content').text
         )
 
+    @override_settings(CACHES=TEST_CACHE_SETTING)
     def test_user_can_update_notice(self):
         course = self.load_course()
         self.access_course_view(course)

@@ -1,0 +1,80 @@
+{% load course_filter %}
+{% load cache %}
+{% cache 900 course_modules course.id %}
+    <div class="col overflow-auto" style="padding: 0;">
+        {% for module in modules %}
+            <div class="accordion" id="accordion-{{ module.id }}">
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-button" data-bs-toggle="collapse"
+                             data-bs-target="#collapse-{{ module.id }}">
+                            Módulo {{ module.order }}: {{ module.title }}
+                        </div>
+                    </div>
+                    <div id="collapse-{{ module.id }}" class="accordion-collapse collapse"
+                         data-bs-parent="#accordion-{{ module.id }}">
+                        <div class="accordion-body">
+                            {% for lesson in module.lessons|sort_order %}
+                                <div class="position-relative">
+                                    <div class="py-3 my-3 border border-dark"
+                                         hx-get="{% url 'student:select_video' lesson.id %}"
+                                         hx-target="#video">
+                                        <p class="ps-2">{{ lesson.order }}. {{ lesson.title }}</p>
+                                    </div>
+                                    {% if lesson.contents.exists %}
+                                        <div class="dropdown position-absolute bottom-0 end-0 text-center border border-dark"
+                                             style="width: 40%;">
+                                            <div class="dropdown-toggle" data-bs-toggle="dropdown">
+                                                Conteúdos
+                                            </div>
+                                            <ul class="dropdown-menu">
+                                                {% for content in lesson.contents.all %}
+                                                    {% with item=content.item %}
+                                                        {% if item|item_is_instance:'text' %}
+                                                            <li>
+                                                                <a class="dropdown-item"
+                                                                   hx-get="{% url 'student:lesson_note' content.id %}"
+                                                                   hx-target="#modal">
+                                                                    {{ item.title }}
+                                                                </a>
+                                                            </li>
+                                                        {% endif %}
+                                                        {% if item|item_is_instance:'file' %}
+                                                            <li>
+                                                            <a class="dropdown-item"
+                                                               href="{{ item.file.url }}" download>
+                                                                {{ item.title }}
+                                                            </a>
+                                                        </li>
+                                                    {% endif %}
+                                                    {% if item|item_is_instance:'image' %}
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                               href="{{ item.image.url }}" download>
+                                                                {{ item.title }}
+                                                            </a>
+                                                        </li>
+                                                    {% endif %}
+                                                    {% if item|item_is_instance:'link' %}
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                               href="{{ item.url }}"
+                                                               target="_blank">
+                                                                {{ item.title }}
+                                                            </a>
+                                                        </li>
+                                                    {% endif %}
+                                                    {% endwith %}
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endcache %}

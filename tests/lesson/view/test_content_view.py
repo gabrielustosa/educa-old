@@ -28,20 +28,6 @@ class TestContentView(TestCustomBase, ContentMixin):
         self.assertEqual(response.status_code, 403)
 
     @parameterized.expand(['text', 'file', 'image', 'link'])
-    def test_content_appear_only_for_course_owner(self, value):
-        owner = UserFactory(username='teste')
-        lesson = LessonFactory(module__course__owner=owner)
-        self.create_content_in_batch(content_type=value, batch=4, lesson=lesson, owner=owner)
-
-        self.login(is_superuser=True)
-
-        response = self.response_get('content:get_content', kwargs={'lesson_id': lesson.id, 'model_name': value})
-
-        response_context_contents = response.context['contents']
-
-        self.assertEqual(len(response_context_contents), 4)
-
-    @parameterized.expand(['text', 'file', 'image', 'link'])
     def test_user_can_delete_content_if_is_not_course_owner(self, value):
         owner = UserFactory(username='testes')
         lesson = LessonFactory(module__course__owner=owner, course__owner=owner)

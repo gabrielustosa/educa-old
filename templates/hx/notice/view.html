@@ -1,54 +1,58 @@
-<div>
-    <div class="pt-3">
-        <ul class="text-danger" id="notice-error">
-        </ul>
-    </div>
-    <div id="notice-content">
-        {% if request.user == course.owner %}
-            <div class="d-flex justify-content-end">
-                <button id="create-notice"
-                        class="btn btn-dark"
-                        hx-get="{% url 'notice:render_create' course.id %}"
-                        hx-target="#notice-content">
-                    Novo aviso
-                </button>
-            </div>
-        {% endif %}
-        {% for notice in notices %}
-            <div id="notice-content" class="d-flex justify-content-between">
-                <div>
-                    {% include 'hx/notice/content.html' %}
+{% load cache %}
+
+{% cache 300 course_notice course.id %}
+    <div>
+        <div class="pt-3">
+            <ul class="text-danger" id="notice-error">
+            </ul>
+        </div>
+        <div id="notice-content">
+            {% if request.user == course.owner %}
+                <div class="d-flex justify-content-end">
+                    <button id="create-notice"
+                            class="btn btn-dark"
+                            hx-get="{% url 'notice:render_create' course.id %}"
+                            hx-target="#notice-content">
+                        Novo aviso
+                    </button>
                 </div>
-                <div>
-                    {% if request.user == course.owner %}
-                        <div class="dropdown">
+            {% endif %}
+            {% for notice in notices %}
+                <div id="notice-content" class="d-flex justify-content-between">
+                    <div>
+                        {% include 'hx/notice/content.html' %}
+                    </div>
+                    <div>
+                        {% if request.user == course.owner %}
+                            <div class="dropdown">
                             <span id="options" data-bs-toggle="dropdown">
                                 <i class="bi bi-three-dots-vertical"></i>
                             </span>
-                            <ul class="dropdown-menu">
-                                <li>
+                                <ul class="dropdown-menu">
+                                    <li>
                                     <span id="edit"
                                           class="dropdown-item"
                                           hx-get="{% url 'notice:render_update' notice.id %}"
                                           hx-target="#notice-content">
                                         Editar
                                     </span>
-                                </li>
-                                <li>
+                                    </li>
+                                    <li>
                                     <span id="delete"
                                           class="dropdown-item"
                                           hx-get="{% url 'notice:confirm' notice.id %}"
                                           hx-target="#modal">
                                         Apagar
                                     </span>
-                                </li>
-                            </ul>
-                        </div>
-                    {% endif %}
+                                    </li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
-        {% empty %}
-            <h5>Ainda não há nenhuma nota.</h5>
-        {% endfor %}
+            {% empty %}
+                <h5>Ainda não há nenhuma nota.</h5>
+            {% endfor %}
+        </div>
     </div>
-</div>
+{% endcache %}

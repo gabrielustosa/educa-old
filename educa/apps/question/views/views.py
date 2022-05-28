@@ -1,9 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.cache import cache
 from django.db.models import Q
 from django.forms import modelform_factory
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
-from django.utils.functional import cached_property
 from django.views.generic import TemplateView
 
 from educa.apps.course.models import Course
@@ -17,19 +16,31 @@ class QuestionMixin(
     LoginRequiredMixin,
     TemplateView,
 ):
-    @cached_property
     def get_course(self):
-        return get_object_or_404(Course, id=self.kwargs.get('course_id'))
+        course_id = self.kwargs.get('course_id')
+        course = cache.get(f'course-{course_id}')
+        if course:
+            return course
+        else:
+            course = Course.objects.filter(id=course_id).first()
+            cache.set(f'course-{course_id}', course)
+            return course
 
-    @cached_property
     def get_lesson(self):
-        return get_object_or_404(Lesson, id=self.kwargs.get('lesson_id'))
+        lesson_id = self.kwargs.get('lesson_id')
+        lesson = cache.get(f'lesson-{lesson_id}')
+        if lesson:
+            return lesson
+        else:
+            lesson = Lesson.objects.filter(id=lesson_id).first()
+            cache.set(f'lesson-{lesson_id}', lesson)
+            return lesson
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         context['lesson_id'] = get_lesson_id(self.request)
-        context['course'] = self.get_course
+        context['course'] = self.get_course()
 
         return context
 
@@ -40,7 +51,7 @@ class QuestionView(QuestionMixin):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['questions'] = Question.objects.filter(lesson__course=self.get_course)
+        context['questions'] = Question.objects.filter(lesson__course=self.get_course())
 
         return context
 
@@ -61,7 +72,7 @@ class QuestionCreateView(QuestionMixin):
     http_method_names = ['post']
 
     def get_course(self):
-        return self.get_lesson.course
+        return self.get_lesson().course
 
     def post(self, request, *args, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -79,7 +90,7 @@ class QuestionCreateView(QuestionMixin):
         if error_messages:
             return HttpResponse(render_error(error_messages), status=400)
 
-        Question.objects.create(lesson=self.get_lesson, user=request.user, title=title, content=content)
+        Question.objects.create(lesson=self.get_lesson(), user=request.user, title=title, content=content)
 
         context['questions'] = Question.objects.filter(lesson__course=self.get_course())
 
@@ -96,9 +107,9 @@ class QuestionSearchView(QuestionMixin):
         search = request.POST.get('search')
 
         if search == "":
-            return course_all_questions_view(request, self.get_course.id)
+            return course_all_questions_view(request, self.get_course().id)
 
-        context['questions'] = Question.objects.filter(lesson__course=self.get_course). \
+        context['questions'] = Question.objects.filter(lesson__course=self.get_course()). \
             filter(Q(title__icontains=search) | Q(content__icontains=search))
 
         return self.render_to_response(context)

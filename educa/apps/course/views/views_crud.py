@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.core.cache import cache
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
@@ -63,5 +64,8 @@ class CourseDeleteView(
 
 
 def get_course_overview(request, course_id):
-    course = get_object_or_404(Course, id=course_id)
+    course = cache.get(f'course-{course_id}')
+    if not course:
+        course = Course.objects.filter(id=course_id).first()
+        cache.set(f'course-{course_id}', course)
     return render(request, 'hx/course/overview.html', context={'course': course})

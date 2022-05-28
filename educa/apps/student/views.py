@@ -2,6 +2,7 @@ import json
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
@@ -49,19 +50,39 @@ class StudentCourseView(
     template_name = 'student/view.html'
 
     def get_course(self):
-        return get_object_or_404(Course, slug=self.kwargs.get('course_slug'))
+        course_id = self.kwargs.get('course_id')
+        course = cache.get(f'course-{course_id}')
+        if course:
+            return course
+        else:
+            course = Course.objects.filter(id=course_id).first()
+            cache.set(f'course-{course_id}', course)
+            return course
+
+    def get_lesson(self):
+        lesson_id = self.kwargs.get('lesson_id')
+        lesson = cache.get(f'lesson-{lesson_id}')
+        if lesson:
+            return lesson
+        else:
+            lesson = Lesson.objects.filter(id=lesson_id).first()
+            cache.set(f'lesson-{lesson_id}', lesson)
+            return lesson
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         course = self.get_course()
         context['course'] = course
         context['modules'] = course.modules.all()
-        context['current_lesson'] = get_object_or_404(Lesson, id=self.kwargs.get('lesson_id'))
+        context['current_lesson'] = self.get_lesson()
         return context
 
 
 def select_lesson_view(request, lesson_id):
-    lesson = Lesson.objects.get(id=lesson_id)
+    lesson = cache.get(f'lesson-{lesson_id}')
+    if not lesson:
+        lesson = Lesson.objects.filter(id=lesson_id).first()
+        cache.set(f'lesson-{lesson_id}', lesson)
     return render(request, 'hx/lesson/video.html', context={'current_lesson': lesson})
 
 
@@ -71,12 +92,19 @@ def lesson_note_view(request, content_id):
 
 
 def course_search_view(request, course_id):
-    course = get_object_or_404(Course, id=course_id)
+    course = cache.get(f'course-{course_id}')
+    if not course:
+        course = Course.objects.filter(id=course_id).first()
+        cache.set(f'course-{course_id}', course)
     return render(request, 'hx/course/search.html', context={'course': course})
 
 
 def course_content_search_view(request, course_id):
-    course = get_object_or_404(Course, id=course_id)
+    course = cache.get(f'course-{course_id}')
+    if not course:
+        course = Course.objects.filter(id=course_id).first()
+        cache.set(f'course-{course_id}', course)
+
     search = request.POST.get('search')
 
     if search == "":

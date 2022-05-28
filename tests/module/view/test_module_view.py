@@ -1,8 +1,7 @@
 import pytest
 
-from educa.apps.module.views import ModuleDetailView
+from educa.apps.module.views.views_crud import ModuleDetailView
 
-from tests.factories.course import CourseFactory
 from tests.factories.lesson import LessonFactory
 from tests.factories.module import ModuleFactory
 from tests.factories.user import UserFactory
