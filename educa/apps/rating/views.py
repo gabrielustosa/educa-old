@@ -66,9 +66,10 @@ class RatingCreateView(
 
         error_messages = []
         if not rating:
-            error_messages.append('Você precisa adicionar um número a sua avaliação.')
-        if int(rating) > 5 or int(rating) < 1:
-            error_messages.append('Você deve escolher um número de 1 a 5.')
+            error_messages.append('Você precisa escolher um número de 1 a 5 a sua avaliação.')
+        if rating:
+            if int(rating) > 5 or int(rating) < 1:
+                error_messages.append('Você deve escolher um número de 1 a 5.')
 
         if len(comment) == 0:
             error_messages.append('O comentário da sua avaliação não pode estar vazio.')

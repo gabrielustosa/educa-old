@@ -177,7 +177,7 @@ class TestCourseLessonMixin(ContentMixin):
         return course
 
 
-class TestCourseLessonBase(TestFunctionalBase, TestCourseLessonMixin):
+class TestCourseLessonBase(TestFunctionalBase, TestCourseLessonMixin, ContentMixin):
 
     def access_course_view(self, course):
         self.browser.get(self.live_server_url + reverse('student:view',
