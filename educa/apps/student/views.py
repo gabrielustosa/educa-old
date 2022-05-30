@@ -14,6 +14,7 @@ from educa.apps.content.models import Content
 from educa.apps.course.models import Course, CourseRelation
 from educa.apps.lesson.models import Lesson
 from educa.apps.student.forms import UserCreateForm
+from educa.utils.mixin import CacheMixin
 
 
 class StudentRegisterView(CreateView):
@@ -45,29 +46,10 @@ class StudentCourseListView(TemplateView):
 
 class StudentCourseView(
     LoginRequiredMixin,
+    CacheMixin,
     TemplateView,
 ):
     template_name = 'student/course_view.html'
-
-    def get_course(self):
-        course_id = self.kwargs.get('course_id')
-        course = cache.get(f'course-{course_id}')
-        if course:
-            return course
-        else:
-            course = Course.objects.filter(id=course_id).first()
-            cache.set(f'course-{course_id}', course)
-            return course
-
-    def get_lesson(self):
-        lesson_id = self.kwargs.get('lesson_id')
-        lesson = cache.get(f'lesson-{lesson_id}')
-        if lesson:
-            return lesson
-        else:
-            lesson = Lesson.objects.filter(id=lesson_id).first()
-            cache.set(f'lesson-{lesson_id}', lesson)
-            return lesson
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

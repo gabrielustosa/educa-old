@@ -1,12 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.cache import cache
 from django.db.models import Count
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
 from django.views.generic import TemplateView
 
 from educa.apps.course.models import Course
-from educa.apps.lesson.models import Lesson
 from educa.apps.question.models import Question
+from educa.utils.mixin import CacheMixin
 
 
 def course_all_questions_view(request, course_id):
@@ -21,27 +21,9 @@ def course_all_questions_view(request, course_id):
 
 class FilterQuestionMixin(
     LoginRequiredMixin,
+    CacheMixin,
     TemplateView,
 ):
-    def get_course(self):
-        course_id = self.kwargs.get('course_id')
-        course = cache.get(f'course-{course_id}')
-        if course:
-            return course
-        else:
-            course = Course.objects.filter(id=course_id).first()
-            cache.set(f'course-{course_id}', course)
-            return course
-
-    def get_lesson(self):
-        lesson_id = self.kwargs.get('lesson_id')
-        lesson = cache.get(f'lesson-{lesson_id}')
-        if lesson:
-            return lesson
-        else:
-            lesson = Lesson.objects.filter(id=lesson_id).first()
-            cache.set(f'lesson-{lesson_id}', lesson)
-            return lesson
 
     def get_questions(self):
         return None

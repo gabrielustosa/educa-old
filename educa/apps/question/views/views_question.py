@@ -5,10 +5,10 @@ from django.shortcuts import get_object_or_404
 from django.utils.functional import cached_property
 from django.views.generic import TemplateView
 
-from educa.apps.mixin import QuestionOwnerMixin
+from educa.utils.mixin import QuestionOwnerMixin
 from educa.apps.question.models import Question, Answer
 from educa.apps.question.views.views_filter import course_all_questions_view
-from educa.utils import render_error
+from educa.utils.utils import render_error
 
 
 class QuestionViewMixin(

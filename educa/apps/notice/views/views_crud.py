@@ -5,10 +5,10 @@ from django.utils.functional import cached_property
 from django.views.generic import TemplateView
 
 from educa.apps.course.models import Course
-from educa.apps.mixin import CourseOwnerMixin
+from educa.utils.mixin import CourseOwnerMixin
 from educa.apps.notice.models import Notice
 from educa.apps.notice.views.views import notice_view
-from educa.utils import render_error
+from educa.utils.utils import render_error
 
 
 class NoticeCreateView(

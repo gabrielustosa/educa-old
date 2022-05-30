@@ -2,12 +2,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.cache import cache
 from django.forms import modelform_factory
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
 from django.views.generic import TemplateView
 
 from educa.apps.course.models import Course
 from educa.apps.rating.models import Rating
-from educa.utils import render_error
+from educa.utils.mixin import CacheMixin
+from educa.utils.utils import render_error
 
 
 def rating_view(request, course_id):
@@ -21,19 +22,10 @@ def rating_view(request, course_id):
 
 class RatingRenderCreateView(
     LoginRequiredMixin,
+    CacheMixin,
     TemplateView,
 ):
     template_name = 'hx/rating/render/create.html'
-
-    def get_course(self):
-        course_id = self.kwargs.get('course_id')
-        course = cache.get(f'course-{course_id}')
-        if course:
-            return course
-        else:
-            course = Course.objects.filter(id=course_id).first()
-            cache.set(f'course-{course_id}', course)
-            return course
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -44,19 +36,10 @@ class RatingRenderCreateView(
 
 class RatingCreateView(
     LoginRequiredMixin,
+    CacheMixin,
     TemplateView,
 ):
     http_method_names = ['post']
-
-    def get_course(self):
-        course_id = self.kwargs.get('course_id')
-        course = cache.get(f'course-{course_id}')
-        if course:
-            return course
-        else:
-            course = Course.objects.filter(id=course_id).first()
-            cache.set(f'course-{course_id}', course)
-            return course
 
     def post(self, request, *args, **kwargs):
         course = self.get_course()

@@ -1,3 +1,5 @@
+from time import sleep
+
 import pytest
 from parameterized import parameterized
 
@@ -28,6 +30,8 @@ class TestQuestionFilter(TestCourseLessonBase):
         self.wait_element_to_be_clickable(filter_id)
 
         self.wait_element_to_be_clickable(element_id)
+
+        sleep(1)
 
         self.assertIn(
             content,

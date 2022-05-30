@@ -3,7 +3,7 @@
 from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
-import educa.fields
+import educa.utils.fields
 
 
 class Migration(migrations.Migration):
@@ -78,7 +78,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('object_id', models.PositiveIntegerField()),
-                ('order', educa.fields.OrderField(blank=True)),
+                ('order', educa.utils.fields.OrderField(blank=True)),
                 ('content_type', models.ForeignKey(limit_choices_to={'model__in': ('text', 'video', 'image', 'file')}, on_delete=django.db.models.deletion.CASCADE, to='contenttypes.contenttype')),
                 ('module', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='contents', to='module.module')),
             ],

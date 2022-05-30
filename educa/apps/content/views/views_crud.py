@@ -6,8 +6,8 @@ from django.views.generic import TemplateView, DeleteView
 
 from educa.apps.content.models import Content
 from educa.apps.lesson.models import Lesson
-from educa.apps.mixin import CourseOwnerMixin
-from educa.utils import get_model
+from educa.utils.mixin import CourseOwnerMixin
+from educa.utils.utils import get_model
 
 
 class ContentCreateUpdateView(

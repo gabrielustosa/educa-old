@@ -7,7 +7,7 @@ from django.views.generic import TemplateView
 
 from educa.apps.question.models import Answer
 from educa.apps.question.views.views_question import QuestionViewMixin
-from educa.utils import render_error
+from educa.utils.utils import render_error
 
 
 class AnswerCreateView(QuestionViewMixin):

@@ -1,9 +1,9 @@
 from django.db import models
 
 from educa.apps.course.models import Course
-from educa.fields import OrderField
+from educa.utils.fields import OrderField
 from educa.apps.module.models import Module
-from educa.utils import get_url_id
+from educa.utils.utils import get_url_id
 
 
 class Lesson(models.Model):

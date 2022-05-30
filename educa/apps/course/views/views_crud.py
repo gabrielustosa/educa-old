@@ -1,11 +1,11 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.core.cache import cache
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
 
 from educa.apps.course.models import Course
-from educa.apps.mixin import CourseOwnerMixin
+from educa.utils.mixin import CourseOwnerMixin
 from educa.apps.module.models import Module
 
 

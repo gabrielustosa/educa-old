@@ -6,7 +6,7 @@ from django.views.generic import CreateView, TemplateView, UpdateView, DeleteVie
 
 from educa.apps.course.models import Course
 from educa.apps.lesson.models import Lesson
-from educa.apps.mixin import CourseOwnerMixin
+from educa.utils.mixin import CourseOwnerMixin
 from educa.apps.module.models import Module
 
 

@@ -1,40 +1,20 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.cache import cache
 from django.db.models import Q
 from django.forms import modelform_factory
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 
-from educa.apps.course.models import Course
-from educa.apps.lesson.models import Lesson
 from educa.apps.question.models import Question
 from educa.apps.question.views.views_filter import course_all_questions_view
-from educa.utils import get_lesson_id, render_error
+from educa.utils.mixin import CacheMixin
+from educa.utils.utils import get_lesson_id, render_error
 
 
 class QuestionMixin(
     LoginRequiredMixin,
+    CacheMixin,
     TemplateView,
 ):
-    def get_course(self):
-        course_id = self.kwargs.get('course_id')
-        course = cache.get(f'course-{course_id}')
-        if course:
-            return course
-        else:
-            course = Course.objects.filter(id=course_id).first()
-            cache.set(f'course-{course_id}', course)
-            return course
-
-    def get_lesson(self):
-        lesson_id = self.kwargs.get('lesson_id')
-        lesson = cache.get(f'lesson-{lesson_id}')
-        if lesson:
-            return lesson
-        else:
-            lesson = Lesson.objects.filter(id=lesson_id).first()
-            cache.set(f'lesson-{lesson_id}', lesson)
-            return lesson
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
