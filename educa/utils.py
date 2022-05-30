@@ -1,4 +1,5 @@
 from django.apps import apps
+from urllib import parse
 
 
 def get_model(model_name):
@@ -22,3 +23,9 @@ def render_error(error_messages):
         if error != error_messages[len(error_messages) - 1]:
             new_list.append('&')
     return new_list
+
+
+def get_url_id(url):
+    url_parsed = parse.urlparse(url)
+    qsl = parse.parse_qs(url_parsed.query)
+    return qsl['v'][0]

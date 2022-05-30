@@ -1,5 +1,6 @@
-{% load embed_video_tags %}
-
 <span id="lesson_id" data-value="{{ current_lesson.id }}"></span>
 
-{% video current_lesson.video '1124x728' %}
+<div id="player">
+    <iframe id="player-youtube" src="https://www.youtube.com/embed/GZ2ZAZpU1qo?enablejsapi=1"
+            allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>

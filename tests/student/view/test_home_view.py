@@ -24,6 +24,7 @@ class TestHomeView(TestCustomBase):
         response = self.response_get('home')
         self.assertTemplateUsed(response, 'course/list.html')
 
+    @override_settings(CACHES=TEST_CACHE_SETTING)
     def test_home_template_shows_no_courses_found_if_no_courses(self):
         response = self.response_get('home')
         self.assertIn(

@@ -39,7 +39,7 @@ INSTALLED_APPS = [
 
     # 3rd apps
     'bootstrap5',
-    'embed_video',
+    'rest_framework',
 
     # my apps
     'educa.apps.course',

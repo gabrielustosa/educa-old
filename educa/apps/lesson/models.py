@@ -1,14 +1,15 @@
 from django.db import models
-from embed_video.fields import EmbedVideoField
 
 from educa.apps.course.models import Course
 from educa.apps.module.fields import OrderField
 from educa.apps.module.models import Module
+from educa.utils import get_url_id
 
 
 class Lesson(models.Model):
     title = models.CharField('Título', max_length=100)
-    video = EmbedVideoField(verbose_name='Vídeo')
+    video = models.URLField(verbose_name='Vídeo')
+    video_id = models.CharField(max_length=100, blank=True)
     module = models.ForeignKey(
         Module,
         related_name='lessons',
@@ -19,3 +20,8 @@ class Lesson(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, **kwargs):
+        if not hasattr(self, 'video_id'):
+            setattr(self, 'video_id', get_url_id(getattr(self, 'video')))
+        return super().save(**kwargs)

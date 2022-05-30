@@ -19,5 +19,5 @@
                 }
             }).then((response) => response.json())
         }
-    });
+    })
 })()
