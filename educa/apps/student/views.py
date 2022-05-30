@@ -47,7 +47,7 @@ class StudentCourseView(
     LoginRequiredMixin,
     TemplateView,
 ):
-    template_name = 'student/view.html'
+    template_name = 'student/course_view.html'
 
     def get_course(self):
         course_id = self.kwargs.get('course_id')

@@ -1,0 +1,24 @@
+<div>
+    <div>
+        <ul class="text-danger" id="note-error">
+        </ul>
+    </div>
+    <div id="note-content">
+        <div class="d-flex justify-content-end">
+            <button id="create-note"
+                    class="btn btn-dark"
+                    hx-get="{% url 'note:render_create' %}"
+                    hx-target="#note-content">
+                Criar observação
+            </button>
+        </div>
+        <h3>Observações da aula {{ lesson.title }}</h3>
+
+        {% for note in notes %}
+            <div>
+                <p>{{ note.time }}</p>
+                <p>{{ note.note }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>

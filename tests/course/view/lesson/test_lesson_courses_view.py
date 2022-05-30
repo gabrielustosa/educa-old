@@ -27,7 +27,7 @@ class TestCourseLessonView(TestCustomBase, TestCourseLessonMixin):
         self.assertEqual(self.response.status_code, 200)
 
     def test_lesson_view_loads_correct_template(self):
-        self.assertTemplateUsed(self.response, 'student/view.html')
+        self.assertTemplateUsed(self.response, 'student/course_view.html')
 
     def test_if_course_modules_are_being_loaded_correctly(self):
         response_context_modules = self.response.context['modules']

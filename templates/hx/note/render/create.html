@@ -1,0 +1,21 @@
+{% load bootstrap5 %}
+
+<div id="note-create" class="container">
+    <div id="youtube-counter"></div>
+    <h1 class="text-center">Criar observação</h1>
+    <div>
+        {% csrf_token %}
+        <input type="hidden" id="time-counter" name="time">
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button id="send"
+                    class="btn btn-dark"
+                    hx-post="{% url 'note:create' %}"
+                    hx-target="#note-content"
+                    hx-parent="#note-create"
+                    hx-error="#note-error">
+                Salvar
+            </button>
+        {% endbuttons %}
+    </div>
+</div>

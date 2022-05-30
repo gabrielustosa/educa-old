@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
 from educa.apps.lesson.models import Lesson
-from educa.apps.module.fields import OrderField
+from educa.fields import OrderField
 
 
 class Content(models.Model):

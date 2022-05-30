@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'educa.apps.rating',
     'educa.apps.question',
     'educa.apps.notice',
+    'educa.apps.note',
 ]
 
 MIDDLEWARE = [

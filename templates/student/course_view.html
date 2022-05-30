@@ -26,6 +26,9 @@
                     <div id="notice" hx-get="{% url 'notice:view' course.id %}" hx-target="#content">
                         <h5>Avisos</h5>
                     </div>
+                    <div id="note" hx-get="{% url 'note:view' %}" hx-target="#content">
+                        <h5>Observações</h5>
+                    </div>
                     <div id="rating" hx-get="{% url 'rating:view' course.id %}" hx-target="#content">
                         <h5>Avaliações</h5>
                     </div>
@@ -46,8 +49,33 @@
 {% endblock %}
 
 {% block javascript %}
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script src="{% static 'js/lesson.js' %}"></script>
     <script src="{% static 'js/custom-form.js' %}"></script>
     <script src="{% static 'js/custom-modal.js' %}"></script>
     <script src="{% static 'js/custom-error.js' %}"></script>
+    <script>
+        var player;
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player-youtube', {
+                events: {
+                    'onStateChange': onPlayerStateChange,
+                }
+            })
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.PLAYING) {
+                var timer = setInterval(function () {
+                    let result = new Date(player.getCurrentTime() * 1000).toISOString().slice(11, 19)
+                    document.querySelector('#youtube-counter').innerText = result
+                    document.querySelector('#time-counter').setAttribute('value', result)
+                }, 200);
+            } else {
+                clearInterval(timer);
+            }
+        }
+    </script>
+    <script src="{% static 'js/player.js' %}"></script>
 {% endblock %}

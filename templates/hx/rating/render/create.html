@@ -1,21 +1,19 @@
 {% load bootstrap5 %}
 
-{% block content %}
-    <div id="rating-create" class="container">
-        <h1 class="text-center">Avaliar curso</h1>
-        <div>
-            {% csrf_token %}
-            {% bootstrap_form form %}
-            {% buttons %}
-                <button id="send"
-                        class="btn btn-dark"
-                        hx-post="{% url 'rating:create' course.id %}"
-                        hx-target="#rating-content"
-                        hx-parent="#rating-create"
-                        hx-error="#rating-error">
-                    Avaliar
-                </button>
+<div id="rating-create" class="container">
+    <h1 class="text-center">Avaliar curso</h1>
+    <div>
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button id="send"
+                    class="btn btn-dark"
+                    hx-post="{% url 'rating:create' course.id %}"
+                    hx-target="#rating-content"
+                    hx-parent="#rating-create"
+                    hx-error="#rating-error">
+                Avaliar
+            </button>
             {% endbuttons %}
-        </div>
     </div>
-{% endblock %}
+</div>

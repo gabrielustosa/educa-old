@@ -1,7 +1,7 @@
 from django.db import models
 
 from educa.apps.course.models import Course
-from educa.apps.module.fields import OrderField
+from educa.fields import OrderField
 from educa.apps.module.models import Module
 from educa.utils import get_url_id
 
