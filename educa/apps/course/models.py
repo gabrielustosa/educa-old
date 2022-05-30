@@ -43,6 +43,10 @@ class Course(models.Model):
         from educa.apps.lesson.models import Lesson
         return Lesson.objects.filter(course=self).order_by('order').first().id
 
+    def get_first_lesson(self):
+        from educa.apps.lesson.models import Lesson
+        return Lesson.objects.filter(course=self).order_by('order').first()
+
     def get_total_lessons(self):
         from educa.apps.lesson.models import Lesson
         return Lesson.objects.filter(course=self).count()

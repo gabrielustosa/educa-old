@@ -15,9 +15,22 @@
         <h3>Observações da aula {{ lesson.title }}</h3>
 
         {% for note in notes %}
-            <div>
-                <p>{{ note.time }}</p>
-                <p>{{ note.note }}</p>
+            <div id="note-{{ note.id }}" class="d-flex justify-content-between">
+                <div>
+                    <p>{{ note.time }}</p>
+                    <p>{{ note.note }}</p>
+                </div>
+                <div>
+                    <i id="update"
+                       hx-get="{% url 'note:render_update' note.id %}"
+                       hx-target="#note-{{ note.id }}"
+                       class="bi bi-pencil-fill">
+                    </i>
+                    <i id="delete"
+                       hx-get="{% url 'note:confirm' note.id %}"
+                       hx-target="#modal"
+                       class="bi bi-trash-fill"></i>
+                </div>
             </div>
         {% endfor %}
     </div>

@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.cache import cache
 from django.forms import modelform_factory
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import TemplateView
 
@@ -79,3 +79,84 @@ class NoteCreateView(
         Note.objects.create(lesson=self.get_lesson(), user=self.request.user, note=note, time=time)
 
         return redirect(reverse('note:view') + f'?lesson_id={self.get_lesson().id}')
+
+
+class NoteRenderUpdateView(
+    LoginRequiredMixin,
+    TemplateView,
+    CacheMixin,
+):
+    template_name = 'hx/note/render/update.html'
+
+    def get_kwargs(self):
+        return self.request.GET
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        note = get_object_or_404(Note, id=self.kwargs.get('note_id'))
+
+        context['lesson'] = self.get_lesson()
+        form = modelform_factory(Note, fields=('note',))
+        context['form'] = form(instance=note)
+        context['note'] = note
+
+        return context
+
+
+class NoteUpdateView(
+    LoginRequiredMixin,
+    TemplateView,
+    CacheMixin,
+):
+
+    def get_kwargs(self):
+        return self.request.GET
+
+    def post(self, request, *args, **kwargs):
+        note = get_object_or_404(Note, id=self.kwargs.get('note_id'))
+        content_note = request.POST.get('note')
+
+        error_messages = []
+        if len(content_note) == 0:
+            error_messages.append('A sua observação não pode estar vázia.')
+
+        if error_messages:
+            return HttpResponse(render_error(error_messages), status=400)
+
+        note.note = content_note
+        note.save()
+
+        return redirect(reverse('note:view') + f'?lesson_id={note.lesson.id}')
+
+
+class NoteConfirmView(
+    LoginRequiredMixin,
+    TemplateView,
+    CacheMixin,
+):
+    template_name = 'hx/modal.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        note = get_object_or_404(Note, id=self.kwargs.get('note_id'))
+
+        context.update({'title': 'Confirmação',
+                        'content': 'Você tem certeza que deseja deletar sua nota?',
+                        'confirm': True,
+                        'note': note})
+
+        return context
+
+
+class NoteDeleteView(
+    LoginRequiredMixin,
+    TemplateView,
+    CacheMixin,
+):
+    def post(self, request, *args, **kwargs):
+        note = get_object_or_404(Note, id=self.kwargs.get('note_id'))
+
+        note.delete()
+
+        return redirect(reverse('note:view') + f'?lesson_id={note.lesson.id}')

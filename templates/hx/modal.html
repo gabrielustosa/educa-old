@@ -22,6 +22,9 @@
                                 {% elif notice %}
                                 hx-post="{% url 'notice:delete' notice.id %}"
                                 hx-target="#content"
+                                {% elif note %}
+                                hx-post="{% url 'note:delete' note.id %}"
+                                hx-target="#content"
                                 {% endif %}>
                             Confirmar
                         </button>

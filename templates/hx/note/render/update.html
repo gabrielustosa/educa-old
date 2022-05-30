@@ -1,0 +1,17 @@
+{% load bootstrap5 %}
+
+<div id="note-update" class="container">
+    {% csrf_token %}
+    <input type="hidden" id="time-counter" name="time">
+    {% bootstrap_form form %}
+    {% buttons %}
+        <button id="save"
+                class="btn btn-dark"
+                hx-post="{% url 'note:update' note.id %}"
+                hx-target="#note-content"
+                hx-parent="#note-update"
+                hx-error="#note-error">
+            Salvar
+        </button>
+    {% endbuttons %}
+</div>
