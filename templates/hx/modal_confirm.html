@@ -7,16 +7,14 @@
             </div>
             <div class="modal-body">
                 {% csrf_token %}
-                <div class="pt-3">
-                    <p>{{ confirm_text }}</p>
-                    <button id="confirm"
-                            data-bs-dismiss="modal"
-                            class="btn btn-danger"
-                            hx-post="{{ post_url }}"
-                            hx-target="{{ target }}">
-                        Confirmar
-                    </button>
-                </div>
+                <p>{{ confirm_text }}</p>
+                <button id="confirm"
+                        data-bs-dismiss="modal"
+                        class="btn btn-danger"
+                        hx-post="{{ post_url }}"
+                        hx-target="{{ target }}">
+                    Confirmar
+                </button>
             </div>
         </div>
     </div>

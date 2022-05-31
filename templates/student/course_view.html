@@ -58,6 +58,19 @@
     <script src="{% static 'js/lesson-modal.js' %}"></script>
     <script src="{% static 'js/custom-error.js' %}"></script>
     <script>
+        const formatTime = seconds => {
+            const pad = num => num < 10 ? `0${num}` : num
+
+            const H = pad(Math.floor(seconds / 3600))
+            const i = pad(Math.floor(seconds % 3600 / 60))
+            const s = pad(seconds % 60)
+
+            let result = ''
+            if (H > 0) result += `${+H}:`
+            result += `${H > 0 ? i : +i}:${s}`
+            return result.split('.')[0]
+        }
+
         var player;
 
         function onYouTubeIframeAPIReady() {
@@ -71,14 +84,17 @@
         function onPlayerStateChange(event) {
             if (event.data === YT.PlayerState.PLAYING) {
                 var timer = setInterval(function () {
-                    let result = new Date(player.getCurrentTime() * 1000).toISOString().slice(11, 19)
-                    document.querySelector('#youtube-counter').innerText = result
-                    document.querySelector('#time-counter').setAttribute('value', result)
+                    let result = formatTime(player.getCurrentTime())
+                    let element = document.querySelector('#youtube-counter')
+                    if (element) {
+                        element.innerText = result
+                        document.querySelector('#time-counter').setAttribute('value', result)
+                    }
                 }, 200);
             } else {
                 clearInterval(timer);
             }
         }
     </script>
-    <script src="{% static 'js/player.js' %}"></script>
+    <script src="{% static 'js/lesson-player.js' %}"></script>
 {% endblock %}
