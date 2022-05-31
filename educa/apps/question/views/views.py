@@ -13,7 +13,9 @@ class QuestionListView(QuestionMixin):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['questions'] = Question.objects.filter(lesson__course=self.get_course())
+        context['context_object'] = Question.objects.filter(lesson__course=self.get_course())
+
+        self.request.session[f'section-{self.get_course().id}'] = 'question'
 
         return context
 
@@ -65,7 +67,7 @@ class QuestionSearchView(QuestionMixin):
         if search == "":
             return course_all_questions_view(request, self.get_course().id)
 
-        context['questions'] = Question.objects.filter(lesson__course=self.get_course()). \
+        context['context_object'] = Question.objects.filter(lesson__course=self.get_course()). \
             filter(Q(title__icontains=search) | Q(content__icontains=search))
 
         return self.render_to_response(context)

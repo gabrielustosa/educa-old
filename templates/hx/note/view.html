@@ -12,9 +12,9 @@
                 Criar observação
             </button>
         </div>
-        <h3>Observações da aula {{ lesson.title }}</h3>
+        <h3>Observações da aula</h3>
 
-        {% for note in notes %}
+        {% for note in context_object %}
             <div id="note-{{ note.id }}" class="d-flex justify-content-between">
                 <div>
                     <p class="timer">{{ note.time }}</p>

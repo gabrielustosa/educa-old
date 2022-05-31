@@ -31,7 +31,7 @@ class QuestionCreateView(QuestionMixin):
 
         Question.objects.create(lesson=self.get_lesson(), user=request.user, title=title, content=content)
 
-        context['questions'] = Question.objects.filter(lesson__course=self.get_course())
+        context['context_object'] = Question.objects.filter(lesson__course=self.get_course())
 
         return self.render_to_response(context)
 

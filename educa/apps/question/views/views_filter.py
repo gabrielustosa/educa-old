@@ -14,7 +14,7 @@ def course_all_questions_view(request, course_id):
         cache.set(f'course-{course_id}', course)
     questions = Question.objects.filter(lesson__course=course)
     return render(request, 'hx/question/filter/all_questions.html',
-                  context={'questions': questions, 'course': course})
+                  context={'context_object': questions, 'course': course})
 
 
 class FilterQuestionLesson(FilterQuestionMixin):

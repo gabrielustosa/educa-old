@@ -17,7 +17,8 @@ def rating_view(request, course_id):
         course = Course.objects.filter(id=course_id).first()
         cache.set(f'course-{course_id}', course)
     ratings = Rating.objects.filter(course=course)
-    return render(request, 'hx/rating/rating.html', context={'ratings': ratings, 'course': course})
+    request.session[f'section-{course_id}'] = 'rating'
+    return render(request, 'hx/rating/rating.html', context={'context_object': ratings, 'course': course})
 
 
 class RatingRenderCreateView(

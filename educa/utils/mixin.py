@@ -129,6 +129,6 @@ class FilterQuestionMixin(
         if self.get_lesson():
             context['lesson'] = self.get_lesson()
         if self.get_questions():
-            context['questions'] = self.get_questions()
+            context['context_object'] = self.get_questions()
 
         return context

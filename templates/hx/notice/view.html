@@ -14,7 +14,7 @@
                 </button>
             </div>
         {% endif %}
-        {% for notice in notices %}
+        {% for notice in context_object %}
             <div id="notice-content" class="d-flex justify-content-between">
                 <div>
                     {% include 'hx/notice/content.html' %}

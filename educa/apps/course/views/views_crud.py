@@ -68,4 +68,5 @@ def get_course_overview(request, course_id):
     if not course:
         course = Course.objects.filter(id=course_id).first()
         cache.set(f'course-{course_id}', course)
+    request.session[f'section-{course_id}'] = 'overview'
     return render(request, 'hx/course/overview.html', context={'course': course})

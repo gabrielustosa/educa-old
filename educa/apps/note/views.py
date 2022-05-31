@@ -26,8 +26,11 @@ class NoteView(
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['lesson'] = self.get_lesson()
-        context['notes'] = Note.objects.filter(user=self.request.user, lesson=self.get_lesson())
+        lesson = self.get_lesson()
+
+        context['context_object'] = Note.objects.filter(user=self.request.user, lesson=lesson)
+
+        self.request.session[f'section-{lesson.course.id}'] = 'note'
 
         return context
 

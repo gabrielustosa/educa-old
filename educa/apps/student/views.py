@@ -13,6 +13,10 @@ from django.views.generic import CreateView, TemplateView
 from educa.apps.content.models import Content
 from educa.apps.course.models import Course, CourseRelation
 from educa.apps.lesson.models import Lesson
+from educa.apps.note.models import Note
+from educa.apps.notice.models import Notice
+from educa.apps.question.models import Question
+from educa.apps.rating.models import Rating
 from educa.apps.student.forms import UserCreateForm
 from educa.utils.mixin import CacheMixin
 
@@ -57,6 +61,32 @@ class StudentCourseView(
         context['course'] = course
         context['modules'] = course.modules.all()
         context['current_lesson'] = self.get_lesson()
+
+        context_object = None
+
+        match self.request.session.get(f'section-{course.id}'):
+            case 'search':
+                template_section = 'hx/course/search.html'
+            case 'overview':
+                template_section = 'hx/course/overview.html'
+            case 'question':
+                template_section = 'hx/question/course/questions.html'
+                context_object = Question.objects.filter(lesson__course=course)
+            case 'notice':
+                template_section = 'hx/notice/view.html'
+                context_object = Notice.objects.filter(course=course)
+            case 'note':
+                template_section = 'hx/note/view.html'
+                context_object = Note.objects.filter(user=self.request.user, lesson=self.get_lesson())
+            case 'rating':
+                template_section = 'hx/rating/rating.html'
+                context_object = Rating.objects.filter(course=course)
+            case _:
+                template_section = 'hx/course/overview.html'
+
+        context['template_section'] = template_section
+        context['context_object'] = context_object
+
         return context
 
 
@@ -78,6 +108,7 @@ def course_search_view(request, course_id):
     if not course:
         course = Course.objects.filter(id=course_id).first()
         cache.set(f'course-{course_id}', course)
+    request.session[f'section-{course_id}'] = 'search'
     return render(request, 'hx/course/search.html', context={'course': course})
 
 

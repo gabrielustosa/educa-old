@@ -16,7 +16,8 @@ def notice_view(request, course_id):
         course = Course.objects.filter(id=course_id).first()
         cache.set(f'course-{course_id}', course)
     notices = Notice.objects.filter(course=course)
-    return render(request, 'hx/notice/view.html', context={'notices': notices, 'course': course})
+    request.session[f'section-{course_id}'] = 'notice'
+    return render(request, 'hx/notice/view.html', context={'context_object': notices, 'course': course})
 
 
 class NoticeRenderCreateView(
