@@ -3,12 +3,12 @@ import json
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.cache import cache
-from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import CreateView, TemplateView
+from django.core.paginator import Paginator
 
 from educa.apps.content.models import Content
 from educa.apps.course.models import Course, CourseRelation
@@ -18,6 +18,7 @@ from educa.apps.notice.models import Notice
 from educa.apps.question.models import Question
 from educa.apps.rating.models import Rating
 from educa.apps.student.forms import UserCreateForm
+from educa.settings import QUESTION_PAGINATE_BY
 from educa.utils.mixin import CacheMixin
 
 
@@ -71,7 +72,10 @@ class StudentCourseView(
                 template_section = 'hx/course/overview.html'
             case 'question':
                 template_section = 'hx/question/course/questions.html'
-                context_object = Question.objects.filter(lesson__course=course)
+                objects = Question.objects.filter(lesson__course=course)
+                paginator = Paginator(objects, QUESTION_PAGINATE_BY)
+                context_object = paginator.page(1).object_list
+                context['paginator'] = paginator
             case 'notice':
                 template_section = 'hx/notice/view.html'
                 context_object = Notice.objects.filter(course=course)

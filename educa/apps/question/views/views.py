@@ -1,21 +1,29 @@
 from django.db.models import Q
 from django.forms import modelform_factory
+from django.shortcuts import redirect
+from django.urls import reverse
+from django.views.generic import ListView, TemplateView
 
 from educa.apps.question.models import Question, Answer
 from educa.apps.question.views.views_crud import QuestionViewMixin
-from educa.apps.question.views.views_filter import course_all_questions_view
+from educa.settings import QUESTION_PAGINATE_BY
 from educa.utils.mixin import QuestionOwnerMixin, QuestionMixin
 
 
-class QuestionListView(QuestionMixin):
+class QuestionListView(QuestionMixin, ListView):
     template_name = 'hx/question/course/questions.html'
+    model = Question
+    paginate_by = QUESTION_PAGINATE_BY
+    context_object_name = 'context_object'
+
+    def get_queryset(self):
+        return Question.objects.filter(lesson__course=self.get_course())
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['context_object'] = Question.objects.filter(lesson__course=self.get_course())
-
         self.request.session[f'section-{self.get_course().id}'] = 'question'
+        context['course'] = self.get_course()
 
         return context
 
@@ -32,7 +40,7 @@ class QuestionView(QuestionViewMixin):
         return context
 
 
-class QuestionRenderCreateView(QuestionMixin):
+class QuestionRenderCreateView(QuestionMixin, TemplateView):
     template_name = 'hx/question/render/create.html'
 
     def get_context_data(self, **kwargs):
@@ -55,7 +63,7 @@ class QuestionRenderUpdateView(QuestionViewMixin, QuestionOwnerMixin):
         return context
 
 
-class QuestionSearchView(QuestionMixin):
+class QuestionSearchView(QuestionMixin, TemplateView):
     template_name = 'hx/question/search.html'
     http_method_names = ['post']
 
@@ -65,7 +73,7 @@ class QuestionSearchView(QuestionMixin):
         search = request.POST.get('search')
 
         if search == "":
-            return course_all_questions_view(request, self.get_course().id)
+            return redirect(reverse('question_filter:all_questions', kwargs={'course_id': self.get_course().id}))
 
         context['context_object'] = Question.objects.filter(lesson__course=self.get_course()). \
             filter(Q(title__icontains=search) | Q(content__icontains=search))

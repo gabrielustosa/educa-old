@@ -1,21 +1,20 @@
 from django.http import HttpResponse
+from django.shortcuts import redirect
+from django.urls import reverse
+from django.views.generic import TemplateView
 
 from educa.utils.mixin import QuestionOwnerMixin, QuestionViewMixin, QuestionMixin
 from educa.apps.question.models import Question
-from educa.apps.question.views.views_filter import course_all_questions_view
 from educa.utils.utils import render_error
 
 
-class QuestionCreateView(QuestionMixin):
-    template_name = 'hx/question/course/questions.html'
+class QuestionCreateView(QuestionMixin, TemplateView):
     http_method_names = ['post']
 
     def get_course(self):
         return self.get_lesson().course
 
     def post(self, request, *args, **kwargs):
-        context = super().get_context_data(**kwargs)
-
         title = request.POST.get('title')
         content = request.POST.get('content')
 
@@ -31,9 +30,8 @@ class QuestionCreateView(QuestionMixin):
 
         Question.objects.create(lesson=self.get_lesson(), user=request.user, title=title, content=content)
 
-        context['context_object'] = Question.objects.filter(lesson__course=self.get_course())
-
-        return self.render_to_response(context)
+        return redirect(reverse('question:course', kwargs={
+            'course_id': self.get_lesson().course_id}) + f'?lesson_id={self.get_lesson().id}')
 
 
 class QuestionUpdateView(QuestionOwnerMixin, QuestionViewMixin):
@@ -72,6 +70,8 @@ class QuestionDeleteView(QuestionViewMixin):
     http_method_names = ['post']
 
     def post(self, request, *args, **kwargs):
+        question = self.get_question
+
         self.get_question.delete()
 
-        return course_all_questions_view(request, self.get_question.lesson.course.id)
+        return redirect(reverse('question_filter:all_questions', kwargs={'course_id': question.lesson.course.id}))

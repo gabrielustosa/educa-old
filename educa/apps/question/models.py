@@ -19,6 +19,9 @@ class Question(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['-id']
+
     def __str__(self):
         return self.title
 
@@ -36,3 +39,6 @@ class Answer(models.Model):
     content = models.TextField('Resposta')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-id']

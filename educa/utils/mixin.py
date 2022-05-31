@@ -3,12 +3,13 @@ from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from django.utils.functional import cached_property
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 
 from educa.apps.course.models import Course
 from educa.apps.lesson.models import Lesson
 from educa.apps.module.models import Module
 from educa.apps.question.models import Answer, Question
+from educa.settings import QUESTION_PAGINATE_BY
 from educa.utils.utils import get_lesson_id
 
 
@@ -66,7 +67,6 @@ class CacheMixin:
 class QuestionMixin(
     LoginRequiredMixin,
     CacheMixin,
-    TemplateView,
 ):
 
     def get_context_data(self, **kwargs):
@@ -115,11 +115,11 @@ class QuestionViewMixin(
 class FilterQuestionMixin(
     LoginRequiredMixin,
     CacheMixin,
-    TemplateView,
+    ListView,
 ):
-
-    def get_questions(self):
-        return None
+    model = Question
+    paginate_by = QUESTION_PAGINATE_BY
+    context_object_name = 'context_object'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -128,7 +128,5 @@ class FilterQuestionMixin(
             context['course'] = self.get_course()
         if self.get_lesson():
             context['lesson'] = self.get_lesson()
-        if self.get_questions():
-            context['context_object'] = self.get_questions()
 
         return context
