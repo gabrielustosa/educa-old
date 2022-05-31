@@ -16,7 +16,7 @@
         {% buttons %}
             <button id="ask"
                     class="btn btn-dark"
-                    hx-post="{% url 'question:create' lesson_id %}"
+                    hx-post="{% url 'question_crud:create' lesson_id %}"
                     hx-target="#content"
                     hx-parent="#question-ask"
                     hx-error="#question-error">

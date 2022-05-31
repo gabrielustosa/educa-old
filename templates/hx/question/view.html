@@ -17,7 +17,7 @@
                         <li>
                             <span id="edit-question"
                                   class="dropdown-item"
-                                  hx-get="{% url 'question_view:render_update' question.id %}"
+                                  hx-get="{% url 'question:render_update' question.id %}"
                                   hx-target="#question-content">
                                     Editar
                             </span>
@@ -25,8 +25,8 @@
                         <li>
                             <span id="delete-question"
                                   class="dropdown-item"
-                                  hx-get="{% url 'question_view:confirm_delete' question.id %}"
-                                  hx-target="#modal">
+                                  hx-get="{% url 'question:confirm_delete' question.id %}"
+                                  hx-target="#modal-confirm">
                                     Apagar
                             </span>
                         </li>

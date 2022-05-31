@@ -38,12 +38,15 @@
                 </div>
             </div>
             <div class="col" style="padding: 0;">
-                {% include 'partials/course/accordion.html' with modules=modules %}
+                {% include 'partials/course/accordion.html' %}
             </div>
         </div>
     </div>
-    <div id="modal">
-        {% include 'hx/modal.html' %}
+    <div id="modal-note">
+        {% include 'hx/modal_note.html' %}
+    </div>
+    <div id="modal-confirm">
+        {% include 'hx/modal_confirm.html' %}
     </div>
     {{ course.id|json_script:'course_id' }}
 {% endblock %}
@@ -52,7 +55,7 @@
     <script src="https://www.youtube.com/iframe_api"></script>
     <script src="{% static 'js/custom-lesson.js' %}"></script>
     <script src="{% static 'js/custom-form.js' %}"></script>
-    <script src="{% static 'js/custom-modal.js' %}"></script>
+    <script src="{% static 'js/lesson-modal.js' %}"></script>
     <script src="{% static 'js/custom-error.js' %}"></script>
     <script>
         var player;

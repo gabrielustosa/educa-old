@@ -1,12 +1,8 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import modelform_factory
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
-from django.utils.functional import cached_property
-from django.views.generic import TemplateView
 
 from educa.apps.question.models import Answer
-from educa.apps.question.views.views_question import QuestionViewMixin
+from educa.utils.mixin import AnswerMixin, QuestionViewMixin
 from educa.utils.utils import render_error
 
 
@@ -33,23 +29,6 @@ class AnswerCreateView(QuestionViewMixin):
         context['form'] = modelform_factory(Answer, fields=('content',))
 
         return self.render_to_response(context)
-
-
-class AnswerMixin(
-    LoginRequiredMixin,
-    TemplateView
-):
-
-    @cached_property
-    def get_answer(self):
-        return get_object_or_404(Answer, id=self.kwargs.get('answer_id'))
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        context['answer'] = self.get_answer
-
-        return context
 
 
 class AnswerRenderUpdateView(AnswerMixin):
@@ -88,14 +67,16 @@ class AnswerUpdateView(AnswerMixin):
 
 
 class AnswerConfirmDeleteView(AnswerMixin):
-    template_name = 'hx/modal.html'
+    template_name = 'hx/modal_confirm.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context = context | {'title': 'Confirmação',
-                             'content': 'Você tem certeza que deseja deletar sua resposta?',
-                             'confirm': True}
+        context = context | {
+            'confirm_text': 'Você tem certeza que deseja deletar a sua resposta?',
+            'post_url': f'/course/answer/delete/{self.get_answer.id}/',
+            'target': '#answers',
+        }
         return context
 
 

@@ -68,7 +68,7 @@ class NoticeConfirmView(
     CourseOwnerMixin,
     TemplateView,
 ):
-    template_name = 'hx/modal.html'
+    template_name = 'hx/modal_confirm.html'
 
     @cached_property
     def get_notice(self):
@@ -80,11 +80,8 @@ class NoticeConfirmView(
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        notice = self.get_notice
-
-        context.update({'title': 'Confirmação',
-                        'content': 'Você tem certeza que deseja deletar seu aviso?',
-                        'confirm': True,
-                        'notice': notice})
+        context.update({'confirm_text': 'Você tem certeza que deseja deletar seu alerta?',
+                        'post_url': f'/course/notice/delete/{self.get_notice.id}/',
+                        'target': '#content'})
 
         return context

@@ -1,37 +1,31 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.forms import modelform_factory
-from django.http import HttpResponse
-from django.views.generic import TemplateView
 
-from educa.apps.question.models import Question
+from educa.apps.question.models import Question, Answer
+from educa.apps.question.views.views_crud import QuestionViewMixin
 from educa.apps.question.views.views_filter import course_all_questions_view
-from educa.utils.mixin import CacheMixin
-from educa.utils.utils import get_lesson_id, render_error
+from educa.utils.mixin import QuestionOwnerMixin, QuestionMixin
 
 
-class QuestionMixin(
-    LoginRequiredMixin,
-    CacheMixin,
-    TemplateView,
-):
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        context['lesson_id'] = get_lesson_id(self.request)
-        context['course'] = self.get_course()
-
-        return context
-
-
-class QuestionView(QuestionMixin):
+class QuestionListView(QuestionMixin):
     template_name = 'hx/question/course/questions.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         context['questions'] = Question.objects.filter(lesson__course=self.get_course())
+
+        return context
+
+
+class QuestionView(QuestionViewMixin):
+    template_name = 'hx/question/view.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['answers'] = self.get_question.answers.all()
+        context['form'] = modelform_factory(Answer, fields=('content',))
 
         return context
 
@@ -47,34 +41,16 @@ class QuestionRenderCreateView(QuestionMixin):
         return context
 
 
-class QuestionCreateView(QuestionMixin):
-    template_name = 'hx/question/course/questions.html'
-    http_method_names = ['post']
+class QuestionRenderUpdateView(QuestionViewMixin, QuestionOwnerMixin):
+    template_name = 'hx/question/render/update.html'
 
-    def get_course(self):
-        return self.get_lesson().course
-
-    def post(self, request, *args, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        title = request.POST.get('title')
-        content = request.POST.get('content')
+        form = modelform_factory(Question, fields=('title', 'content'))
+        context['form'] = form(instance=self.get_question)
 
-        error_messages = []
-        if len(title) <= 5:
-            error_messages.append('O título deve conter mais que 5 carácteres.')
-
-        if len(content) == 0:
-            error_messages.append('Os detalhes da sua pergunta não podem estar vazios.')
-
-        if error_messages:
-            return HttpResponse(render_error(error_messages), status=400)
-
-        Question.objects.create(lesson=self.get_lesson(), user=request.user, title=title, content=content)
-
-        context['questions'] = Question.objects.filter(lesson__course=self.get_course())
-
-        return self.render_to_response(context)
+        return context
 
 
 class QuestionSearchView(QuestionMixin):
@@ -93,3 +69,17 @@ class QuestionSearchView(QuestionMixin):
             filter(Q(title__icontains=search) | Q(content__icontains=search))
 
         return self.render_to_response(context)
+
+
+class QuestionConfirmDeleteView(QuestionViewMixin):
+    template_name = 'hx/modal_confirm.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context = context | {
+            'confirm_text': 'Você tem certeza que deseja deletar a sua pergunta?',
+            'post_url': f'/course/question/crud/delete/{self.get_question.id}/',
+            'target': '#question',
+        }
+        return context

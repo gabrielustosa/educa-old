@@ -134,17 +134,16 @@ class NoteConfirmView(
     TemplateView,
     CacheMixin,
 ):
-    template_name = 'hx/modal.html'
+    template_name = 'hx/modal_confirm.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         note = get_object_or_404(Note, id=self.kwargs.get('note_id'))
 
-        context.update({'title': 'Confirmação',
-                        'content': 'Você tem certeza que deseja deletar sua nota?',
-                        'confirm': True,
-                        'note': note})
+        context.update({'confirm_text': 'Você tem certeza que deseja deletar sua observação?',
+                        'post_url': f'/course/note/delete/{note.id}/ ',
+                        'target': '#content'})
 
         return context
 

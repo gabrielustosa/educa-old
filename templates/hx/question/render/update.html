@@ -7,7 +7,7 @@
         {% buttons %}
             <button id="save"
                     class="btn btn-dark"
-                    hx-post="{% url 'question_view:update' question.id %}"
+                    hx-post="{% url 'question_crud:update' question.id %}"
                     hx-target="#question-content"
                     hx-parent="#question-update"
                     hx-error="#question-error">

@@ -70,7 +70,7 @@ def select_lesson_view(request, lesson_id):
 
 def lesson_note_view(request, content_id):
     item = Content.objects.get(id=content_id).item
-    return render(request, 'hx/modal.html', context={'content': item.content, 'title': 'Notas'})
+    return render(request, 'hx/modal_note.html', context={'content': item.content, 'title': 'Notas'})
 
 
 def course_search_view(request, course_id):
