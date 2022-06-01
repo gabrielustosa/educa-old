@@ -121,6 +121,9 @@ class FilterQuestionMixin(
     paginate_by = QUESTION_PAGINATE_BY
     context_object_name = 'context_object'
 
+    def get_absolute_url(self):
+        return None
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -128,5 +131,10 @@ class FilterQuestionMixin(
             context['course'] = self.get_course()
         if self.get_lesson():
             context['lesson'] = self.get_lesson()
+        if self.get_absolute_url():
+            context['scroll_url'] = self.get_absolute_url()
+
+        if not self.request.GET.get('page'):
+            context['first_render'] = True
 
         return context

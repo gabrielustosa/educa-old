@@ -1,6 +1,12 @@
-<span class="ps-5">{{ paginator.num_pages }}</span>
-
 {% for question in context_object %}
+    {% if scroll_url %}
+        {% if forloop.last %}
+            <div hx-get="{{ scroll_url }}?page={{ page_obj.number|add:'1' }}"
+                 hx-trigger="revealed"
+                 hx-swap="afterend">
+            </div>
+        {% endif %}
+    {% endif %}
     <div class="border border-dark my-4">
         <div class="d-flex justify-content-between">
             <div>

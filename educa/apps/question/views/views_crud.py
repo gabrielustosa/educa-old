@@ -30,8 +30,9 @@ class QuestionCreateView(QuestionMixin, TemplateView):
 
         Question.objects.create(lesson=self.get_lesson(), user=request.user, title=title, content=content)
 
-        return redirect(reverse('question:course', kwargs={
-            'course_id': self.get_lesson().course_id}) + f'?lesson_id={self.get_lesson().id}')
+        return redirect(reverse('question:course',
+                                kwargs={
+                                    'course_id': self.get_lesson().course_id}) + f'?lesson_id={self.get_lesson().id}')
 
 
 class QuestionUpdateView(QuestionOwnerMixin, QuestionViewMixin):

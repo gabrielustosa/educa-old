@@ -1,4 +1,6 @@
-<h5>Todas as perguntas da aula "{{ lesson.title }}" ({{ lesson.questions.count }})</h5>
+{% if first_render %}
+    <h5>Todas as perguntas da aula "{{ lesson.title }}" ({{ paginator.object_list|length }})</h5>
+{% endif %}
 <div>
     {% include 'hx/question/question.html' with empty_message='Essa aula ainda não tem perguntas.' %}
 </div>

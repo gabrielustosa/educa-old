@@ -1,4 +1,6 @@
-<h5>Todas as perguntas deste curso ({{ context_object|length }})</h5>
+{% if first_render %}
+    <h5>Todas as perguntas deste curso ({{ paginator.object_list|length }})</h5>
+{% endif %}
 <div>
     {% include 'hx/question/question.html' with empty_message='Ainda não há perguntas.' %}
 </div>

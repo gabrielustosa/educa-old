@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.cache import cache
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import CreateView, TemplateView
 from django.core.paginator import Paginator
@@ -76,6 +76,8 @@ class StudentCourseView(
                 paginator = Paginator(objects, QUESTION_PAGINATE_BY)
                 context_object = paginator.page(1).object_list
                 context['paginator'] = paginator
+                context['page_obj'] = paginator.get_page(1)
+                context['scroll_url'] = reverse('question_filter:all_questions', kwargs={'course_id': course.id})
             case 'notice':
                 template_section = 'hx/notice/view.html'
                 context_object = Notice.objects.filter(course=course)

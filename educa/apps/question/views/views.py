@@ -23,7 +23,9 @@ class QuestionListView(QuestionMixin, ListView):
         context = super().get_context_data(**kwargs)
 
         self.request.session[f'section-{self.get_course().id}'] = 'question'
-        context['course'] = self.get_course()
+        course = self.get_course()
+        context['course'] = course
+        context['scroll_url'] = f'/course/question/filter/all_questions/{course.id}/'
 
         return context
 
