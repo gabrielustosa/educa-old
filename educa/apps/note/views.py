@@ -1,14 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.cache import cache
 from django.forms import modelform_factory
 from django.http import HttpResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import TemplateView
 
-from educa.apps.lesson.models import Lesson
 from educa.apps.note.models import Note
-from educa.utils.mixin import CacheMixin
+from educa.utils.mixin.course import CacheMixin
 from educa.utils.utils import render_error
 
 

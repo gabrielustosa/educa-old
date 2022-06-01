@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
 from educa.apps.lesson.models import Lesson
-from educa.utils.mixin import CourseOwnerMixin, CacheMixin
+from educa.utils.mixin.course import CourseOwnerMixin, CacheMixin
 
 
 class LessonOrderView(

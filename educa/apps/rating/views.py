@@ -7,7 +7,7 @@ from django.views.generic import TemplateView
 
 from educa.apps.course.models import Course
 from educa.apps.rating.models import Rating
-from educa.utils.mixin import CacheMixin
+from educa.utils.mixin.course import CacheMixin
 from educa.utils.utils import render_error
 
 

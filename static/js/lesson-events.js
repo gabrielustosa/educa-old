@@ -29,6 +29,13 @@
             if (document.querySelector('#note-content')) {
                 htmx.ajax('GET', `/course/note/view/?lesson_id=${document.lesson_id}`, '#content')
             }
+
+            // update if student in filter lesson
+
+            if (document.querySelector('#filter-lesson-content')) {
+                htmx.ajax('GET', `/course/question/filter/lesson/${document.lesson_id}/?lesson_id=${document.lesson_id}`, '#question')
+            }
+
         }
     })
 })()

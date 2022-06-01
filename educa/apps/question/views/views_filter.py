@@ -2,7 +2,7 @@ from django.db.models import Count
 from django.urls import reverse
 
 from educa.apps.question.models import Question
-from educa.utils.mixin import FilterQuestionMixin
+from educa.utils.mixin.question import FilterQuestionMixin
 
 
 class FilterQuestionAll(FilterQuestionMixin):
@@ -17,6 +17,9 @@ class FilterQuestionAll(FilterQuestionMixin):
 
 class FilterQuestionLesson(FilterQuestionMixin):
     template_name = 'hx/question/filter/question_lesson.html'
+
+    def get_kwargs(self):
+        return self.request.GET
 
     def get_absolute_url(self):
         return reverse('question_filter:lesson', kwargs={'lesson_id': self.get_lesson().id})

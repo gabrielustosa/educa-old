@@ -2,7 +2,7 @@ from braces.views import CsrfExemptMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from educa.utils.mixin import CourseOwnerMixin, CacheMixin
+from educa.utils.mixin.course import CourseOwnerMixin, CacheMixin
 from educa.apps.module.models import Module
 
 

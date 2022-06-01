@@ -3,8 +3,8 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import TemplateView
 
-from educa.utils.mixin import QuestionOwnerMixin, QuestionViewMixin, QuestionMixin
 from educa.apps.question.models import Question
+from educa.utils.mixin.question import QuestionMixin, QuestionOwnerMixin, QuestionViewMixin
 from educa.utils.utils import render_error
 
 

@@ -19,7 +19,7 @@ from educa.apps.question.models import Question
 from educa.apps.rating.models import Rating
 from educa.apps.student.forms import UserCreateForm
 from educa.settings import QUESTION_PAGINATE_BY
-from educa.utils.mixin import CacheMixin
+from educa.utils.mixin.course import CacheMixin
 
 
 class StudentRegisterView(CreateView):

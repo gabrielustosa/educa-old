@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
 
 from educa.apps.course.models import Course
-from educa.utils.mixin import CourseOwnerMixin
+from educa.utils.mixin.course import CourseOwnerMixin
 from educa.apps.module.models import Module
 
 

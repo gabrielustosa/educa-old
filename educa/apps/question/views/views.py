@@ -7,7 +7,7 @@ from django.views.generic import ListView, TemplateView
 from educa.apps.question.models import Question, Answer
 from educa.apps.question.views.views_crud import QuestionViewMixin
 from educa.settings import QUESTION_PAGINATE_BY
-from educa.utils.mixin import QuestionOwnerMixin, QuestionMixin
+from educa.utils.mixin.question import QuestionMixin, QuestionOwnerMixin
 
 
 class QuestionListView(QuestionMixin, ListView):
