@@ -1,24 +1,33 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.cache import cache
 from django.forms import modelform_factory
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import redirect
+from django.urls import reverse
 from django.views.generic import TemplateView
 
-from educa.apps.course.models import Course
 from educa.apps.rating.models import Rating
 from educa.utils.mixin.course import CacheMixin
 from educa.utils.utils import render_error
 
 
-def rating_view(request, course_id):
-    course = cache.get(f'course-{course_id}')
-    if not course:
-        course = Course.objects.filter(id=course_id).first()
-        cache.set(f'course-{course_id}', course)
-    ratings = Rating.objects.filter(course=course)
-    request.session[f'section-{course_id}'] = 'rating'
-    return render(request, 'hx/rating/rating.html', context={'context_object': ratings, 'course': course})
+class RatingView(
+    LoginRequiredMixin,
+    CacheMixin,
+    TemplateView,
+):
+    template_name = 'hx/rating/rating.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        course = self.get_course()
+        ratings = Rating.objects.filter(course=course)
+        context['context_object'] = ratings
+        context['course'] = course
+
+        self.request.session[f'section-{course.id}'] = 'rating'
+
+        return context
 
 
 class RatingRenderCreateView(
@@ -63,4 +72,4 @@ class RatingCreateView(
 
         Rating.objects.create(rating=rating, comment=comment, user=request.user, course=course)
 
-        return rating_view(request, course.id)
+        return redirect(reverse('rating:view', kwargs={'course_id': course.id}))

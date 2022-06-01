@@ -1,6 +1,5 @@
 from educa.apps.course.models import CourseRelation
-from educa.apps.lesson.models import Lesson
-from educa.apps.student.views import StudentCourseView
+from educa.apps.student.views.views_course import StudentCourseView
 
 from tests.base import TestCourseLessonMixin, TestCustomBase
 from tests.factories.user import UserFactory

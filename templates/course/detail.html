@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 
-{% load cache %}
 {% load course_filter %}
 
 {% block title %}
@@ -8,7 +7,6 @@
 {% endblock %}
 
 {% block content %}
-    {% cache 900 course_detail course.id %}
     <div class="container pt-4">
         <div class="row">
             <div class="col-8">
@@ -50,7 +48,7 @@
                                 </a>
                             {% endwith %}
                         {% else %}
-                            <form method="post" action="{% url 'course:enrroll' course.id %}">
+                            <form method="post" action="{% url 'student:enrroll' course.id %}">
                                 {% csrf_token %}
                                 <button class="btn btn-primary mt-3"
                                         style="width: 16rem;">Inscreva-se
@@ -62,5 +60,4 @@
             </div>
         </div>
     </div>
-    {% endcache %}
 {% endblock %}

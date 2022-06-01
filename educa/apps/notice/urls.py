@@ -5,7 +5,7 @@ from .views import views, views_crud
 app_name = 'notice'
 
 urlpatterns = [
-    path('view/<int:course_id>/', views.notice_view, name='view'),
+    path('view/<int:course_id>/', views.NoticeView.as_view(), name='view'),
     path('render/create/<int:course_id>/', views.NoticeRenderCreateView.as_view(), name='render_create'),
     path('create/<int:course_id>/', views_crud.NoticeCreateView.as_view(), name='create'),
     path('render/update/<int:notice_id>/', views.NoticeRenderUpdateView.as_view(), name='render_update'),

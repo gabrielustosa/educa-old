@@ -209,7 +209,9 @@ class TestUpdateDeleteQuestion(TestCourseLessonBase):
 
         self.login()
 
-        lesson_3 = Lesson.objects.get(id=3)
+        sleep(1)
+
+        lesson_3 = course.lesson_set.filter(order=3).first()
 
         self.create_question(course)
 

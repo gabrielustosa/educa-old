@@ -116,7 +116,9 @@ class TestNote(TestCourseLessonBase):
 
         me = self.login(is_superuser=True)
 
-        lesson_3 = Lesson.objects.get(id=3)
+        sleep(1)
+
+        lesson_3 = course.lesson_set.filter(order=3).first()
 
         Note.objects.create(user=me, lesson=course.get_first_lesson(), note='Test Note Lesson 1', time='00:00:00')
         Note.objects.create(user=me, lesson=lesson_3, note='Test Note Lesson 3', time='00:00:00')

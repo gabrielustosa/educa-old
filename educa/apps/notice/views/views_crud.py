@@ -1,13 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
 from django.utils.functional import cached_property
 from django.views.generic import TemplateView
 
 from educa.apps.course.models import Course
 from educa.utils.mixin.course import CourseOwnerMixin
 from educa.apps.notice.models import Notice
-from educa.apps.notice.views.views import notice_view
 from educa.utils.utils import render_error
 
 
@@ -37,7 +37,7 @@ class NoticeCreateView(
 
         Notice.objects.create(course=self.get_course(), title=title, content=content)
 
-        return notice_view(request, self.kwargs.get('course_id'))
+        return redirect(reverse('notice:view', kwargs={'course_id': self.get_course().id}))
 
 
 class NoticeUpdateView(
@@ -74,7 +74,7 @@ class NoticeUpdateView(
         notice.content = content
         notice.save()
 
-        return notice_view(request, notice.course.id)
+        return redirect(reverse('notice:view', kwargs={'course_id': notice.course.id}))
 
 
 class NoticeDeleteView(
@@ -94,4 +94,4 @@ class NoticeDeleteView(
 
         notice.delete()
 
-        return notice_view(request, notice.course.id)
+        return redirect(reverse('notice:view', kwargs={'course_id': notice.course.id}))

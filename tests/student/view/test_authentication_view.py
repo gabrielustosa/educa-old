@@ -2,7 +2,7 @@ import pytest
 
 from django.contrib.auth.views import LoginView
 
-from educa.apps.student.views import StudentRegisterView
+from educa.apps.student.views.views import StudentRegisterView
 from tests.base import TestCustomBase
 
 

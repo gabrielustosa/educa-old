@@ -1,23 +1,32 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.cache import cache
 from django.forms import modelform_factory
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.utils.functional import cached_property
 from django.views.generic import TemplateView
 
 from educa.apps.course.models import Course
-from educa.utils.mixin.course import CourseOwnerMixin
+from educa.utils.mixin.course import CourseOwnerMixin, CacheMixin
 from educa.apps.notice.models import Notice
 
 
-def notice_view(request, course_id):
-    course = cache.get(f'course-{course_id}')
-    if not course:
-        course = Course.objects.filter(id=course_id).first()
-        cache.set(f'course-{course_id}', course)
-    notices = Notice.objects.filter(course=course)
-    request.session[f'section-{course_id}'] = 'notice'
-    return render(request, 'hx/notice/view.html', context={'context_object': notices, 'course': course})
+class NoticeView(
+    LoginRequiredMixin,
+    CacheMixin,
+    TemplateView,
+):
+    template_name = 'hx/notice/view.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        course = self.get_course()
+        notices = Notice.objects.filter(course=course)
+        context['context_object'] = notices
+        context['course'] = course
+
+        self.request.session[f'section-{course.id}'] = 'notice'
+
+        return context
 
 
 class NoticeRenderCreateView(
