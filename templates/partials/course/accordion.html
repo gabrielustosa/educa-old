@@ -14,7 +14,7 @@
                      data-bs-parent="#accordion-{{ module.id }}">
                     <div class="accordion-body">
                         {% for lesson in module.lessons|sort_order %}
-                            <div class="position-relative">
+                            <div id="lesson-{{ lesson.id }}" class="position-relative">
                                 <div class="py-3 my-3 border border-dark"
                                      hx-get="{% url 'student:select_video' lesson.id %}"
                                      hx-target="#video">

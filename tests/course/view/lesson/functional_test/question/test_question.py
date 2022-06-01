@@ -1,7 +1,10 @@
+from time import sleep
+
 import pytest
 
 from selenium.webdriver.common.by import By
 
+from educa.apps.lesson.models import Lesson
 from tests.base import TestCourseLessonBase
 
 
@@ -197,5 +200,30 @@ class TestUpdateDeleteQuestion(TestCourseLessonBase):
 
         self.assertIn(
             'Os detalhes da sua pergunta não podem estar vazios.',
+            self.wait_element_exists('content').text
+        )
+
+    def test_question_lesson_filter_update_if_user_click_on_video(self):
+        course = self.load_course()
+        self.access_course_view(course)
+
+        self.login()
+
+        lesson_3 = Lesson.objects.get(id=3)
+
+        self.create_question(course)
+
+        self.wait_element_to_be_clickable('questions-answers')
+
+        self.wait_element_to_be_clickable('filter-by')
+
+        self.wait_element_to_be_clickable('filter-lesson')
+
+        self.wait_element_to_be_clickable('accordion-1')
+
+        self.wait_element_to_be_clickable('lesson-3')
+
+        self.assertIn(
+            lesson_3.title,
             self.wait_element_exists('content').text
         )

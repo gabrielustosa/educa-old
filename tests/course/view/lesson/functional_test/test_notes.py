@@ -4,6 +4,7 @@ import pytest
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 
+from educa.apps.lesson.models import Lesson
 from educa.apps.note.models import Note
 from tests.base import TestCourseLessonBase
 
@@ -106,5 +107,27 @@ class TestNote(TestCourseLessonBase):
 
         self.assertNotIn(
             'Test Note',
+            self.wait_element_exists('content').text
+        )
+
+    def test_notes_update_if_user_click_on_video(self):
+        course = self.load_course()
+        self.access_course_view(course)
+
+        me = self.login(is_superuser=True)
+
+        lesson_3 = Lesson.objects.get(id=3)
+
+        Note.objects.create(user=me, lesson=course.get_first_lesson(), note='Test Note Lesson 1', time='00:00:00')
+        Note.objects.create(user=me, lesson=lesson_3, note='Test Note Lesson 3', time='00:00:00')
+
+        self.wait_element_to_be_clickable('note')
+
+        self.wait_element_to_be_clickable('accordion-1')
+
+        self.wait_element_to_be_clickable('lesson-3')
+
+        self.assertIn(
+            'Test Note Lesson 3',
             self.wait_element_exists('content').text
         )

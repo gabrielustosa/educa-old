@@ -85,7 +85,7 @@ class ContentMixin:
 
 class TestFunctionalBase(StaticLiveServerTestCase):
     def setUp(self) -> None:
-        self.browser = make_chrome_browser('--headless')
+        self.browser = make_chrome_browser()
         self.wait = WebDriverWait(self.browser, 20)
         return super().setUp()
 
@@ -188,6 +188,13 @@ class TestCourseLessonBase(TestFunctionalBase, TestCourseLessonMixin, ContentMix
         questions = []
         for i in range(quantity):
             lesson = choice(course.lesson_set.all())
+            question = QuestionFactory(lesson=lesson)
+            questions.append(question)
+        return questions
+
+    def create_question_for(self, lesson, quantity=1):
+        questions = []
+        for i in range(quantity):
             question = QuestionFactory(lesson=lesson)
             questions.append(question)
         return questions
