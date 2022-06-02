@@ -34,14 +34,10 @@ class Course(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
-        super(Course, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title
-
-    def get_first_lesson_id(self):
-        from educa.apps.lesson.models import Lesson
-        return Lesson.objects.filter(course=self).order_by('order').first().id
 
     def get_first_lesson(self):
         from educa.apps.lesson.models import Lesson

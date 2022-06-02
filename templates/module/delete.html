@@ -2,7 +2,7 @@
 {% load bootstrap5 %}
 
 {% block title %}
-    Excluir Curso
+    Excluir módulo
 {% endblock %}
 
 {% block content %}
@@ -10,12 +10,12 @@
         <form method="post">
             {% csrf_token %}
             <p>Você tem certeza que deseja excluir o módulo "{{ object.title }}"?</p>
-            {% buttons %}
-                <button type="submit" class="btn btn-danger">Confirmar</button>
-                <button type="submit" class="btn btn-warning">
-                    <a href="{% url 'module:detail' object.id %}" class="text-decoration-none text-white">Cancelar</a>
-                </button>
-            {% endbuttons %}
+            <button type="submit" class="btn btn-danger">
+                Confirmar
+            </button>
+            <a href="{% url 'module:detail' object.id %}" class="text-decoration-none text-white btn btn-warning">
+                Cancelar
+            </a>
         </form>
     </div>
 {% endblock %}

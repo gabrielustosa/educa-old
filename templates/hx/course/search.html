@@ -1,6 +1,6 @@
 <div>
     <div class="input-group rounded">
-        <input hx-post="{% url 'question:search' course.id %}" hx-target="#result"
+        <input hx-post="{% url 'student:content_search' course.id %}" hx-target="#result"
                hx-trigger="keyup changed delay:500ms"
                type="search" class="form-control rounded" name="search"
                placeholder="Pesquisar" aria-label="Search" aria-describedby="search-addon"/>

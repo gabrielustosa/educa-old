@@ -69,6 +69,9 @@ class ModuleUpdateView(
     def get_course(self):
         return self.get_object().course
 
+    def get_success_url(self):
+        return reverse_lazy('module:detail', kwargs={'module_id': self.kwargs.get('module_id')})
+
 
 class ModuleDeleteView(
     LoginRequiredMixin,
@@ -80,10 +83,9 @@ class ModuleDeleteView(
     model = Module
     permission_required = 'module.delete_course'
     pk_url_kwarg = 'module_id'
+    success_url = reverse_lazy('course:mine')
 
     def get_course(self):
         return self.get_object().course
 
-    def get_success_url(self):
-        return reverse_lazy('module:detail', kwargs={'module_id': self.kwargs.get('module_id')})
 

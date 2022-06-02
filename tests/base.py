@@ -182,7 +182,7 @@ class TestCourseLessonBase(TestFunctionalBase, TestCourseLessonMixin, ContentMix
     def access_course_view(self, course):
         self.browser.get(self.live_server_url + reverse('student:view',
                                                         kwargs={'course_id': course.id,
-                                                                'lesson_id': course.get_first_lesson_id()}))
+                                                                'lesson_id': course.get_first_lesson().id}))
 
     def create_question(self, course, quantity=1):
         questions = []

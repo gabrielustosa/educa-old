@@ -85,6 +85,6 @@ class CourseEnrollView(
         if CourseRelation.objects.filter(course=course, user=request.user).exists():
             messages.error(request, 'Você já está inscrito nesse curso.')
             return redirect(reverse('student:courses'))
-        CourseRelation.objects.create(course=course, user=request.user, current_lesson=course.get_first_lesson_id())
+        CourseRelation.objects.create(course=course, user=request.user, current_lesson=course.get_first_lesson().id)
         messages.success(request, f'Parabéns! Você agora você está inscrito no curso {course.title}!')
         return redirect(reverse('course:detail', kwargs={'course_id': course.id}))

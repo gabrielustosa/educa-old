@@ -11,9 +11,11 @@
             {% csrf_token %}
             <p>Você tem certeza que você quer excluir o conteúdo "{{ object.item.title }}"?</p>
             {% buttons %}
-                <button type="submit" class="btn btn-danger">Confirmar</button>
-                <button type="submit" class="btn btn-warning">
-                    <a href="{% url 'course:mine' %}" class="text-decoration-none text-white">Cancelar</a>
+                <button type="submit" class="btn btn-danger">
+                    Confirmar
+                </button>
+                <button class="btn btn-warning">
+                    <a href="{% url 'lesson:detail' object.lesson.id %}" class="text-decoration-none text-white">Cancelar</a>
                 </button>
             {% endbuttons %}
         </form>

@@ -39,7 +39,7 @@ class FilterQuestionIAsk(FilterQuestionMixin):
 
 
 class FilterQuestionMostAnswered(FilterQuestionMixin):
-    template_name = 'hx/question/filter/question_more_answers.html'
+    template_name = 'hx/question/filter/question_most_answers.html'
 
     def get_absolute_url(self):
         return reverse('question_filter:most_answered', kwargs={'course_id': self.get_course().id})
@@ -52,7 +52,7 @@ class FilterQuestionMostAnswered(FilterQuestionMixin):
 
 
 class FilterQuestionMostRecent(FilterQuestionMixin):
-    template_name = 'hx/question/filter/question_more_recent.html'
+    template_name = 'hx/question/filter/question_most_recent.html'
 
     def get_absolute_url(self):
         return reverse('question_filter:most_recent', kwargs={'course_id': self.get_course().id})
