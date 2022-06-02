@@ -53,3 +53,8 @@ def get_current_lesson(user, course):
 @register.filter()
 def sort_order(query):
     return query.order_by('order')
+
+
+@register.filter()
+def user_liked(user, question):
+    return question.user_likes.filter(id=user.id).exists()

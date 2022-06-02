@@ -6,7 +6,7 @@ from educa.apps.subject.models import Subject
 
 
 @admin.register(CourseRelation)
-class CourseRelation(admin.ModelAdmin):
+class CourseRelationAdmin(admin.ModelAdmin):
     list_display = ('id',)
 
 

@@ -109,27 +109,3 @@ class TestNote(TestCourseLessonBase):
             'Test Note',
             self.wait_element_exists('content').text
         )
-
-    def test_notes_update_if_user_click_on_video(self):
-        course = self.load_course()
-        self.access_course_view(course)
-
-        me = self.login(is_superuser=True)
-
-        sleep(1)
-
-        lesson_3 = course.lesson_set.filter(order=3).first()
-
-        Note.objects.create(user=me, lesson=course.get_first_lesson(), note='Test Note Lesson 1', time='00:00:00')
-        Note.objects.create(user=me, lesson=lesson_3, note='Test Note Lesson 3', time='00:00:00')
-
-        self.wait_element_to_be_clickable('note')
-
-        self.wait_element_to_be_clickable('accordion-1')
-
-        self.wait_element_to_be_clickable('lesson-3')
-
-        self.assertIn(
-            'Test Note Lesson 3',
-            self.wait_element_exists('content').text
-        )

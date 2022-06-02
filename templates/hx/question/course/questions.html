@@ -47,17 +47,17 @@
                         </a>
                     </li>
                     <li>
-                        <a id="filter-more-answers"
+                        <a id="filter-most-answers"
                            class="dropdown-item"
-                           hx-get="{% url 'question_filter:more_answers' course.id %}"
+                           hx-get="{% url 'question_filter:most_answered' course.id %}"
                            hx-target="#question">
                             Perguntas com mais respostas
                         </a>
                     </li>
                     <li>
-                        <a id="filter-more-recent"
+                        <a id="filter-most-recent"
                            class="dropdown-item"
-                           hx-get="{% url 'question_filter:more_recent' course.id %}"
+                           hx-get="{% url 'question_filter:most_recent' course.id %}"
                            hx-target="#question">
                             Perguntas mais recentes
                         </a>
@@ -68,6 +68,14 @@
                            hx-get="{% url 'question_filter:without_answer' course.id %}"
                            hx-target="#question">
                             Perguntas sem respostas
+                        </a>
+                    </li>
+                    <li>
+                        <a id="filter-most-voted"
+                           class="dropdown-item"
+                           hx-get="{% url 'question_filter:most_voted' course.id %}"
+                           hx-target="#question">
+                            Perguntas mais votadas
                         </a>
                     </li>
                 </ul>

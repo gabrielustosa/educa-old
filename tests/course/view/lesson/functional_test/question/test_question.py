@@ -202,30 +202,3 @@ class TestUpdateDeleteQuestion(TestCourseLessonBase):
             'Os detalhes da sua pergunta não podem estar vazios.',
             self.wait_element_exists('content').text
         )
-
-    def test_question_lesson_filter_update_if_user_click_on_video(self):
-        course = self.load_course()
-        self.access_course_view(course)
-
-        self.login()
-
-        sleep(1)
-
-        lesson_3 = course.lesson_set.filter(order=3).first()
-
-        self.create_question(course)
-
-        self.wait_element_to_be_clickable('questions-answers')
-
-        self.wait_element_to_be_clickable('filter-by')
-
-        self.wait_element_to_be_clickable('filter-lesson')
-
-        self.wait_element_to_be_clickable('accordion-1')
-
-        self.wait_element_to_be_clickable('lesson-3')
-
-        self.assertIn(
-            lesson_3.title,
-            self.wait_element_exists('content').text
-        )

@@ -22,6 +22,6 @@ class Lesson(models.Model):
         return self.title
 
     def save(self, **kwargs):
-        if not hasattr(self, 'video_id'):
+        if getattr(self, 'video_id') == "":
             setattr(self, 'video_id', get_url_id(getattr(self, 'video')))
         return super().save(**kwargs)

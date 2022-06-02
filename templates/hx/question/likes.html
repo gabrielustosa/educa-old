@@ -1,0 +1,8 @@
+{% load course_filter %}
+
+{{ question.user_likes.all|length }}
+{% if request.user|user_liked:question %}
+    <i class="bi bi-star-fill"></i>
+{% else %}
+    <i class="bi bi-star"></i>
+{% endif %}

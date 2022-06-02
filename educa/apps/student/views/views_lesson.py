@@ -90,8 +90,8 @@ class CourseLessonSearchView(
 
 
 class CourseUpdateCurrentLessonView(
-    LoginRequiredMixin,
     CsrfExemptMixin,
+    LoginRequiredMixin,
     CacheMixin,
     TemplateView,
 ):

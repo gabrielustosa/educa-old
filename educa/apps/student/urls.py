@@ -6,7 +6,7 @@ from .views import views_lesson
 app_name = 'student'
 
 urlpatterns = [
-    path('course/enrroll/<int:course_id>/', views_course.CourseEnrrollView.as_view(), name='enrroll'),
+    path('course/enroll/<int:course_id>/', views_course.CourseEnrollView.as_view(), name='enroll'),
     path('courses/', views_course.StudentCourseListView.as_view(), name='courses'),
     path('course/<slug:course_id>/lesson/<int:lesson_id>/', views_course.StudentCourseView.as_view(), name='view'),
     path('course/lesson/<int:lesson_id>/', views_lesson.SelectLessonView.as_view(), name='select_video'),

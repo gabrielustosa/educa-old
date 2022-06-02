@@ -1,33 +1,29 @@
 {% extends 'base.html' %}
 
-{% load cache %}
-
 {% block title %}
     Todos os cursos
 {% endblock %}
 
 {% block content %}
-    {% cache 900 course_list %}
-        <div class="container">
-            {% if not courses %}
-                <h2 class="text-center pt-5">Nenhum curso foi encontrado :(</h2>
-            {% endif %}
-            <div class="row row-cols-auto">
-                {% for course in courses %}
-                    <div class="col pb-3">
-                        <a href="{% url 'course:detail' course.id %}" class="text-decoration-none">
-                            <div class="card mt-3" style="width: 13rem;">
-                                <img class="card-img-top" src="{{ course.image.url }}" alt="Post image">
-                                <div class="card-body" style="color: black;">
-                                    <h5 class="card-title">{{ course.title }}</h5>
-                                    <p class="card-text" style="font-size: 16px;">{{ course.description }}</p>
-                                </div>
+    <div class="container">
+        {% if not courses %}
+            <h2 class="text-center pt-5">Nenhum curso foi encontrado :(</h2>
+        {% endif %}
+        <div class="row row-cols-auto">
+            {% for course in courses %}
+                <div class="col pb-3">
+                    <a href="{% url 'course:detail' course.id %}" class="text-decoration-none">
+                        <div class="card mt-3" style="width: 13rem;">
+                            <img class="card-img-top" src="{{ course.image.url }}" alt="Post image">
+                            <div class="card-body" style="color: black;">
+                                <h5 class="card-title">{{ course.title }}</h5>
+                                <p class="card-text" style="font-size: 16px;">{{ course.description }}</p>
                             </div>
-                        </a>
-                    </div>
-                {% endfor %}
-            </div>
-            {% include 'partials/base/_paginator.html' %}
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
         </div>
-    {% endcache %}
+        {% include 'partials/base/_paginator.html' %}
+    </div>
 {% endblock %}

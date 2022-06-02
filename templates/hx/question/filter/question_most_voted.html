@@ -1,0 +1,6 @@
+{% if first_render %}
+    <h5>Perguntas mais votadas ({{ paginator.object_list|length }})</h5>
+{% endif %}
+<div>
+    {% include 'hx/question/question.html' with empty_message='Ainda não há perguntas.' %}
+</div>

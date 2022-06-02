@@ -11,4 +11,5 @@ urlpatterns = [
     path('render/update/<int:question_id>/', views.QuestionRenderUpdateView.as_view(), name='render_update'),
     path('confirm/<int:question_id>/', views.QuestionConfirmDeleteView.as_view(), name='confirm_delete'),
     path('search/<int:course_id>/', views.QuestionSearchView.as_view(), name='search'),
+    path('like/<int:question_id>/', views.QuestionLikeView.as_view(), name='like')
 ]

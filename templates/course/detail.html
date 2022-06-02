@@ -48,7 +48,7 @@
                                 </a>
                             {% endwith %}
                         {% else %}
-                            <form method="post" action="{% url 'student:enrroll' course.id %}">
+                            <form method="post" action="{% url 'student:enroll' course.id %}">
                                 {% csrf_token %}
                                 <button class="btn btn-primary mt-3"
                                         style="width: 16rem;">Inscreva-se

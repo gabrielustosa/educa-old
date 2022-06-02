@@ -18,6 +18,11 @@ class Question(models.Model):
     content = models.TextField('Detalhes')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    user_likes = models.ManyToManyField(
+        User,
+        related_name='questions_liked',
+        blank=True
+    )
 
     class Meta:
         ordering = ['-id']

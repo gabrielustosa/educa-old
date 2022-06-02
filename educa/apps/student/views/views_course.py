@@ -72,7 +72,7 @@ class StudentCourseView(
         return context
 
 
-class CourseEnrrollView(
+class CourseEnrollView(
     CacheMixin,
     TemplateView,
 ):

@@ -95,3 +95,17 @@ class QuestionConfirmDeleteView(QuestionViewMixin):
             'target': '#question',
         }
         return context
+
+
+class QuestionLikeView(QuestionViewMixin):
+    template_name = 'hx/question/likes.html'
+
+    def get(self, request, *args, **kwargs):
+        question = self.get_question
+
+        if question.user_likes.filter(id=request.user.id).exists():
+            question.user_likes.remove(request.user)
+        else:
+            question.user_likes.add(request.user)
+
+        return super().get(request, *args, **kwargs)
