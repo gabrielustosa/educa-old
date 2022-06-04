@@ -58,3 +58,15 @@ def sort_order(query):
 @register.filter()
 def user_liked(user, question):
     return question.user_likes.filter(id=user.id).exists()
+
+
+@register.filter()
+def get_rating_stars(avg):
+    stars = []
+    avg = float(avg)
+    avg_int = int(avg)
+    for n in range(avg_int):
+        stars.append('i')
+    if avg - avg_int >= .5:
+        stars.append('m')
+    return stars

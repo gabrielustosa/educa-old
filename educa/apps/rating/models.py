@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 from educa.apps.course.models import Course
@@ -12,11 +11,7 @@ class Rating(models.Model):
         on_delete=models.CASCADE
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    rating = models.PositiveIntegerField(
-        validators=[
-            MaxValueValidator(5),
-            MinValueValidator(1)
-        ],
+    rating = models.FloatField(
         verbose_name='Avaliação'
     )
     comment = models.TextField('Comentário')

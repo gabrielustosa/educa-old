@@ -14,18 +14,22 @@
     <div class="container">
         {% if not courses %}
             <h2 class="text-3xl pl-14 pt-14 font-bold w-1/2">Infelizmente, não encontramos resultados para
-                "{{ search_term }}"</h2>
+                "{{ search_term }}".</h2>
             <h3 class="text-xl pl-14 pt-7">Recomendamos ajustar a sua busca. Aqui estão algumas ideias:</h3>
             <ul class="list-disc text-lg pl-24 pt-7">
-                <li>Verifique se todas as palavras estão escritas corretamente</li>
-                <li>Tente usar termos de pesquisa diferentes</li>
-                <li>Tente usar termos de pesquisa mais genéricos</li>
+                <li>Verifique se todas as palavras estão escritas corretamente.</li>
+                <li>Tente usar termos de pesquisa diferentes.</li>
+                <li>Tente usar termos de pesquisa mais genéricos.</li>
             </ul>
         {% else %}
-            {% if not subject %}
+            {% if subject %}
+                <h1 class="text-3xl p-8">Cursos de {{ subject.title }}.</h1>
+            {% endif %}
+            {% if search_term %}
+                <h1 class="text-3xl p-8">Resultados para "{{ search_term }}"</h1>
+            {% endif %}
+            {% if not subject and not search_term %}
                 <h1 class="text-3xl p-8">Vamos começar a aprender!</h1>
-            {% else %}
-                <h1 class="text-3xl p-8">Cursos de {{ subject.title }}</h1>
             {% endif %}
         {% endif %}
         <div class="mx-14 grid grid-cols-5 gap-24">
@@ -38,11 +42,15 @@
                         <h5 class="text-lg font-semibold">{{ course.title }}</h5>
                         <span class="text-sm text-gray-400">{{ course.owner.get_full_name }}</span>
                         <div class="flex space-x-3">
-                            <span>{{ course.get_rating_avg }} </span>
-                            {% for r in course.get_rating_avg|range_list %}
-                                <i class="text-yellow-300 w-2 h-2 bi bi-star-fill"></i>
+                            <span>{{ course.get_rating_avg|floatformat }}</span>
+                            {% for r in course.get_rating_avg|get_rating_stars %}
+                                {% if r == "i" %}
+                                    <i class="text-yellow-300 w-2 h-2 bi bi-star-fill"></i>
+                                {% elif r == "m" %}
+                                    <i class="text-yellow-300 w-2 h-2 bi bi-star-half"></i>
+                                {% endif %}
                             {% endfor %}
-                            <span>({{ course.students|length }})</span>
+                            <span class="text-gray-500">({{ course.students|length }})</span>
                         </div>
                     </div>
                 </a>

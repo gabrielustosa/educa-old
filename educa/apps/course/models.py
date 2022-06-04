@@ -45,7 +45,7 @@ class Course(models.Model):
         result = Rating.objects.filter(course=self).aggregate(Avg('rating'))
         result = result['rating__avg']
         if result:
-            return round(result)
+            return "{:.2f}".format(result)
         return 0
 
     def get_first_lesson(self):
