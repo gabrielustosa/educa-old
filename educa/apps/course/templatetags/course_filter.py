@@ -70,3 +70,14 @@ def get_rating_stars(avg):
     if avg - avg_int >= .5:
         stars.append('m')
     return stars
+
+
+@register.filter()
+def get_rating_stars_empty(value):
+    stars = []
+    for n in range(1, 6):
+        if value >= n:
+            stars.append('i')
+        else:
+            stars.append('v')
+    return stars

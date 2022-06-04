@@ -44,20 +44,17 @@ class Course(models.Model):
         return self.title
 
     def get_rating_avg(self):
-        from educa.apps.rating.models import Rating
-        result = Rating.objects.filter(course=self).aggregate(Avg('rating'))
+        result = self.ratings.aggregate(Avg('rating'))
         result = result['rating__avg']
         if result:
             return "{:.2f}".format(result)
         return 0
 
     def get_first_lesson(self):
-        from educa.apps.lesson.models import Lesson
-        return Lesson.objects.filter(course=self).order_by('order').first()
+        return self.lesson_set.order_by('order').first()
 
     def get_total_lessons(self):
-        from educa.apps.lesson.models import Lesson
-        return Lesson.objects.filter(course=self).count()
+        return self.lesson_set.count()
 
     def get_total_questions(self):
         from educa.apps.question.models import Question
@@ -67,6 +64,24 @@ class Course(models.Model):
         from educa.apps.content.models import Content
         return Content.objects.filter(lesson__course=self).filter(
             Q(content_type__model='file') | Q(content_type__model='image')).count()
+
+    def get_rating_bars(self):
+        from educa.apps.rating.models import Rating
+        ratings = self.ratings
+
+        ranting_dict = {5: 0, 4: 0, 3: 0, 2: 0, 1: 0}
+        numbers_rating = [1, 2, 3, 4, 5]
+        for number in numbers_rating:
+            for rating in ratings.all():
+                if int(rating.rating) == number:
+                    ranting_dict[int(rating.rating)] = ranting_dict.get(int(rating.rating)) + 1
+
+        result = {}
+
+        for k, v in ranting_dict.items():
+            result[k] = "{:.2f}".format((v / len(ratings.all())) * 100)
+
+        return result
 
 
 class CourseRelation(models.Model):

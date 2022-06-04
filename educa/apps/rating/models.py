@@ -15,6 +15,7 @@ class Rating(models.Model):
         verbose_name='Avaliação'
     )
     comment = models.TextField('Comentário')
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'{self.user} - {self.rating}'
