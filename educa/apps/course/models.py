@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import Avg
+from django.db.models import Avg, Q
 from django.utils.text import slugify
 
 from educa.apps.subject.models import Subject
@@ -20,6 +20,9 @@ class Course(models.Model):
     )
     title = models.CharField('Título', max_length=200)
     slug = models.SlugField(unique=True)
+    short_description = models.TextField()
+    learn_description = models.TextField()
+    requirements = models.TextField()
     description = models.TextField('Descrição')
     image = models.ImageField('Imagem')
     created = models.DateField(auto_now_add=True)
@@ -59,6 +62,11 @@ class Course(models.Model):
     def get_total_questions(self):
         from educa.apps.question.models import Question
         return Question.objects.filter(lesson__ourse=self).count()
+
+    def get_total_files_download(self):
+        from educa.apps.content.models import Content
+        return Content.objects.filter(lesson__course=self).filter(
+            Q(content_type__model='file') | Q(content_type__model='image')).count()
 
 
 class CourseRelation(models.Model):

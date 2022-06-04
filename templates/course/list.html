@@ -23,7 +23,7 @@
             </ul>
         {% else %}
             {% if subject %}
-                <h1 class="text-3xl p-8">Cursos de {{ subject.title }}.</h1>
+                <h1 class="text-3xl p-8">Cursos de {{ subject.title }}</h1>
             {% endif %}
             {% if search_term %}
                 <h1 class="text-3xl p-8">Resultados para "{{ search_term }}"</h1>
@@ -50,7 +50,7 @@
                                     <i class="text-yellow-300 w-2 h-2 bi bi-star-half"></i>
                                 {% endif %}
                             {% endfor %}
-                            <span class="text-gray-500">({{ course.students|length }})</span>
+                            <span class="text-gray-500">({{ course.ratings.all|length }})</span>
                         </div>
                     </div>
                 </a>

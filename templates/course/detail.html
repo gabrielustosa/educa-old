@@ -3,61 +3,178 @@
 {% load course_filter %}
 
 {% block title %}
-    Curso - {{ course.title }}
+    {{ course.title }} | Educa
+{% endblock %}
+
+{% block nav %}
+    {% include 'partials/base/nav_home.html' %}
 {% endblock %}
 
 {% block content %}
-    <div class="container pt-4">
-        <div class="row">
-            <div class="col-8">
-                <div>
-                    <h3>{{ course.title }}</h3>
-                    <p>{{ course.description }}</p>
-                    <p>Criado por: {{ course.owner.get_full_name }}</p>
-                </div>
-                {% for module in course.modules.all %}
-                    <div class="dropdown">
-                        <div class="d-flex justify-content-between align-items-center border border-dark"
-                             data-bs-toggle="dropdown"
-                             aria-expanded="false" style="width: 40vw;">
-                            <p class="ps-2">{{ module.title }}</p>
-                            <p class="pe-2">{{ module.get_total_lessons }} aulas</p>
-                        </div>
-                        <div class="dropdown-menu  border border-dark" style="width: 40vw;">
-                            {% for lesson in module.lessons.all %}
-                                <div class="dropdown-item disabled text-dark">{{ lesson.title }}</div>
-                            {% empty %}
-                                <div class="dropdown-item disabled text-dark">Esse módulo ainda não possui aulas.</div>
-                            {% endfor %}
-                        </div>
+    <section>
+        <div class="bg-zinc-800 w-full">
+            <div class="grid grid-cols-2">
+                <div class="p-10 pl-28">
+                    <a href="{% url 'subject:view' course.subject.id %}" class="text-violet-300 font-semibold">
+                        {{ course.subject.title }}
+                    </a>
+                    <h3 class="pt-3 text-white text-3xl font-bold">
+                        {{ course.title }}
+                    </h3>
+                    <p class="pt-3 text-white text-lg font-bold">
+                        {{ course.short_description }}
+                    </p>
+                    <div class="flex space-x-3 pt-3">
+                        <span class="text-yellow-300">{{ course.get_rating_avg|floatformat }}</span>
+                        {% for r in course.get_rating_avg|get_rating_stars %}
+                            {% if r == "i" %}
+                                <i class="text-yellow-300 w-2 h-2 bi bi-star-fill"></i>
+                            {% elif r == "m" %}
+                                <i class="text-yellow-300 w-2 h-2 bi bi-star-half"></i>
+                            {% endif %}
+                        {% endfor %}
+                        <span class="pl-3 text-gray-500">
+                            (<a href="#rating" class="text-violet-300 underline">{{ course.ratings.all|length }} avaliações</a>)
+                        </span>
+                        <span class="text-white">
+                            22{{ course.students.all|length }} alunos
+                        </span>
                     </div>
-                {% endfor %}
-                {% include 'hx/rating/rating_list.html' %}
-            </div>
-            <div class="col text-center">
-                <div class="card" style="width: 18rem;">
-                    <img src="{{ course.image.url }}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title text-start">{{ course.title }}</h5>
-                        {% if request.user|student_is_enrolled:course.id %}
-                            {% with current_lesson=request.user|get_current_lesson:course %}
-                                <a href="{% url 'student:view' course.id current_lesson %}"
-                                   class="btn btn-primary mt-3"
-                                   style="width: 16rem;">
-                                    Acessar
-                                </a>
-                            {% endwith %}
-                        {% else %}
-                            <form method="post" action="{% url 'student:enroll' course.id %}">
-                                {% csrf_token %}
-                                <button class="btn btn-primary mt-3"
-                                        style="width: 16rem;">Inscreva-se
-                                </button>
-                            </form>
-                        {% endif %}
+                    <p class="text-white pt-2">Criado por
+                        <span class="text-violet-300 underline">{{ course.owner.get_full_name }}</span>
+                    </p>
+                </div>
+                <div class="relative">
+                    <div class="absolute pt-10">
+                        <img src="{{ course.image.url }}"
+                             alt="Imagem do curso {{ course.title }}"
+                             class="object-contain">
+                        <div class="shadow-lg pb-3">
+                            <div>{% if request.user|student_is_enrolled:course.id %}
+                                {% with current_lesson=request.user|get_current_lesson:course %}
+                                    <a href="{% url 'student:view' course.id current_lesson %}">
+                                        <div class="flex justify-center">
+                                            <button class="w-9/12 bg-violet-700 px-4 py-2 my-3 rounded-sm text-white">
+                                                Acessar
+                                            </button>
+                                        </div>
+                                    </a>
+                                {% endwith %}
+                            {% else %}
+                                <form method="post" action="{% url 'student:enroll' course.id %}">
+                                    {% csrf_token %}
+                                    <div class="flex justify-center">
+                                        <button class="w-9/12 bg-violet-700 px-4 py-2 my-3 rounded-sm text-white">
+                                            Inscrever-se
+                                        </button>
+                                    </div>
+                                </form>
+                            {% endif %}
+                            </div>
+                            <div>
+                                <h5 class="font-bold pt-3">Este curso inclui:</h5>
+                                <ul class="pl-5 py-3 space-y-2">
+                                    <li class="flex">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                             fill="currentColor" class="bi bi-person-video" viewBox="0 0 16 16">
+                                            <path d="M8 9.05a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
+                                            <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2Zm10.798 11c-.453-1.27-1.76-3-4.798-3-3.037 0-4.345 1.73-4.798 3H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-1.202Z"></path>
+                                        </svg>
+                                        <span class="pl-3">{{ course.get_total_lessons }} Aulas sob demanda</span>
+                                    </li>
+                                    <li class="flex">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                             fill="currentColor" class="bi bi-cloud-arrow-down" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                  d="M7.646 10.854a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2z"></path>
+                                            <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"></path>
+                                        </svg>
+                                        <span class="pl-3">{{ course.get_total_files_download }} Arquivos para download</span>
+                                    </li>
+                                    <li class="flex">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                             fill="currentColor" class="bi bi-infinity" viewBox="0 0 16 16">
+                                            <path d="M5.68 5.792 7.345 7.75 5.681 9.708a2.75 2.75 0 1 1 0-3.916ZM8 6.978 6.416 5.113l-.014-.015a3.75 3.75 0 1 0 0 5.304l.014-.015L8 8.522l1.584 1.865.014.015a3.75 3.75 0 1 0 0-5.304l-.014.015L8 6.978Zm.656.772 1.663-1.958a2.75 2.75 0 1 1 0 3.916L8.656 7.75Z"></path>
+                                        </svg>
+                                        <span class="pl-3">Acesso vitalício</span>
+                                    </li>
+                                    <li class="flex">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                             fill="currentColor" class="bi bi-trophy" viewBox="0 0 16 16">
+                                            <path d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5c0 .538-.012 1.05-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.132-5.89A33.076 33.076 0 0 1 2.5.5zm.099 2.54a2 2 0 0 0 .72 3.935c-.333-1.05-.588-2.346-.72-3.935zm10.083 3.935a2 2 0 0 0 .72-3.935c-.133 1.59-.388 2.885-.72 3.935zM3.504 1c.007.517.026 1.006.056 1.469.13 2.028.457 3.546.87 4.667C5.294 9.48 6.484 10 7 10a.5.5 0 0 1 .5.5v2.61a1 1 0 0 1-.757.97l-1.426.356a.5.5 0 0 0-.179.085L4.5 15h7l-.638-.479a.501.501 0 0 0-.18-.085l-1.425-.356a1 1 0 0 1-.757-.97V10.5A.5.5 0 0 1 9 10c.516 0 1.706-.52 2.57-2.864.413-1.12.74-2.64.87-4.667.03-.463.049-.952.056-1.469H3.504z"></path>
+                                        </svg>
+                                        <span class="pl-3">Certificado de conclusão</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+        <div class="grid grid-cols-2">
+            <div class="mx-16">
+                <div class="my-7">
+                    <h1 class="p-5 text-2xl font-bold">O que você aprenderá</h1>
+                    <p class="pl-5 py-5">
+                        {{ course.learn_description }}
+                    </p>
+                </div>
+                <div class="my-7 p-5">
+                    <h1 class="text-2xl font-bold">Conteúdo do curso</h1>
+                    <div class="pt-8 text-sm">
+                        {{ course.modules.all|length }} módulos • {{ course.lesson_set.all|length }} aulas
+                        <div class="pt-5">
+                            {% for module in course.modules.all %}
+                                <div id="accordion-collapse" data-accordion="collapse">
+                                    <div>
+                                        <button type="button"
+                                                class="flex items-center p-3 text-lg w-full text-left border border-gray-200 focus:ring-4 focus:ring-gray-200"
+                                                data-accordion-target="#accordion-module-{{ module.id }}">
+                                            <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor"
+                                                 viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd"
+                                                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                      clip-rule="evenodd">
+                                                </path>
+                                            </svg>
+                                            <span class="grid grid-cols-2 content-between w-full">
+                                                <span class="pl-3 text-black">{{ module.title }}</span>
+                                                <span class="text-black text-right">{{ module.lessons.all|length }} aulas</span>
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <div id="accordion-module-{{ module.id }}" class="hidden">
+                                        <div class="p-5 border border-t-0 border-gray-200 dark:border-gray-700">
+                                            {% for lesson in module.lessons.all %}
+                                                <div class="text-base flex py-2">
+                                                    <i class="bi bi-play-circle-fill"></i>
+                                                    <p class="pl-3">Aula {{ lesson.order }} - {{ lesson.title }}</p>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="my-7">
+                    <h1 class="p-5 text-2xl font-bold">Requisitos</h1>
+                    <p class="pl-5 py-5">
+                        {{ course.requirements }}
+                    </p>
+                </div>
+                <div class="my-7">
+                    <h1 class="p-5 text-2xl font-bold">Descrição</h1>
+                    <p class="pl-5 py-5">
+                        {{ course.requirements }}
+                    </p>
+                </div>
+                {#                <div class="pl-5">#}
+                {#                    <h1 class="text-3xl font-bold">Feedback dos alunos</h1>#}
+                {#                </div>#}
+            </div>
+        </div>
+    </section>
 {% endblock %}

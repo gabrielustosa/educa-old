@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     # 3rd apps
     'rest_framework',
     'compressor',
+    'crispy_forms',
+    'crispy_tailwind',
 
     # my apps
     'educa.apps.course',
@@ -155,10 +157,16 @@ LOGOUT_REDIRECT_URL = '/'
 
 QUESTION_PAGINATE_BY = 4
 
-# Compress
+# COMPRESS CSS
 
 COMPRESS_ROOT = BASE_DIR / 'static'
 
 COMPRESS_ENABLED = True
 
 STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
+
+# CRISPY
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'tailwind'
+
+CRISPY_TEMPLATE_PACK = 'tailwind'
