@@ -22,7 +22,11 @@
                 <li>Tente usar termos de pesquisa mais genéricos</li>
             </ul>
         {% else %}
-            <h1 class="text-3xl p-8">Vamos começar a aprender!</h1>
+            {% if not subject %}
+                <h1 class="text-3xl p-8">Vamos começar a aprender!</h1>
+            {% else %}
+                <h1 class="text-3xl p-8">Cursos de {{ subject.title }}</h1>
+            {% endif %}
         {% endif %}
         <div class="mx-14 grid grid-cols-5 gap-24">
             {% for course in courses %}

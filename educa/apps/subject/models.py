@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class Subject(models.Model):
@@ -9,7 +10,7 @@ class Subject(models.Model):
         ordering = ['title']
 
     def get_absolute_url(self):
-        return '/'
+        return reverse('subject:view', kwargs={'subject_id': self.id})
 
     def __str__(self):
         return self.title
