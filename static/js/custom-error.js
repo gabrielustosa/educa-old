@@ -14,7 +14,7 @@
                     li.innerText = message
                     parent.appendChild(li)
                 }
-                document.getElementById('menu').scrollIntoView()
+                parent.scrollIntoView()
             }
         }
     })

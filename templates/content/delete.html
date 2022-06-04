@@ -14,9 +14,9 @@
                 <button type="submit" class="btn btn-danger">
                     Confirmar
                 </button>
-                <button class="btn btn-warning">
-                    <a href="{% url 'lesson:detail' object.lesson.id %}" class="text-decoration-none text-white">Cancelar</a>
-                </button>
+                <a href="{% url 'lesson:detail' object.lesson.id %}" class="text-decoration-none text-white btn btn-warning">
+                    Cancelar
+                </a>
             {% endbuttons %}
         </form>
     </div>

@@ -1,29 +1,50 @@
 {% extends 'base.html' %}
 
+{% load course_filter %}
+
 {% block title %}
-    Todos os cursos
+    Cursos online - Educa
+{% endblock %}
+
+{% block nav %}
+    {% include 'partials/base/nav_home.html' %}
 {% endblock %}
 
 {% block content %}
     <div class="container">
         {% if not courses %}
-            <h2 class="text-center pt-5">Nenhum curso foi encontrado :(</h2>
+            <h2 class="text-3xl pl-14 pt-14 font-bold w-1/2">Infelizmente, não encontramos resultados para
+                "{{ search_term }}"</h2>
+            <h3 class="text-xl pl-14 pt-7">Recomendamos ajustar a sua busca. Aqui estão algumas ideias:</h3>
+            <ul class="list-disc text-lg pl-24 pt-7">
+                <li>Verifique se todas as palavras estão escritas corretamente</li>
+                <li>Tente usar termos de pesquisa diferentes</li>
+                <li>Tente usar termos de pesquisa mais genéricos</li>
+            </ul>
+        {% else %}
+            <h1 class="text-3xl p-8">Vamos começar a aprender!</h1>
         {% endif %}
-        <div class="row row-cols-auto">
+        <div class="mx-14 grid grid-cols-5 gap-24">
             {% for course in courses %}
-                <div class="col pb-3">
-                    <a href="{% url 'course:detail' course.id %}" class="text-decoration-none">
-                        <div class="card mt-3" style="width: 13rem;">
-                            <img class="card-img-top" src="{{ course.image.url }}" alt="Post image">
-                            <div class="card-body" style="color: black;">
-                                <h5 class="card-title">{{ course.title }}</h5>
-                                <p class="card-text" style="font-size: 16px;">{{ course.description }}</p>
-                            </div>
+                <a href="{% url 'course:detail' course.id %}">
+                    <img src="{{ course.image.url }}"
+                         alt="Imagem do curso {{ course.title }}"
+                         class="object-contain">
+                    <div>
+                        <h5 class="text-lg font-semibold">{{ course.title }}</h5>
+                        <span class="text-sm text-gray-400">{{ course.owner.get_full_name }}</span>
+                        <div class="flex space-x-3">
+                            <span>{{ course.get_rating_avg }} </span>
+                            {% for r in course.get_rating_avg|range_list %}
+                                <i class="text-yellow-300 w-2 h-2 bi bi-star-fill"></i>
+                            {% endfor %}
+                            <span>({{ course.students|length }})</span>
                         </div>
-                    </a>
-                </div>
+                    </div>
+                </a>
             {% endfor %}
         </div>
-        {% include 'partials/base/_paginator.html' %}
+        {% include 'partials/base/paginator.html' %}
     </div>
 {% endblock %}
+

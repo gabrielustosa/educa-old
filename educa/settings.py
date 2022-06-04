@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # 3rd apps
-    'bootstrap5',
     'rest_framework',
+    'compressor',
 
     # my apps
     'educa.apps.course',
@@ -78,6 +78,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'educa.apps.subject.context_processor.subject_renderer',
             ],
         },
     },
@@ -153,3 +154,11 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 QUESTION_PAGINATE_BY = 4
+
+# Compress
+
+COMPRESS_ROOT = BASE_DIR / 'static'
+
+COMPRESS_ENABLED = True
+
+STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)

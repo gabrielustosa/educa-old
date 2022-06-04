@@ -8,6 +8,7 @@ app_name = 'student'
 urlpatterns = [
     path('course/enroll/<int:course_id>/', views_course.CourseEnrollView.as_view(), name='enroll'),
     path('courses/', views_course.StudentCourseListView.as_view(), name='courses'),
+    path('course/overview/<int:course_id>/', views_lesson.CourseOverView.as_view(), name='overview'),
     path('course/<slug:course_id>/lesson/<int:lesson_id>/', views_course.StudentCourseView.as_view(), name='view'),
     path('course/lesson/<int:lesson_id>/', views_lesson.SelectLessonView.as_view(), name='select_video'),
     path('course/lesson/note/<int:content_id>/', views_lesson.LessonNoteView.as_view(), name='lesson_note'),

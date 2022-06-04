@@ -1,10 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, TemplateView
 
 from educa.apps.course.models import Course
 from educa.apps.rating.models import Rating
-from educa.utils.mixin.course import CacheMixin
 
 
 class CourseListView(ListView):
@@ -40,18 +40,23 @@ class CourseDetailView(TemplateView):
         return context
 
 
-class CourseOverView(
-    LoginRequiredMixin,
-    CacheMixin,
-    TemplateView,
-):
-    template_name = 'hx/course/overview.html'
+class CourseSearchView(CourseListView):
+
+    def get_queryset(self):
+        search = self.request.GET.get('q')
+
+        queryset = super().get_queryset()
+
+        if not search:
+            return queryset
+
+        queryset = queryset.filter(Q(title__icontains=search) | Q(description__icontains=search))
+
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        course = self.get_course()
-        context['course'] = course
-        self.request.session[f'section-{course.id}'] = 'overview'
+        context['search_term'] = self.request.GET.get('q')
 
         return context

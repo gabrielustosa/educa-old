@@ -20,6 +20,9 @@ class AnswerCreateView(QuestionViewMixin):
         if len(content) == 0:
             error_messages.append('A sua resposta não pode estar vazia.')
 
+        if len(content) <= 5:
+            error_messages.append('A sua resposta precisa ter mais de 5 carácteres.')
+
         if error_messages:
             return HttpResponse(render_error(error_messages), status=400)
 
@@ -56,6 +59,9 @@ class AnswerUpdateView(AnswerMixin):
 
         if len(content) == 0:
             error_messages.append('Os detalhes da sua resposta não podem estar vazios.')
+
+        if len(content) <= 5:
+            error_messages.append('A sua resposta precisa ter mais de 5 carácteres.')
 
         if error_messages:
             return HttpResponse(render_error(error_messages), status=400)

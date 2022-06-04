@@ -42,6 +42,23 @@ class LessonNoteView(
         return context
 
 
+class CourseOverView(
+    LoginRequiredMixin,
+    CacheMixin,
+    TemplateView,
+):
+    template_name = 'hx/course/overview.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        course = self.get_course()
+        context['course'] = course
+        self.request.session[f'section-{course.id}'] = 'overview'
+
+        return context
+
+
 class CourseSearchView(
     LoginRequiredMixin,
     CacheMixin,

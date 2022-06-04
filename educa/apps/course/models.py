@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Avg
 from django.utils.text import slugify
 
 from educa.apps.subject.models import Subject
@@ -38,6 +39,14 @@ class Course(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_rating_avg(self):
+        from educa.apps.rating.models import Rating
+        result = Rating.objects.filter(course=self).aggregate(Avg('rating'))
+        result = result['rating__avg']
+        if result:
+            return round(result)
+        return 0
 
     def get_first_lesson(self):
         from educa.apps.lesson.models import Lesson

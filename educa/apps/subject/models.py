@@ -8,5 +8,8 @@ class Subject(models.Model):
     class Meta:
         ordering = ['title']
 
+    def get_absolute_url(self):
+        return '/'
+
     def __str__(self):
         return self.title

@@ -17,7 +17,7 @@
                     <div id="search" hx-get="{% url 'student:search' course.id %}" hx-target="#content">
                         <h5><i class="bi bi-search"></i></h5>
                     </div>
-                    <div id="overview" hx-get="{% url 'course:overview' course.id %}" hx-target="#content">
+                    <div id="overview" hx-get="{% url 'student:overview' course.id %}" hx-target="#content">
                         <h5>Visão geral</h5>
                     </div>
                     <div id="questions-answers" hx-get="{% url 'question:course' course.id %}" hx-target="#content">
