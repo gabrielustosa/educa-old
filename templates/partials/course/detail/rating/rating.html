@@ -29,11 +29,21 @@
             <p class="text-sm py-2">{{ rating.comment }}</p>
         </div>
         <hr class="border-gray-400">
+    {% empty %}
+        {% if search_term %}
+            <h1 class="mb-6 text-xl">
+                Nenhuma avaliação mencionando '<span class="font-bold">{{ search_term }}</span>'
+            </h1>
+            <p class="py-2 text-lg">
+                Sua pesquisa não retornou resultados com a classificação selecionada. Tente desmarcar a seleção para ver
+                avaliações que correspondam a sua pesquisa.
+            </p>
+        {% endif %}
     {% endfor %}
     {% if page_obj.has_next %}
         <button id="see-more"
                 class="border mb-4 font-semibold text-lg py-2 border-zinc-800 w-full"
-                hx-get="/course/rating/view/{{ course.id }}?page={{ page_obj.number|add:'1' }}"
+                hx-get="{{ page_url }}?page={{ page_obj.number|add:'1' }}"
                 hx-target="#rating-list"
                 hx-swap="beforeend">
             Ver mais avaliações

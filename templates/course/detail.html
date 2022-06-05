@@ -100,5 +100,9 @@
                 }
             }
         })
+
+        document.querySelector('#select-filter').addEventListener('change', e => {
+            document.querySelector('#rating-filter').setAttribute('value', e.target.value)
+        })
     </script>
 {% endblock %}
