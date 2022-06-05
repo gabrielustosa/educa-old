@@ -5,7 +5,7 @@
             Categorias
         </div>
         <form action="{% url 'course:search' %}" method="GET" class="flex grow items-center h-10">
-            <label for="simple-search" class="sr-only">Search</label>
+            <label for="simple-search" class="sr-only">Pesquisar</label>
             <div class="relative">
                 <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none mx-10">
                     <i class="w-5 h-5 text-gray-500 bi bi-search"></i>
@@ -23,7 +23,8 @@
         </div>
         <div class="text-md hover:text-violet-500 cursor-pointer" data-dropdown-toggle="option-dropdown">
             {% if user.is_authenticated %}
-                Opções
+                <img src="{{ request.user.get_url_profile }}" alt="Imagem de perfil"
+                     class="inline object-cover w-10 h-10 mr-2 rounded-full">
             {% else %}
                 Logar
             {% endif %}

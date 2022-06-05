@@ -1,7 +1,7 @@
-from django.contrib.auth.models import User
 from django.db import models
 
 from educa.apps.course.models import Course
+from educa.apps.student.models import User
 
 
 class Rating(models.Model):

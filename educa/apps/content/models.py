@@ -1,9 +1,9 @@
-from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
 from educa.apps.lesson.models import Lesson
+from educa.apps.student.models import User
 from educa.utils.fields import OrderField
 
 

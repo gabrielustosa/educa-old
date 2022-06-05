@@ -1,8 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.db.models import Avg, Q
 from django.utils.text import slugify
 
+from educa.apps.student.models import User
 from educa.apps.subject.models import Subject
 
 
@@ -24,7 +24,7 @@ class Course(models.Model):
     learn_description = models.TextField()
     requirements = models.TextField()
     description = models.TextField('Descrição')
-    image = models.ImageField('Imagem')
+    image = models.ImageField('Imagem', upload_to='profiles/')
     created = models.DateField(auto_now_add=True)
     students = models.ManyToManyField(
         User,

@@ -63,6 +63,10 @@
 
 {% block javascript %}
     <script>
+        let course_id = "{{ course.id }}"
+
+        htmx.ajax('GET', `/course/rating/view/${course_id}`, '#rating-list')
+
         let progressbars = document.querySelectorAll('.progress')
         progressbars.forEach(progress => {
             progress.addEventListener('click', () => {
@@ -92,9 +96,6 @@
                 })
             })
         })
-
-        let course_id = "{{ course.id }}"
-        htmx.ajax('GET', `/course/rating/view/${course_id}`, '#rating-list')
 
         htmx.on('htmx:afterSwap', e => {
             if (e.target.id === "rating-list") {

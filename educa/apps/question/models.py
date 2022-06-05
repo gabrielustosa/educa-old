@@ -1,7 +1,7 @@
-from django.contrib.auth.models import User
 from django.db import models
 
 from educa.apps.lesson.models import Lesson
+from educa.apps.student.models import User
 
 
 class Question(models.Model):
