@@ -69,6 +69,9 @@
                 progress.classList.remove('opacity-25')
                 let progress_data = parseInt(progress.getAttribute('data-value'))
                 document.querySelector(`#close-${progress_data}`).classList.remove('hidden')
+
+                htmx.ajax('GET', `/course/rating/filter/${course_id}/?filter=${progress_data}`, '#rating-list')
+
                 progressbars.forEach(other_progress => {
                     let other_progress_data = parseInt(other_progress.getAttribute('data-value'))
                     if (other_progress_data !== progress_data) {
@@ -83,6 +86,7 @@
         close_buttons.forEach(close => {
             close.addEventListener('click', () => {
                 close.classList.add('hidden')
+                htmx.ajax('GET', `/course/rating/view/${course_id}`, '#rating-list')
                 progressbars.forEach(progress => {
                     progress.classList.remove('opacity-25')
                 })
