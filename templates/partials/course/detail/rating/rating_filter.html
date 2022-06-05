@@ -1,7 +1,8 @@
 <div class="mb-3 grow mx-8">
     <div class="input-group w-full mb-4">
         <form class="flex" hx-get="{% url 'rating:search' course.id %}" hx-target="#rating-list">
-            <input type="search" name="search"
+            <input id="rating-search"
+                   type="search" name="search"
                    class="form-control flex-auto block w-full px-3 py-3 text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none"
                    placeholder="Pesquisar avaliações" aria-label="Search"
                    aria-describedby="button-addon2">

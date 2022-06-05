@@ -43,7 +43,7 @@
     {% if page_obj.has_next %}
         <button id="see-more"
                 class="border mb-4 font-semibold text-lg py-2 border-zinc-800 w-full"
-                hx-get="{{ page_url }}?page={{ page_obj.number|add:'1' }}"
+                hx-get="{{ page_url }}?page={{ page_obj.number|add:'1' }}&search={{ search_term }}&filter={{ filter }}"
                 hx-target="#rating-list"
                 hx-swap="beforeend">
             Ver mais avaliações

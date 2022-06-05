@@ -97,6 +97,7 @@ class RatingSearchView(RatingView):
 
         course = self.get_course()
 
+        context['filter'] = self.request.GET.get('filter')
         context['page_url'] = f'/course/rating/search/{course.id}/'
         context['search_term'] = self.request.GET.get('search')
 
@@ -110,3 +111,24 @@ class RatingSearchView(RatingView):
         if search == "":
             return redirect(reverse('rating:view', kwargs={'course_id': course.id}))
         return super().get(request, *args, **kwargs)
+
+
+class RatingFilterView(RatingView):
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        filter_by = self.request.GET.get('filter')
+
+        if filter_by != 'all':
+            queryset = queryset.filter(rating__in=[int(filter_by), (float(filter_by) + .5)])
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        course = self.get_course()
+
+        context['filter'] = self.request.GET.get('filter')
+        context['page_url'] = f'/course/rating/filter/{course.id}/'
+
+        return context
