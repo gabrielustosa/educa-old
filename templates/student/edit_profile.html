@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% load tailwind_filters %}
+
+{% block title %}
+    Entrar
+{% endblock %}
+
+{% block nav %}
+    {% include 'partials/base/nav_home.html' %}
+{% endblock %}
+
+
+{% block content %}
+    <div class="container mx-auto w-1/2 py-5">
+        <h2 class="text-center text-3xl py-3">Alterar informações</h2>
+        <form method="post" id="login">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button id="submit"
+                    type="submit"
+                    class="bg-violet-700 px-4 py-2 my-3 w-full rounded-sm text-white">
+                Salvar informações
+            </button>
+        </form>
+    </div>
+{% endblock %}

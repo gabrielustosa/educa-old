@@ -48,13 +48,36 @@
     </div>
 
     <div id="option-dropdown"
-         class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700">
-        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
+         class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-72">
+        <ul class="py-1 text-sm space-y-2 dark:text-gray-200" aria-labelledby="dropdownDefault">
             {% if user.is_authenticated %}
+                <div class="flex items-center px-5 py-5 text-gray-900 mx-auto">
+                    <a href="{% url 'profile' %}">
+                        <img src="{{ request.user.get_url_profile }}" alt="Imagem de perfil"
+                             class="inline object-cover w-12 h-12 mr-2 rounded-full">
+                    </a>
+                    <div class="pl-2">
+                        <div>{{ request.user.name }}</div>
+                        <div class="font-medium text-gray-400">{{ request.user.email }}</div>
+                    </div>
+                </div>
+                <hr>
+                <li>
+                    <a href="#"
+                       class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                        Meu aprendizado
+                    </a>
+                </li>
+                <li>
+                    <a href="#"
+                       class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                        Instrutor
+                    </a>
+                </li>
                 <li>
                     <a href="{% url 'logout' %}"
                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                        Deslogar
+                        Sair
                     </a>
                 </li>
             {% else %}

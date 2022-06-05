@@ -644,8 +644,16 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-right: 0.5rem;
 }
 
+.mr-1 {
+  margin-right: 0.25rem;
+}
+
 .block {
   display: block;
+}
+
+.inline-block {
+  display: inline-block;
 }
 
 .inline {
@@ -654,6 +662,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .flex {
   display: flex;
+}
+
+.inline-flex {
+  display: inline-flex;
 }
 
 .grid {
@@ -758,6 +770,14 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .w-10 {
   width: 2.5rem;
+}
+
+.w-72 {
+  width: 18rem;
+}
+
+.w-96 {
+  width: 24rem;
 }
 
 .flex-1 {
@@ -887,6 +907,12 @@ Ensure the default browser behavior of the `hidden` attribute.
   overflow: auto;
 }
 
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .rounded-sm {
   border-radius: 0.125rem;
 }
@@ -897,6 +923,16 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .rounded {
   border-radius: 0.25rem;
+}
+
+.rounded-t {
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+}
+
+.rounded-b {
+  border-bottom-right-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
 }
 
 .border-0 {
@@ -991,6 +1027,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 .bg-gray-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(75 85 99 / var(--tw-bg-opacity));
+}
+
+.bg-gray-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
 }
 
 .bg-clip-padding {
@@ -1099,6 +1140,16 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding-bottom: 0.625rem;
 }
 
+.px-10 {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
 .pt-5 {
   padding-top: 1.25rem;
 }
@@ -1177,6 +1228,14 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .pt-6 {
   padding-top: 1.5rem;
+}
+
+.pl-2 {
+  padding-left: 0.5rem;
+}
+
+.pt-1 {
+  padding-top: 0.25rem;
 }
 
 .text-left {
@@ -1306,6 +1365,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   color: rgb(209 213 219 / var(--tw-text-opacity));
 }
 
+.text-gray-900 {
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity));
+}
+
 .underline {
   -webkit-text-decoration-line: underline;
           text-decoration-line: underline;
@@ -1354,6 +1418,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-gray-400:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(156 163 175 / var(--tw-bg-opacity));
+}
+
 .hover\:text-violet-500:hover {
   --tw-text-opacity: 1;
   color: rgb(139 92 246 / var(--tw-text-opacity));
@@ -1391,6 +1460,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-ring-color: rgb(229 231 235 / var(--tw-ring-opacity));
 }
 
+.group:hover .group-hover\:block {
+  display: block;
+}
+
 @media (prefers-color-scheme: dark) {
   .dark\:border-gray-700 {
     --tw-border-opacity: 1;
@@ -1415,6 +1488,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   .dark\:text-gray-500 {
     --tw-text-opacity: 1;
     color: rgb(107 114 128 / var(--tw-text-opacity));
+  }
+
+  .dark\:text-white {
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity));
   }
 
   .dark\:hover\:bg-gray-600:hover {

@@ -27,5 +27,11 @@ class UserCreateForm(UserCreationForm):
 class UserEditForm(UserChangeForm):
     class Meta:
         model = User
-        fields = ('username', 'name')
+        fields = ('username', 'name', 'job', 'bio', 'site', 'youtube', 'twitter', 'instagram', 'facebook', 'linkedin')
         labels = {'username': 'E-mail'}
+
+    def __init__(self, *args, **kwargs):
+        super(UserChangeForm, self).__init__(*args, **kwargs)
+
+        self.fields['username'].help_text = None
+        del self.fields['password']

@@ -5,7 +5,7 @@ from django.urls import path, include
 from django.contrib.auth import views as views_login
 
 from educa.apps.course.views.views import CourseListView
-from educa.apps.student.views.views import StudentRegisterView
+from educa.apps.student.views.views import StudentRegisterView, StudentEditProfileView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -13,6 +13,7 @@ urlpatterns = [
     path('accounts/login/', views_login.LoginView.as_view(), name='login'),
     path('accounts/logout/', views_login.LogoutView.as_view(), name='logout'),
     path('students/', include('educa.apps.student.urls')),
+    path('student/profile/', StudentEditProfileView.as_view(), name='profile'),
     path('course/', include('educa.apps.course.urls')),
     path('module/content/', include('educa.apps.content.urls')),
     path('course/module/', include('educa.apps.module.urls')),

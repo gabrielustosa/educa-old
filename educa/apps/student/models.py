@@ -38,8 +38,8 @@ class User(AbstractUser):
     is_instructor = models.BooleanField('Instrutor', default=False)
     objects = UserManager()
     # social
-    job = models.CharField(max_length=100)
-    bio = models.TextField()
+    job = models.CharField(blank=True, max_length=100)
+    bio = models.TextField(blank=True)
     site = models.URLField(blank=True)
     youtube = models.URLField(blank=True)
     twitter = models.URLField(blank=True)
