@@ -18,5 +18,8 @@ class Rating(models.Model):
     answer = models.TextField(blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['created', ]
+
     def __str__(self):
         return f'{self.user} - {self.rating}'

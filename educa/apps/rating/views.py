@@ -3,7 +3,7 @@ from django.forms import modelform_factory
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 
 from educa.apps.rating.models import Rating
 from educa.utils.mixin.course import CacheMixin
@@ -13,16 +13,20 @@ from educa.utils.utils import render_error
 class RatingView(
     LoginRequiredMixin,
     CacheMixin,
-    TemplateView,
+    ListView,
 ):
-    template_name = 'hx/rating/rating.html'
+    template_name = 'partials/course/detail/rating/rating.html'
+    model = Rating
+    paginate_by = 6
+    context_object_name = 'ratings'
+
+    def get_queryset(self):
+        return Rating.objects.filter(course=self.get_course())
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         course = self.get_course()
-        ratings = Rating.objects.filter(course=course)
-        context['context_object'] = ratings
         context['course'] = course
 
         self.request.session[f'section-{course.id}'] = 'rating'

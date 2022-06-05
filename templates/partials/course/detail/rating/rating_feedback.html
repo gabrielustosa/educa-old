@@ -25,8 +25,8 @@
     <div class="col-span-3 pt-3 space-y-2">
         {% for k, v in course.get_rating_bars.items %}
             <div class="grid grid-cols-2 items-center">
-                <div class="w-full bg-gray-200 rounded-full h-2.5">
-                    <div class="bg-gray-600 h-2.5 rounded-full" style="width: {{ v }}%"></div>
+                <div class="progress w-full bg-gray-200 rounded-full h-4" data-value="{{ k }}">
+                    <div class="bg-gray-600 h-4 rounded-full" style="width: {{ v }}%"></div>
                 </div>
                 <div class="flex pl-3 w-full">
                     {% for r in k|get_rating_stars_empty %}
@@ -45,7 +45,7 @@
                     {% endfor %}
                     <div class="grid grid-cols-3 items-center w-1/3">
                         <span class="pl-5 text-violet-500 text-lg">{{ v|floatformat }}%</span>
-                        <i class="col-span-2 text-right bi bi-x"></i>
+                        <i id="close-{{ k }}" class="close col-span-2 text-right bi bi-x hidden"></i>
                     </div>
                 </div>
             </div>
