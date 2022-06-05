@@ -1,0 +1,35 @@
+<h1 class="text-2xl font-bold">Conteúdo do curso</h1>
+<div class="pt-8 text-sm">
+    {{ course.modules.all|length }} módulos • {{ course.lesson_set.all|length }} aulas
+    <div class="pt-5">
+        {% for module in course.modules.all %}
+            <div id="accordion-collapse" data-accordion="collapse">
+                <button type="button"
+                        class="flex items-center p-3 text-lg w-full text-left border border-gray-200 focus:ring-4 focus:ring-gray-200"
+                        data-accordion-target="#accordion-module-{{ module.id }}">
+                    <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor"
+                         viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clip-rule="evenodd">
+                        </path>
+                    </svg>
+                    <span class="grid grid-cols-2 content-between w-full">
+                            <span class="pl-3 text-black">{{ module.title }}</span>
+                            <span class="text-black text-right">{{ module.lessons.all|length }} aulas</span>
+                        </span>
+                </button>
+                <div id="accordion-module-{{ module.id }}" class="hidden">
+                    <div class="p-5 border border-t-0 border-gray-200 dark:border-gray-700">
+                        {% for lesson in module.lessons.all %}
+                            <div class="text-base flex py-2">
+                                <i class="bi bi-play-circle-fill"></i>
+                                <p class="pl-3">Aula {{ lesson.order }} - {{ lesson.title }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

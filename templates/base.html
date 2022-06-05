@@ -20,17 +20,13 @@
         {% block content %}{% endblock %}
     </div>
 
-    <div class="justify-center">
-        {% include 'partials/base/footer.html' %}
-    </div>
+    {% include 'partials/base/footer.html' %}
 </div>
 
 <script src="https://unpkg.com/htmx.org@1.6.0"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.js"></script>
 
-
-{% block javascript %}{% endblock %}
 <script>
     htmx.onLoad(function (content) {
         let sortables = content.querySelectorAll(".sortable");
@@ -46,5 +42,7 @@
         event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
     })
 </script>
+{% block javascript %}{% endblock %}
+
 </body>
 </html>

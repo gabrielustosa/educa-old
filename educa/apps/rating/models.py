@@ -15,6 +15,7 @@ class Rating(models.Model):
         verbose_name='Avaliação'
     )
     comment = models.TextField('Comentário')
+    answer = models.TextField(blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

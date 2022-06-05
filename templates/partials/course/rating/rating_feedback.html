@@ -1,0 +1,54 @@
+{% load course_filter %}
+
+<h1 class="text-3xl font-bold">Feedback dos alunos</h1>
+<div class="grid grid-cols-4">
+    <div class="pt-6 text-center">
+        <h1 class="text-6xl font-bold text-yellow-600">{{ course.get_rating_avg }}</h1>
+        <div class="flex justify-center space-x-2 items-center py-2">
+            {% for r in course.get_rating_avg|get_rating_stars %}
+                {% if r == "i" %}
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         fill="currentColor" class="w-8 h-8 text-yellow-400"
+                         viewBox="0 0 16 16">
+                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
+                    </svg>
+                {% elif r == "m" %}
+                    <svg class="w-8 h-8 text-yellow-400" fill="currentColor" viewBox="0 0 16 16"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5.354 5.119 7.538.792A.516.516 0 0 1 8 .5c.183 0 .366.097.465.292l2.184 4.327 4.898.696A.537.537 0 0 1 16 6.32a.548.548 0 0 1-.17.445l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256a.52.52 0 0 1-.146.05c-.342.06-.668-.254-.6-.642l.83-4.73L.173 6.765a.55.55 0 0 1-.172-.403.58.58 0 0 1 .085-.302.513.513 0 0 1 .37-.245l4.898-.696zM8 12.027a.5.5 0 0 1 .232.056l3.686 1.894-.694-3.957a.565.565 0 0 1 .162-.505l2.907-2.77-4.052-.576a.525.525 0 0 1-.393-.288L8.001 2.223 8 2.226v9.8z"></path>
+                    </svg>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <p class="text-yellow-600 text-lg">Avaliação do curso</p>
+    </div>
+    <div class="col-span-3 pt-3 space-y-2">
+        {% for k, v in course.get_rating_bars.items %}
+            <div class="grid grid-cols-2 items-center">
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div class="bg-gray-600 h-2.5 rounded-full" style="width: {{ v }}%"></div>
+                </div>
+                <div class="flex pl-3 w-full">
+                    {% for r in k|get_rating_stars_empty %}
+                        {% if r == "i" %}
+                            <svg class="w-7 h-7 text-yellow-400" fill="currentColor"
+                                 viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                        {% elif r == "v" %}
+                            <svg class="w-7 h-7 text-gray-300 dark:text-gray-500"
+                                 fill="currentColor" viewBox="0 0 20 20"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="grid grid-cols-3 items-center w-1/3">
+                        <span class="pl-5 text-violet-500 text-lg">{{ v|floatformat }}%</span>
+                        <i class="col-span-2 text-right bi bi-x"></i>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
