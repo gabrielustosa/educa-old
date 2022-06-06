@@ -2,7 +2,7 @@ from django.db.models import Count
 from django.urls import reverse
 
 from educa.apps.question.models import Question
-from educa.utils.mixin.question import FilterQuestionMixin
+from educa.mixin.question import FilterQuestionMixin
 
 
 class FilterQuestionAll(FilterQuestionMixin):

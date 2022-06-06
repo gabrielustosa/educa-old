@@ -11,7 +11,7 @@ from educa.apps.notice.models import Notice
 from educa.apps.question.models import Question
 from educa.apps.rating.models import Rating
 from educa.settings import QUESTION_PAGINATE_BY
-from educa.utils.mixin.course import CacheMixin
+from educa.mixin import CacheMixin
 
 
 class StudentCourseListView(TemplateView):

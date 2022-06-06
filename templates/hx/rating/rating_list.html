@@ -5,7 +5,7 @@
         <div class="card" style="width: 25rem;">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
-                    <h5 class="card-title">{{ rating.user.get_full_name }}</h5>
+                    <h5 class="card-title">{{ rating.user.name }}</h5>
                     <div>
                         {% for n in rating.rating|range_list %}
                             <i class="bi bi-star-fill text-warning"></i>

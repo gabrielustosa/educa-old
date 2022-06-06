@@ -8,7 +8,7 @@ from django.views.generic import TemplateView
 from educa.apps.content.models import Content
 from educa.apps.course.models import CourseRelation
 from educa.apps.lesson.models import Lesson
-from educa.utils.mixin.course import CacheMixin
+from educa.mixin import CacheMixin
 
 
 class SelectLessonView(

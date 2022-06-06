@@ -62,5 +62,5 @@ class User(AbstractUser):
         if len(self.name.split(' ')) > 1:
             last_name = self.name.split(' ')[1]
         if last_name:
-            return f'https://ui-avatars.com/api/?name={first_name}+{last_name}&background=000&color=fff&format=png'
-        return f'https://ui-avatars.com/api/?name={first_name}&background=000&color=fff&format=png'
+            return f'https://ui-avatars.com/api/?name={first_name}+{last_name}&background=27272A&color=fff&format=png&font-size=0.5'
+        return f'https://ui-avatars.com/api/?name={first_name}&background=27272A&color=fff&format=png&font-size=0.5'

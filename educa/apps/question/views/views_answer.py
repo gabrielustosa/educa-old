@@ -2,7 +2,7 @@ from django.forms import modelform_factory
 from django.http import HttpResponse
 
 from educa.apps.question.models import Answer
-from educa.utils.mixin.question import QuestionViewMixin, AnswerMixin
+from educa.mixin.question import QuestionViewMixin, AnswerMixin
 from educa.utils.utils import render_error
 
 

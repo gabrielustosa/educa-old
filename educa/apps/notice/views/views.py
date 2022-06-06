@@ -5,7 +5,7 @@ from django.utils.functional import cached_property
 from django.views.generic import TemplateView
 
 from educa.apps.course.models import Course
-from educa.utils.mixin.course import CourseOwnerMixin, CacheMixin
+from educa.mixin import CourseOwnerMixin, CacheMixin
 from educa.apps.notice.models import Notice
 
 

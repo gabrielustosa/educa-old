@@ -6,7 +6,7 @@ from django.views.generic import TemplateView, ListView
 
 from educa.apps.question.models import Answer, Question
 from educa.settings import QUESTION_PAGINATE_BY
-from educa.utils.mixin.course import CacheMixin
+from educa.mixin.course import CacheMixin
 from educa.utils.utils import get_lesson_id
 
 

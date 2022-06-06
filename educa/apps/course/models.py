@@ -58,7 +58,7 @@ class Course(models.Model):
 
     def get_total_questions(self):
         from educa.apps.question.models import Question
-        return Question.objects.filter(lesson__ourse=self).count()
+        return Question.objects.filter(lesson__course=self).count()
 
     def get_total_files_download(self):
         from educa.apps.content.models import Content
@@ -66,7 +66,6 @@ class Course(models.Model):
             Q(content_type__model='file') | Q(content_type__model='image')).count()
 
     def get_rating_bars(self):
-        from educa.apps.rating.models import Rating
         ratings = self.ratings
 
         ranting_dict = {5: 0, 4: 0, 3: 0, 2: 0, 1: 0}
@@ -79,7 +78,11 @@ class Course(models.Model):
         result = {}
 
         for k, v in ranting_dict.items():
-            result[k] = "{:.2f}".format((v / len(ratings.all())) * 100)
+            try:
+                operation = v / len(ratings.all()) * 100
+            except ZeroDivisionError:
+                operation = 0
+            result[k] = "{:.2f}".format(operation)
 
         return result
 
