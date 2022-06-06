@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 
 {% load tailwind_filters %}
+{% load course_filter %}
 
 {% block title %}
     Entrar
 {% endblock %}
+
 
 {% block nav %}
     {% include 'partials/base/nav_home.html' %}
@@ -12,6 +14,55 @@
 
 
 {% block content %}
-    <div class="container py-5">
+    <div class="py-5">
+        <div class="flex w-9/12 mx-auto">
+            <div class="pt-3 mx-auto">
+                {% if user.is_instructor %}
+                    <h5 class="text-xl font-bold text-gray-500">INSTRUTOR</h5>
+                {% endif %}
+                <h3 class="py-3 font-bold text-3xl">{{ user.name }}</h3>
+                <h5 class="font-bold">{{ user.job }}</h5>
+                {% if user.is_instructor %}
+                    <div class="flex py-8 space-x-6">
+                        <div>
+                            <p class="text-gray-500 font-bold">Total de alunos</p>
+                            <span class="pt-2 text-2xl font-bold">{{ user.get_total_students }}</span>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 font-bold">Avaliações</p>
+                            <span class="pt-2 text-2xl font-bold">{{ user.get_total_ratings }}</span>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="py-5">
+                    <h1 class="py-2 text-xl font-bold">Sobre</h1>
+                    <p>{{ user.bio }}</p>
+                </div>
+                {% if user.is_instructor %}
+                    <div class="py-5">
+                        <h1 class="py-2 text-xl font-bold">Meus cursos ({{ user.courses.all|length }})</h1>
+                        <div class="grid grid cols-2">
+                            {% for course in user.courses.all %}
+                                {% include 'partials/course/course_card.html' %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="mx-auto pt-3">
+                <img src="{{ user.get_url_profile }}" alt="Imagem de perfil"
+                     class="inline object-cover w-48 h-48 mr-2 rounded-full">
+                <div class="flex flex-col space-y-5 my-5">
+                    {% for k, v in user.get_social_buttons.items %}
+                        <a href="{{ user|get_social_url:k }}"
+                           class="text-center text-lg font-bold py-2 border border-zinc-800">
+                            <i class="{{ v }}"></i>
+                            <span class="pl-2">{{ k }}</span>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
     </div>
 {% endblock %}

@@ -36,6 +36,7 @@ class User(AbstractUser):
     name = models.CharField('Nome', max_length=150)
     is_staff = models.BooleanField('Equipe', default=False)
     is_instructor = models.BooleanField('Instrutor', default=False)
+    profile_image = models.ImageField(upload_to='profiles', blank=True)
     objects = UserManager()
     # social
     job = models.CharField(blank=True, max_length=100)
@@ -64,3 +65,30 @@ class User(AbstractUser):
         if last_name:
             return f'https://ui-avatars.com/api/?name={first_name}+{last_name}&background=27272A&color=fff&format=png&font-size=0.5'
         return f'https://ui-avatars.com/api/?name={first_name}&background=27272A&color=fff&format=png&font-size=0.5'
+
+    def get_total_students(self):
+        count = 0
+        for course in self.courses.all():
+            count += course.students.count()
+        return count
+
+    def get_total_ratings(self):
+        count = 0
+        for course in self.courses.all():
+            count += course.ratings.count()
+        return count
+
+    def get_social_buttons(self):
+        social = {
+            'site': 'bi bi-layout-text-window',
+            'youtube': 'bi bi-youtube',
+            'twitter': 'bi bi-twitter',
+            'instagram': 'bi bi-instagram',
+            'facebook': 'bi bi-facebook',
+            'linkedin': 'bi bi-linkedin'
+        }
+        buttons = {}
+        for k, v in social.items():
+            if getattr(self, k) != "":
+                buttons[k.capitalize()] = v
+        return buttons

@@ -81,3 +81,8 @@ def get_rating_stars_empty(value):
         else:
             stars.append('v')
     return stars
+
+
+@register.filter()
+def get_social_url(user, social):
+    return getattr(user, social.lower())

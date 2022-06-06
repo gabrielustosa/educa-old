@@ -85,16 +85,6 @@ class Course(models.Model):
 
         return result
 
-    def get_instructs_list(self):
-        list_instructors = []
-        for instructor in self.instructors.all():
-            if instructor != list_instructors[len(list_instructors) - 1]:
-                list_instructors.append(f'{instructor.name}, ')
-            else:
-                list_instructors.append(instructor.name)
-
-        return list_instructors
-
 
 class CourseRelation(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
