@@ -19,7 +19,11 @@ class CourseCreateView(
     permission_required = 'course.add_course'
 
     def form_valid(self, form):
-        form.instance.owner = self.request.user
+        course = self.get_object()
+        course.instructors.add(self.request.user)
+        user = self.request.user
+        user.is_instructor = True
+        user.save()
         return super().form_valid(form)
 
 

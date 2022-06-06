@@ -31,11 +31,6 @@ class Content(models.Model):
 
 
 class ItemBase(models.Model):
-    owner = models.ForeignKey(
-        User,
-        related_name='%(class)s_related',
-        on_delete=models.CASCADE
-    )
     title = models.CharField('Título', max_length=250)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

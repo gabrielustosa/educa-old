@@ -9,7 +9,9 @@
                          class="inline object-cover w-12 h-12 mr-2 rounded-full">
                 </div>
                 <div>
-                    <h1 class="text-lg font-bold">{{ rating.user.name }}</h1>
+                    <a href="{% url 'profile_view' course.owner.id %}" class="text-lg font-bold">
+                        {{ rating.user.name }}
+                    </a>
                     <div class="flex pt-2">
                         <div class="w-full">
                             <div class="flex space-x-1">

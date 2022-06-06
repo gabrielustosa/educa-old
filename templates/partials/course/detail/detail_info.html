@@ -36,5 +36,8 @@
     </span>
 </div>
 <p class="text-white pt-2">Criado por
-    <span class="text-violet-300 underline">{{ course.owner.name }}</span>
+    {% for instructor in course.instructors.all %}
+        <a href="{% url 'profile_view' instructor.id %}" class="text-violet-300 underline">{{ instructor.name }}</a>
+    {% endfor %}
+
 </p>

@@ -1,8 +1,11 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView
 
 from educa.apps.student.forms import UserCreateForm, UserEditForm
+from educa.apps.student.models import User
 
 
 class StudentRegisterView(CreateView):
@@ -21,8 +24,11 @@ class StudentRegisterView(CreateView):
         return result
 
 
-class StudentEditProfileView(TemplateView):
-    template_name = 'student/edit_profile.html'
+class StudentEditProfileView(
+    LoginRequiredMixin,
+    TemplateView
+):
+    template_name = 'student/profile/edit.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -34,10 +40,21 @@ class StudentEditProfileView(TemplateView):
     def post(self, request, *args, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['form'] = UserEditForm(instance=self.request.user)
-
         form = UserEditForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
 
+        context['form'] = form
+
         return self.render_to_response(context)
+
+
+class StudentProfileView(TemplateView):
+    template_name = 'student/profile/view.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['user'] = get_object_or_404(User, id=self.kwargs.get('user_id'))
+
+        return context

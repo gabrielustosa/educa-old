@@ -7,10 +7,9 @@ from educa.apps.subject.models import Subject
 
 
 class Course(models.Model):
-    owner = models.ForeignKey(
+    instructors = models.ManyToManyField(
         User,
         related_name='courses_created',
-        on_delete=models.CASCADE
     )
     subject = models.ForeignKey(
         Subject,
@@ -85,6 +84,16 @@ class Course(models.Model):
             result[k] = "{:.2f}".format(operation)
 
         return result
+
+    def get_instructs_list(self):
+        list_instructors = []
+        for instructor in self.instructors.all():
+            if instructor != list_instructors[len(list_instructors) - 1]:
+                list_instructors.append(f'{instructor.name}, ')
+            else:
+                list_instructors.append(instructor.name)
+
+        return list_instructors
 
 
 class CourseRelation(models.Model):
