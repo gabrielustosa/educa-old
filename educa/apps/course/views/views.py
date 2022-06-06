@@ -5,6 +5,7 @@ from django.views.generic import ListView, TemplateView
 
 from educa.apps.course.models import Course
 from educa.apps.rating.models import Rating
+from educa.mixin import CourseOwnerMixin, CacheMixin
 
 
 class CourseListView(ListView):
@@ -23,8 +24,8 @@ class CourseOwnerListView(
     permission_required = 'course.add_course'
 
     def get_queryset(self):
-        queryset = super(CourseOwnerListView, self).get_queryset()
-        return queryset.filter(owner=self.request.user)
+        queryset = super().get_queryset()
+        return queryset.filter(instructors=self.request.user)
 
 
 class CourseDetailView(TemplateView):
@@ -58,5 +59,22 @@ class CourseSearchView(CourseListView):
         context = super().get_context_data(**kwargs)
 
         context['search_term'] = self.request.GET.get('q')
+
+        return context
+
+
+class CourseModulesView(
+    LoginRequiredMixin,
+    CourseOwnerMixin,
+    CacheMixin,
+    TemplateView,
+):
+    template_name = 'hx/course/modules.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['course'] = self.get_course()
+        context['modules'] = self.get_course().modules.all()
 
         return context

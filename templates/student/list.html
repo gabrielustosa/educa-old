@@ -3,7 +3,7 @@
 {% load course_filter %}
 
 {% block title %}
-    Meu aprendizado | Educa
+    Meu aprendizado
 {% endblock %}
 
 {% block nav %}
@@ -11,23 +11,22 @@
 {% endblock %}
 
 {% block content %}
-    <div>
-        <div class="bg-zinc-800 w-full">
-            <div class="w-9/12 mx-auto">
-                <h1 class="text-3xl py-8 text-white">Meu aprendizado</h1>
-            </div>
+    <div class="bg-zinc-800 w-full">
+        <div class="w-9/12 mx-auto">
+            <h1 class="text-3xl py-8 text-white">Meu aprendizado</h1>
         </div>
-        <div class="grid grid-cols-4 gap-24 mt-5 mx-44">
-            {% for course in courses %}
-                {% with current_lesson=request.user|get_current_lesson:course %}
-                    <a href="{% url 'student:view' course.id current_lesson %}" class="flex flex-col">
-                        <img src="{{ course.image.url }}"
-                             alt="Imagem do curso {{ course.title }}"
-                             class="object-contain">
-                        <h5 class="text-lg font-semibold">{{ course.title }}</h5>
-                        <div>
-                            {% for instructor in course.instructors.all %}
-                                <span class="text-xs text-gray-400">
+    </div>
+    <div class="grid grid-cols-4 gap-24 mt-5 mx-44">
+        {% for course in courses %}
+            {% with current_lesson=request.user|get_current_lesson:course %}
+                <a href="{% url 'student:view' course.id current_lesson %}" class="flex flex-col">
+                    <img src="{{ course.image.url }}"
+                         alt="Imagem do curso {{ course.title }}"
+                         class="object-contain">
+                    <h5 class="text-lg font-semibold">{{ course.title }}</h5>
+                    <div>
+                        {% for instructor in course.instructors.all %}
+                            <span class="text-xs text-gray-400">
                                     {{ instructor.name }}{% if foorloop.is_last %}, {% endif %}
                                 </span>
                             {% endfor %}
@@ -55,6 +54,5 @@
                     </a>
                 {% endwith %}
             {% endfor %}
-        </div>
     </div>
 {% endblock %}

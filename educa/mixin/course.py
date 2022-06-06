@@ -9,7 +9,7 @@ from educa.apps.module.models import Module
 class CourseOwnerMixin:
     def dispatch(self, request, *args, **kwargs):
         course = self.get_course()
-        if course.owner != request.user:
+        if request.user not in course.instructors.all():
             raise PermissionDenied()
         return super().dispatch(request, *args, **kwargs)
 
