@@ -5,11 +5,11 @@
         <div class="py-4">
             <div class="flex">
                 <div class="mx-5 pt-3">
-                    <img src="{{ request.user.get_url_profile }}" alt="Imagem de perfil"
+                    <img src="{{ rating.user.get_url_profile }}" alt="Imagem de perfil"
                          class="inline object-cover w-12 h-12 mr-2 rounded-full">
                 </div>
                 <div>
-                    <a href="{% url 'profile_view' course.owner.id %}" class="text-lg font-bold">
+                    <a href="{% url 'profile_view' rating.user.id %}" class="text-lg font-bold">
                         {{ rating.user.name }}
                     </a>
                     <div class="flex pt-2">

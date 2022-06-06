@@ -34,10 +34,12 @@
                         </div>
                     </div>
                 {% endif %}
-                <div class="py-5">
-                    <h1 class="py-2 text-xl font-bold">Sobre</h1>
-                    <p>{{ user.bio }}</p>
-                </div>
+                {% if user.bio %}
+                    <div class="py-5">
+                        <h1 class="py-2 text-xl font-bold">Sobre</h1>
+                        <p>{{ user.bio }}</p>
+                    </div>
+                {% endif %}
                 {% if user.is_instructor %}
                     <div class="py-5">
                         <h1 class="py-2 text-xl font-bold">Meus cursos ({{ user.courses.all|length }})</h1>
