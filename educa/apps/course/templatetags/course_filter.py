@@ -86,3 +86,8 @@ def get_rating_stars_empty(value):
 @register.filter()
 def get_social_url(user, social):
     return getattr(user, social.lower())
+
+
+@register.filter()
+def get_rating_course(user, course):
+    return Rating.objects.filter(user=user, course=course).first().rating

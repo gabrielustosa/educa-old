@@ -46,39 +46,7 @@
                     </p>
                 </div>
                 <div class="my-7">
-                    <h1 class="p-5 text-2xl font-bold">Instrutores</h1>
-                    <div class="pl-5">
-                        {% for instructor in course.instructors.all %}
-                            <div class="pb-4">
-                                <a href="{% url 'profile_view' instructor.id %}"
-                                   class="text-violet-800 text-xl font-bold underline">
-                                    {{ instructor.name }}
-                                </a>
-                                <p class="text-gray-500">{{ instructor.job }}</p>
-                                <div class="flex items-center py-2 space-x-6">
-                                    <img src="{{ instructor.get_url_profile }}" alt="Imagem de perfil"
-                                         class="inline object-cover w-24 h-24 mr-2 rounded-full">
-                                    <div class="text-neutral-800">
-                                        <div>
-                                            <i class="bi bi-award-fill"></i>
-                                            <span class="pl-1">{{ instructor.get_total_ratings }} Avaliações</span>
-                                        </div>
-                                        <div>
-                                            <i class="bi bi-people-fill"></i>
-                                            <span class="pl-1">{{ instructor.get_total_students }} Alunos</span>
-                                        </div>
-                                        <div>
-                                            <i class="bi bi-play-circle-fill"></i>
-                                            <span class="pl-1">{{ instructor.courses.all|length }} Cursos</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="text-sm pt-2">
-                                    {{ instructor.bio }}
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
+                    {% include 'partials/course/detail/instructors.html' %}
                 </div>
                 <div id="rating">
                     {% include 'partials/course/detail/rating/rating_feedback.html' %}
