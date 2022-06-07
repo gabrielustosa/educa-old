@@ -101,7 +101,7 @@ class ContentDeleteView(
 
         context['page_title'] = 'Detelando contéudo'
         context['delete_message'] = f'Você tem certeza que deseja apagar o conteúdo "{self.get_object().item.title}"?'
-        context['success_url'] = self.get_success_url()
+        context['cancel_url'] = self.get_success_url()
 
         return context
 

@@ -12,11 +12,20 @@ class CourseCreateView(
     PermissionRequiredMixin,
     CreateView,
 ):
-    template_name = 'course/create.html'
+    template_name = 'partials/crud/create_or_update.html'
     model = Course
     fields = ['title', 'description', 'subject', 'image']
     success_url = reverse_lazy('course:mine')
     permission_required = 'course.add_course'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['page_title'] = 'Criando curso'
+        context['content_title'] = 'Criar curso'
+        context['button_label'] = 'Criar'
+
+        return context
 
     def form_valid(self, form):
         course = self.get_object()
@@ -33,7 +42,7 @@ class CourseUpdateView(
     CourseOwnerMixin,
     UpdateView,
 ):
-    template_name = 'course/update.html'
+    template_name = 'partials/crud/create_or_update.html'
     model = Course
     fields = ['title', 'description', 'subject', 'image']
     success_url = reverse_lazy('course:mine')
@@ -42,7 +51,12 @@ class CourseUpdateView(
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         context['modules'] = Module.objects.filter(course=self.get_object())
+        context['page_title'] = 'Editando curso'
+        context['content_title'] = 'Editar curso'
+        context['button_label'] = 'Salvar'
+
         return context
 
     def get_course(self):
@@ -55,11 +69,22 @@ class CourseDeleteView(
     CourseOwnerMixin,
     DeleteView,
 ):
-    template_name = 'course/delete.html'
+    template_name = 'partials/crud/delete.html'
     model = Course
     success_url = reverse_lazy('course:mine')
     permission_required = 'course.delete_course'
     pk_url_kwarg = 'course_id'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        obj = self.get_object()
+
+        context['page_title'] = 'Detelando curso'
+        context['delete_message'] = f'Você tem certeza que deseja apagar o curso "{obj.title}"?'
+        context['cancel_url'] = self.get_success_url()
+
+        return context
 
     def get_course(self):
         return self.get_object()

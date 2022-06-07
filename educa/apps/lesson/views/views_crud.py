@@ -6,30 +6,33 @@ from django.views.generic import TemplateView, CreateView, DeleteView, UpdateVie
 
 from educa.apps.content.models import Content
 from educa.apps.lesson.models import Lesson
-from educa.mixin import CourseOwnerMixin
-from educa.apps.module.models import Module
+from educa.mixin import CourseOwnerMixin, CacheMixin
 from educa.utils.utils import content_is_instance
 
 
 class LessonCreateView(
     LoginRequiredMixin,
     PermissionRequiredMixin,
+    CacheMixin,
     CourseOwnerMixin,
     CreateView,
 ):
-    template_name = 'lesson/create.html'
+    template_name = 'partials/crud/create_or_update.html'
     model = Lesson
     fields = ['title', 'video']
     permission_required = 'lesson.add_lesson'
 
-    @cached_property
-    def get_module(self):
-        module_id = self.kwargs.get('module_id')
-        module = get_object_or_404(Module, id=module_id)
-        return module
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['page_title'] = 'Criando aula'
+        context['content_title'] = 'Criar aula'
+        context['button_label'] = 'Criar'
+
+        return context
 
     def form_valid(self, form):
-        module = self.get_module
+        module = self.get_module()
         form.instance.module = module
         form.instance.course = module.course
         return super().form_valid(form)
@@ -38,26 +41,22 @@ class LessonCreateView(
         return reverse_lazy('module:detail', kwargs={'module_id': self.kwargs.get('module_id')})
 
     def get_course(self):
-        return self.get_module.course
+        return self.get_module().course
 
 
 class LessonDetailView(
     LoginRequiredMixin,
     PermissionRequiredMixin,
     CourseOwnerMixin,
+    CacheMixin,
     TemplateView,
 ):
     template_name = 'lesson/detail.html'
     permission_required = 'lesson.view_lesson'
 
-    @cached_property
-    def get_lesson(self):
-        lesson_id = get_object_or_404(Lesson, id=self.kwargs.get('lesson_id'))
-        return lesson_id
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        lesson = self.get_lesson
+        lesson = self.get_lesson()
         contents = Content.objects.filter(lesson=lesson).order_by('order')
         contents_list = []
         for content in contents:
@@ -68,7 +67,7 @@ class LessonDetailView(
         return context
 
     def get_course(self):
-        return self.get_lesson.course
+        return self.get_lesson().course
 
 
 class LessonDeleteView(
@@ -77,10 +76,19 @@ class LessonDeleteView(
     CourseOwnerMixin,
     DeleteView,
 ):
-    template_name = 'lesson/delete.html'
+    template_name = 'partials/crud/delete.html'
     model = Lesson
     permission_required = 'lessons.delete_lesson'
     pk_url_kwarg = 'lesson_id'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['page_title'] = 'Detelando aula'
+        context['delete_message'] = f'Você tem certeza que deseja apagar a aula "{self.get_object().title}"?'
+        context['cancel_url'] = self.get_success_url()
+
+        return context
 
     def get_success_url(self):
         module_id = self.get_object().module.id
@@ -96,11 +104,20 @@ class LessonUpdateView(
     CourseOwnerMixin,
     UpdateView,
 ):
-    template_name = 'lesson/create.html'
+    template_name = 'partials/crud/create_or_update.html'
     model = Lesson
     fields = ['title', 'video']
     permission_required = 'lesson.change_lesson'
     pk_url_kwarg = 'lesson_id'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['page_title'] = 'Editando aula'
+        context['content_title'] = 'Editar aula'
+        context['button_label'] = 'Salvar'
+
+        return context
 
     def get_success_url(self):
         module_id = self.get_object().module.id
