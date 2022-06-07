@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% load tailwind_filters %}
+
+{% block title %}
+    {{ page_title }}
+{% endblock %}
+
+{% block nav %}
+    {% include 'partials/base/nav_home.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="grid grid-cols-2">
+        <div class="pt-5">
+            <h2 class="text-center text-3xl pb-6">{{ content_title }}</h2>
+            <div class="flex flex-col mx-auto w-1/2">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <label class="block text-gray-700 text-sm font-bold my-3"> Adicionar instrutor
+                        <input type="text" name="instructor" placeholder="Adicione o e-mail de outro instrutor"
+                               class="textinput border-gray-300 focus:outline-none leading-normal w-full text-gray-700 border block rounded-lg appearance-none py-2 bg-white px-4">
+                    </label>
+                    <button type="submit"
+                            class="bg-violet-700 px-4 py-2 my-3 w-full rounded-sm text-white">
+                        {{ button_label }}
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="pt-5">
+            <h3 class="text-2xl font-bold text-center">Ordem dos módulos</h3>
+            <form class="sortable pt-3 mx-auto w-1/3 text-center" hx-post="{% url 'module:order' course.id %}"
+                  hx-trigger="end">
+                {% csrf_token %}
+                {% include 'hx/module/sortable.html' %}
+            </form>
+            <div class="text-center pt-5">
+                <a href="{% url 'module:create' course.id %}"
+                   class="bg-violet-700 p-2 text-white rounded-lg hover:text-violet-500">
+                    Criar novo Módulo
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

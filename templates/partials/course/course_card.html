@@ -9,7 +9,7 @@
         <div>
             {% for instructor in course.instructors.all %}
                 <span class="text-xs text-gray-400">
-                    {{ instructor.name }}{% if foorloop.is_last %}, {% endif %}
+                    {{ instructor.name }}{% if not forloop.last %}, {% endif %}
                 </span>
             {% endfor %}
         </div>

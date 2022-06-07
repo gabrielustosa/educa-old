@@ -42,9 +42,9 @@
                 {% endif %}
                 {% if user.is_instructor %}
                     <div class="py-5">
-                        <h1 class="py-2 text-xl font-bold">Meus cursos ({{ user.courses.all|length }})</h1>
+                        <h1 class="py-2 text-xl font-bold">Meus cursos ({{ user.courses_created.all|length }})</h1>
                         <div class="grid grid cols-2">
-                            {% for course in user.courses.all %}
+                            {% for course in user.courses_created.all %}
                                 {% include 'partials/course/course_card.html' %}
                             {% endfor %}
                         </div>

@@ -39,7 +39,7 @@
     {% for instructor in course.instructors.all %}
         <span class="text-violet-300">
             <a href="{% url 'profile_view' instructor.id %}" class="underline">
-                {{ instructor.name }}</a><span>{% if foorloop.is_last %}, {% endif %}</span>
+                {{ instructor.name }}</a><span>{% if not forloop.last %}, {% endif %}</span>
         </span>
     {% endfor %}
 
