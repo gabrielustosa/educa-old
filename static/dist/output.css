@@ -29,7 +29,7 @@
 1. Use a consistent sensible line-height in all browsers.
 2. Prevent adjustments of font size after orientation changes in iOS.
 3. Use a more readable tab size.
-4. Use the user's configured `sans` font-family by default.
+4. Use the student's configured `sans` font-family by default.
 */
 
 html {
@@ -115,7 +115,7 @@ strong {
 }
 
 /*
-1. Use the user's configured `mono` font family by default.
+1. Use the student's configured `mono` font family by default.
 2. Correct the odd `em` font sizing in all browsers.
 */
 
@@ -343,7 +343,7 @@ textarea {
 
 /*
 1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)
-2. Set the default placeholder color to the user's configured gray 400 color.
+2. Set the default placeholder color to the student's configured gray 400 color.
 */
 
 input::-moz-placeholder, textarea::-moz-placeholder {
