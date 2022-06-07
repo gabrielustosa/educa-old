@@ -91,3 +91,10 @@ def get_social_url(user, social):
 @register.filter()
 def get_rating_course(user, course):
     return Rating.objects.filter(user=user, course=course).first().rating
+
+
+@register.filter()
+def cut_word(word, size):
+    if len(word) > size:
+        return f'{word[:size]}...'
+    return word

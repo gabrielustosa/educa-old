@@ -13,7 +13,7 @@
 {% block content %}
     <div class="bg-zinc-800 w-full">
         <div class="w-9/12 mx-auto">
-            <h1 class="text-3xl py-8 text-white">Meu cursos</h1>
+            <h1 class="text-3xl py-8 text-white">Meus cursos</h1>
         </div>
     </div>
     <div class="grid grid-cols-4 gap-24 mt-5 mx-44">
@@ -23,17 +23,17 @@
                     <img src="{{ course.image.url }}"
                          alt="Imagem do curso {{ course.title }}"
                          class="object-contain">
-                    <h5 class="text-lg font-semibold">{{ course.title }}</h5>
-                    <div class="flex flex-col w-1/2 mx-auto text-lg py-2">
-                        <span class="hover:text-violet-500 cursor-pointer"
+                    <h5 class="text-lg font-semibold px-2">{{ course.title }}</h5>
+                    <div class="flex flex-col w-1/2 text-sm text-center mx-auto text-lg pt-3 pb-4 space-y-2">
+                        <span class="bg-violet-700 text-white rounded-lg hover:text-violet-500 cursor-pointer"
                               hx-get="{% url 'course:modules' course.id %}"
                               hx-target="#modal-body">
                             Gerenciar
                         </span>
-                        <a href="{% url 'course:update' course.id %}" class="hover:text-violet-500">
+                        <a href="{% url 'course:update' course.id %}" class="bg-violet-700 text-white rounded-lg hover:text-violet-500">
                             Atualizar
                         </a>
-                        <a href="{% url 'course:delete' course.id %}" class="hover:text-violet-500">
+                        <a href="{% url 'course:delete' course.id %}" class="bg-violet-700 text-white rounded-lg hover:text-violet-500">
                             Deletar
                         </a>
                     </div>
