@@ -1,29 +1,28 @@
 {% load course_filter %}
 
-<div class="row row-cols-auto">
+
+<div class="mx-10 grid grid-cols-3 gap-12">
     {% for content in contents %}
         {% with item=content.item %}
-            <div class="col-6">
-                <div class="card m-2">
-                    <div class="card-header" style="font-weight: bold;">
-                        {{ item.title }} ({{ item|model_verbose }})
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <div class="d-flex justify-content-between">
-                                <a href="{% url 'content:update' lesson.id  item|model_name  item.id %}">
-                                    Editar
-                                </a>
-                                <a href="{% url 'content:delete' content.id %}">
-                                    Deletar
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+            <div class="flex mt-5 flex-col shadow-xl">
+                <h5 class="font-semibold p-3">{{ item.title }} ({{ item|model_verbose }})</h5>
+                <div class="flex flex-col w-1/2 text-sm text-center mx-auto text-lg pb-4 space-y-2">
+                    <a href="{% url 'content:update' lesson.id  item|model_name  item.id %}"
+                       class="bg-violet-600 text-white rounded-lg hover:text-violet-500">
+                        Atualizar
+                    </a>
+                    <a href="{% url 'content:delete' content.id %}"
+                       class="bg-violet-600 text-white rounded-lg hover:text-violet-500">
+                        Deletar
+                    </a>
                 </div>
             </div>
         {% endwith %}
-    {% empty %}
-        <h5 class="mx-auto pb-2">Aqui ainda não tem conteúdos.</h5>
     {% endfor %}
 </div>
+
+{% if not contents %}
+    <h5 class="text-lg text-center pt-10">Essa aula ainda não tem conteúdos.</h5>
+{% endif %}
+
+

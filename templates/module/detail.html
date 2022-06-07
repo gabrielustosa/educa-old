@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="grid grid-cols-3 mt-10 mx-20">
+    <div class="grid grid-cols-3 my-10 mx-20">
         <div class="col-span-2">
             <h1 class="pb-10 text-2xl font-bold w-full">Aulas | Módulo {{ module.title }}</h1>
             <div class="grid grid-cols-3 gap-12">
@@ -55,14 +55,14 @@
             </div>
         </div>
     </div>
-    <div class="absolute left-0 bottom-0 mx-10 space-x-3 py-3">
-        <a href="{% url 'module:update' module.id %}"
-           class="bg-violet-700 text-white rounded-lg p-2 hover:text-violet-500">
-            Editar módulo
-        </a>
+    <div class='absolute bottom-2 w-full'>
         <a href="{% url 'module:delete' module.id %}"
-           class="bg-violet-700 text-white rounded-lg p-2 hover:text-violet-500">
+           class="bg-violet-700 float-right mr-2 text-white rounded-lg p-2 hover:text-violet-500">
             Deletar módulo
+        </a>
+        <a href="{% url 'module:update' module.id %}"
+           class="float-right bg-violet-700 mr-5 text-white rounded-lg p-2 hover:text-violet-500">
+            Editar módulo
         </a>
     </div>
 {% endblock %}

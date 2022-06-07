@@ -16,7 +16,7 @@ class ContentCreateUpdateView(
     CourseOwnerMixin,
     TemplateView,
 ):
-    template_name = 'content/create.html'
+    template_name = 'partials/crud/create_or_update.html'
     permission_required = 'content.add_content'
     lesson = None
     model = None
@@ -45,6 +45,15 @@ class ContentCreateUpdateView(
 
         context['form'] = form
 
+        if self.kwargs.get('object_id'):
+            context['page_title'] = 'Editando conteúdo'
+            context['content_title'] = 'Editar conteúdo'
+            context['button_label'] = 'Salvar'
+        else:
+            context['page_title'] = 'Criando conteúdo'
+            context['content_title'] = 'Criar conteúdo'
+            context['button_label'] = 'Criar'
+
         return render(request, self.template_name, context=context)
 
     def post(self, request, *args, **kwargs):
@@ -67,6 +76,7 @@ class ContentCreateUpdateView(
         context = super().get_context_data()
         context['form'] = form
         context['object'] = self.object
+        context['button_label'] = 'Salvar'
 
         return render(request, self.template_name, context=context)
 
@@ -81,10 +91,19 @@ class ContentDeleteView(
     CourseOwnerMixin,
     DeleteView,
 ):
-    template_name = 'content/delete.html'
+    template_name = 'partials/crud/delete.html'
     model = Content
     permission_required = 'content.delete_content'
     pk_url_kwarg = 'lesson_id'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['page_title'] = 'Detelando contéudo'
+        context['delete_message'] = f'Você tem certeza que deseja apagar o conteúdo "{self.get_object().item.title}"?'
+        context['success_url'] = self.get_success_url()
+
+        return context
 
     def get_success_url(self):
         lesson_id = self.get_object().lesson.id
