@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_tailwind',
     'django_summernote',
+    'django_htmx',
 
     # my apps
     'educa.apps.course',
@@ -62,6 +63,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django_htmx.middleware.HtmxMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',

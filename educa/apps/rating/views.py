@@ -6,11 +6,12 @@ from django.urls import reverse
 from django.views.generic import TemplateView, ListView
 
 from educa.apps.rating.models import Rating
-from educa.mixin import CacheMixin
+from educa.mixin import CacheMixin, HTMXRequireMixin
 from educa.utils.utils import render_error
 
 
 class RatingView(
+    HTMXRequireMixin,
     LoginRequiredMixin,
     CacheMixin,
     ListView,
@@ -36,6 +37,7 @@ class RatingView(
 
 
 class RatingRenderCreateView(
+    HTMXRequireMixin,
     LoginRequiredMixin,
     CacheMixin,
     TemplateView,
@@ -50,6 +52,7 @@ class RatingRenderCreateView(
 
 
 class RatingCreateView(
+    HTMXRequireMixin,
     LoginRequiredMixin,
     CacheMixin,
     TemplateView,

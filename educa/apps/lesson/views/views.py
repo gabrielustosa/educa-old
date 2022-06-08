@@ -2,10 +2,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
 from educa.apps.lesson.models import Lesson
-from educa.mixin import InstructorRequiredMixin, CacheMixin
+from educa.mixin import InstructorRequiredMixin, CacheMixin, HTMXRequireMixin
 
 
 class LessonOrderView(
+    HTMXRequireMixin,
     LoginRequiredMixin,
     InstructorRequiredMixin,
     CacheMixin,

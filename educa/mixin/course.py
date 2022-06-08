@@ -14,6 +14,13 @@ class InstructorRequiredMixin:
         return super().dispatch(request, *args, **kwargs)
 
 
+class HTMXRequireMixin:
+    def dispatch(self, request, *args, **kwargs):
+        if not request.htmx:
+            raise PermissionDenied()
+        return super().dispatch(request, *args, **kwargs)
+
+
 class CacheMixin:
     def get_kwargs(self):
         return self.kwargs

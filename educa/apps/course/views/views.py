@@ -8,7 +8,7 @@ from django.views.generic import ListView, TemplateView
 from educa.apps.course.models import Course
 from educa.apps.rating.models import Rating
 from educa.apps.student.models import User
-from educa.mixin import InstructorRequiredMixin, CacheMixin
+from educa.mixin import InstructorRequiredMixin, CacheMixin, HTMXRequireMixin
 from educa.utils.utils import render_error
 
 
@@ -66,6 +66,7 @@ class CourseSearchView(CourseListView):
 
 
 class CourseModulesView(
+    HTMXRequireMixin,
     LoginRequiredMixin,
     InstructorRequiredMixin,
     CacheMixin,
@@ -83,6 +84,7 @@ class CourseModulesView(
 
 
 class InstructorAddView(
+    HTMXRequireMixin,
     LoginRequiredMixin,
     InstructorRequiredMixin,
     CacheMixin,
@@ -122,6 +124,7 @@ class InstructorAddView(
 
 
 class InstructorRemoveView(
+    HTMXRequireMixin,
     LoginRequiredMixin,
     InstructorRequiredMixin,
     CacheMixin,
