@@ -117,6 +117,9 @@ class InstructorAddView(
 
         course.instructors.add(user)
 
+        user.is_instructor = True
+        user.save()
+
         return self.render_to_response(context)
 
 
@@ -146,5 +149,10 @@ class InstructorRemoveView(
             return HttpResponse(render_error(error_messages), status=400)
 
         course.instructors.remove(instructor_id)
+
+        user = User.objects.get(id=instructor_id)
+
+        if len(user.courses_created.all()) == 0:
+            user.is_instructor = False
 
         return self.render_to_response(context)

@@ -9,6 +9,9 @@
     {% compress css %}
         <link rel="stylesheet" href="{% static 'dist/output.css' %}">
     {% endcompress %}
+    <style>
+        {% block css_internal %}{% endblock %}
+    </style>
 
 
 </head>

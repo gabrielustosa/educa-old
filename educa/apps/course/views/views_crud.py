@@ -36,7 +36,6 @@ class CourseCreateView(
 
         course = get_object_or_404(Course, id=form.instance.id)
         course.instructors.add(user)
-        course.save()
 
         user.is_instructor = True
         user.save()
