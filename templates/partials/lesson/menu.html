@@ -1,0 +1,38 @@
+<div class="flex justify-between border-b-2 border-gray-300">
+    <div id="search"
+         hx-get="{% url 'student:search' course.id %}"
+         hx-target="#content"
+            {% if select == 'search' %} class="border-b-2 border-gray-600" {% endif %}>
+        <h5><i class="bi bi-search"></i></h5>
+    </div>
+    <div id="overview"
+         hx-get="{% url 'student:overview' course.id %}"
+         hx-target="#content"
+            {% if select == 'overview' %} class="border-b-2 border-gray-600" {% endif %}>
+        <h5>Visão geral</h5>
+    </div>
+    <div id="questions-answers"
+         hx-get="{% url 'question:course' course.id %}"
+         hx-target="#content"
+            {% if select == 'question' %} class="border-b-2 border-gray-600" {% endif %}>
+        <h5>Perguntas e respostas</h5>
+    </div>
+    <div id="notice"
+         hx-get="{% url 'notice:view' course.id %}"
+         hx-target="#content"
+            {% if select == 'notice' %} class="border-b-2 border-gray-600" {% endif %}>
+        <h5>Avisos</h5>
+    </div>
+    <div id="note"
+         hx-get="{% url 'note:view' %}"
+         hx-target="#content"
+            {% if select == 'note' %} class="border-b-2 border-gray-600" {% endif %}>
+        <h5>Observações</h5>
+    </div>
+    <div id="rating"
+         hx-get="{% url 'rating:view' course.id %}"
+         hx-target="#content"
+            {% if select == 'rating' %} class="border-b-2 border-gray-600" {% endif %}>
+        <h5>Avaliações</h5>
+    </div>
+</div>

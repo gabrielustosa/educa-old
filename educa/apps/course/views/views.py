@@ -26,8 +26,7 @@ class CourseOwnerListView(
     template_name = 'course/mine.html'
 
     def get_queryset(self):
-        queryset = super().get_queryset()
-        return queryset.filter(instructors=self.request.user)
+        return self.request.user.courses_created.all()
 
 
 class CourseDetailView(TemplateView):
@@ -105,6 +104,9 @@ class InstructorAddView(
         if course.instructors.filter(email=instructor_email).exists():
             error_messages.append('Esse usuário já é um instrutor do curso.')
 
+        if self.request.user != course.owner:
+            error_messages.append('Apenas o dono do curso pode adicionar instrutores.')
+
         user = None
 
         try:
@@ -145,6 +147,9 @@ class InstructorRemoveView(
 
         if instructor_id == self.request.user.id:
             error_messages.append('Você não pode se remover.')
+
+        if self.request.user != course.owner:
+            error_messages.append('Apenas o dono do curso pode remover instrutores.')
 
         if error_messages:
             return HttpResponse(render_error(error_messages), status=400)

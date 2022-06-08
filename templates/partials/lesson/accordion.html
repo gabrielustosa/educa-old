@@ -1,0 +1,112 @@
+{% load course_filter %}
+
+<div>
+    <h1 class="text-lg pl-3 font-bold py-3">Conteúdo do curso</h1>
+</div>
+<div class="overflow-auto" style="max-height: 80vh;">
+    {% for module in modules %}
+        <div id="accordion-collapse" data-accordion="collapse">
+            <button type="button"
+                    class="flex items-center p-4 text-lg w-full text-left border border-gray-200 focus:ring-4 focus:ring-gray-200"
+                    data-accordion-target="#accordion-module-{{ module.id }}">
+                <span class="grid grid-cols-4 content-between w-full">
+                      <span class="pl-3 text-black col-span-3">
+                          <span class="flex flex-col">
+                              <span class="font-bold">Módulo {{ module.order }}: {{ module.title }}</span>
+                              <span class="text-xs pt-1">0 / {{ module.lessons.all|length }} | 1h</span>
+                          </span>
+                      </span>
+                </span>
+                <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor"
+                     viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                          clip-rule="evenodd">
+                    </path>
+                </svg>
+            </button>
+            <div id="accordion-module-{{ module.id }}" class="hidden">
+                <div class="p-5 border border-t-0 border-gray-200 space-y-2 dark:border-gray-70">
+                    {% for lesson in module.lessons|sort_order %}
+                        <div class="relative">
+                            <div class="py-2"
+                                 hx-get="{% url 'student:select_video' lesson.id %}"
+                                 hx-target="#video">
+                                <p class="pl-3">{{ lesson.order }}. {{ lesson.title }}</p>
+                                <span class="pl-3 pt-1 bi bi-play-circle-fill text-gray-600">
+                                    <span class="pl-2">7m</span>
+                                </span>
+                            </div>
+                            {% if lesson.contents.exists %}
+                                <div class="border-2 pl-1 pt-1 space-x-1 flex border-gray-800 absolute right-0 bottom-0"
+                                     data-dropdown-toggle="accordion-dropdown-{{ lesson.id }}"
+                                     data-dropdown-placement="left-start">
+                                    <i class="bi bi-folder-fill text-gray-700"></i>
+                                    <span>Recursos</span>
+                                    <svg data-accordion-icon class="w-4 h-4 shrink-0" fill="currentColor"
+                                         viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                              clip-rule="evenodd">
+                                        </path>
+                                    </svg>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div id="accordion-dropdown-{{ lesson.id }}"
+                             class="z-10 hidden bg-white divide-y divide-gray-600 p-5 rounded shadow w-64">
+                            <ul class="py-1 text-center shadow-lg" aria-labelledby="dropdownDefault">
+                                {% for subject in subjects %}
+                                    {% for content in lesson.contents.all %}
+                                        {% with item=content.item %}
+                                            {% if item|item_is_instance:'text' %}
+                                                <li class="p-2">
+                                                    <a id="content-text"
+                                                       class="hover:text-violet-500 cursor-pointer"
+                                                       hx-get="{% url 'student:lesson_note' content.id %}"
+                                                       hx-target="#modal-note">
+                                                        <i class="bi bi-card-text pr-1"></i>
+                                                        {{ item.title|cut_word:15 }}
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                            {% if item|item_is_instance:'file' %}
+                                                <li class="p-2">
+                                                    <a class="hover:text-violet-500 cursor-pointer"
+                                                       href="{{ item.file.url }}" download>
+                                                        <i class="bi bi-file-earmark pr-1"></i>
+                                                        {{ item.title|cut_word:15 }}
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                            {% if item|item_is_instance:'image' %}
+                                                <li class="p-2">
+                                                    <a class="hover:text-violet-500 cursor-pointer"
+                                                       href="{{ item.image.url }}" download>
+                                                        <i class="bi bi-file-earmark-image pr-1"></i>
+                                                        {{ item.title|cut_word:15 }}
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                            {% if item|item_is_instance:'link' %}
+                                                <li class="p-2">
+                                                    <a class="hover:text-violet-500 cursor-pointer"
+                                                       href="{{ item.url }}"
+                                                       target="_blank">
+                                                        <i class="bi bi-link-45deg pr-1"></i>
+                                                        {{ item.title|cut_word:15 }}
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                        {% endwith %}
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

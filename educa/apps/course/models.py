@@ -19,6 +19,11 @@ class Course(models.Model):
     )
     title = models.CharField('Título', max_length=200)
     slug = models.SlugField(unique=True)
+    owner = models.ForeignKey(
+        User,
+        related_name='courses_own',
+        on_delete=models.CASCADE,
+    )
     short_description = models.TextField('Descrição curta')
     learn_description = models.TextField('Descrição de aprendizado')
     requirements = models.TextField('Requirementos para o curso')

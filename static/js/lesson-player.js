@@ -1,10 +1,7 @@
 (async function () {
     const playVideo = videoId => {
-        if (player) {
-            player.destroy()
-        }
         player = new YT.Player('player', {
-            'videoId': videoId,
+            videoId: videoId,
             events: {
                 'onStateChange': onPlayerStateChange,
             }

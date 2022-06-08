@@ -3,14 +3,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import TemplateView
-from django.core.paginator import Paginator
 
 from educa.apps.course.models import Course, CourseRelation
-from educa.apps.note.models import Note
-from educa.apps.notice.models import Notice
-from educa.apps.question.models import Question
-from educa.apps.rating.models import Rating
-from educa.settings import QUESTION_PAGINATE_BY
 from educa.mixin import CacheMixin
 
 
@@ -39,35 +33,51 @@ class StudentCourseView(
         context['modules'] = course.modules.all()
         context['current_lesson'] = self.get_lesson()
 
-        context_object = None
-
         match self.request.session.get(f'section-{course.id}'):
             case 'search':
-                template_section = 'hx/course/search.html'
+                select = 'search'
             case 'overview':
-                template_section = 'hx/course/overview.html'
+                select = 'overview'
             case 'question':
-                template_section = 'hx/question/course/questions.html'
-                objects = Question.objects.filter(lesson__course=course)
-                paginator = Paginator(objects, QUESTION_PAGINATE_BY)
-                context_object = paginator.page(1).object_list
-                context['paginator'] = paginator
-                context['page_obj'] = paginator.get_page(1)
-                context['scroll_url'] = reverse('question_filter:all_questions', kwargs={'course_id': course.id})
+                select = 'question'
             case 'notice':
-                template_section = 'hx/notice/view.html'
-                context_object = Notice.objects.filter(course=course)
+                select = 'notice'
             case 'note':
-                template_section = 'hx/note/view.html'
-                context_object = Note.objects.filter(user=self.request.user, lesson=self.get_lesson())
+                select = 'note'
             case 'rating':
-                template_section = 'hx/rating/rating.html'
-                context_object = Rating.objects.filter(course=course)
+                select = 'rating'
             case _:
-                template_section = 'hx/course/overview.html'
+                select = 'overview'
 
-        context['template_section'] = template_section
-        context['context_object'] = context_object
+        context['select'] = select
+
+        # match self.request.session.get(f'section-{course.id}'):
+        #     case 'search':
+        #         template_section = 'hx/course/search.html'
+        #     case 'overview':
+        #         template_section = 'hx/course/overview.html'
+        #     case 'question':
+        #         template_section = 'hx/question/course/questions.html'
+        #         objects = Question.objects.filter(lesson__course=course)
+        #         paginator = Paginator(objects, QUESTION_PAGINATE_BY)
+        #         context_object = paginator.page(1).object_list
+        #         context['paginator'] = paginator
+        #         context['page_obj'] = paginator.get_page(1)
+        #         context['scroll_url'] = reverse('question_filter:all_questions', kwargs={'course_id': course.id})
+        #     case 'notice':
+        #         template_section = 'hx/notice/view.html'
+        #         context_object = Notice.objects.filter(course=course)
+        #     case 'note':
+        #         template_section = 'hx/note/view.html'
+        #         context_object = Note.objects.filter(user=self.request.user, lesson=self.get_lesson())
+        #     case 'rating':
+        #         template_section = 'hx/rating/rating.html'
+        #         context_object = Rating.objects.filter(course=course)
+        #     case _:
+        #         template_section = 'hx/course/overview.html'
+        #
+        # context['template_section'] = template_section
+        # context['context_object'] = context_object
 
         return context
 

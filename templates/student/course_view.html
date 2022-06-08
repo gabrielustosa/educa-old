@@ -6,48 +6,33 @@
     {{ course.title }}
 {% endblock %}
 
+{% block nav %}
+    {% include 'partials/base/nav_lesson.html' %}
+{% endblock %}
+
 {% block content %}
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col" style="padding: 0;">
-                <div id="video">
-                    {% include 'hx/lesson/video.html' %}
-                </div>
-                <div id="menu" class="d-flex justify-content-between">
-                    <div id="search" hx-get="{% url 'student:search' course.id %}" hx-target="#content">
-                        <h5><i class="bi bi-search"></i></h5>
-                    </div>
-                    <div id="overview" hx-get="{% url 'student:overview' course.id %}" hx-target="#content">
-                        <h5>Visão geral</h5>
-                    </div>
-                    <div id="questions-answers" hx-get="{% url 'question:course' course.id %}" hx-target="#content">
-                        <h5>Perguntas e respostas</h5>
-                    </div>
-                    <div id="notice" hx-get="{% url 'notice:view' course.id %}" hx-target="#content">
-                        <h5>Avisos</h5>
-                    </div>
-                    <div id="note" hx-get="{% url 'note:view' %}" hx-target="#content">
-                        <h5>Observações</h5>
-                    </div>
-                    <div id="rating" hx-get="{% url 'rating:view' course.id %}" hx-target="#content">
-                        <h5>Avaliações</h5>
-                    </div>
-                </div>
-                <div id="content">
-                    {% include template_section %}
-                </div>
+    <div class="grid grid-cols-4">
+        <div class="col-span-3">
+            <div id="video">
+                {% include 'hx/lesson/video.html' %}
             </div>
-            <div class="col" style="padding: 0;">
-                {% include 'partials/course/accordion.html' %}
+            <div id="menu" class="mx-10 items-center font-semibold text-lg pt-2">
+                {% include 'partials/lesson/menu.html' %}
+                <hr>
+            </div>
+            <div id="content">
             </div>
         </div>
+        <div>
+            {% include 'partials/lesson/accordion.html' %}
+        </div>
     </div>
-    <div id="modal-note">
-        {% include 'hx/modal_note.html' %}
-    </div>
-    <div id="modal-confirm">
-        {% include 'hx/modal_confirm.html' %}
-    </div>
+    {#    <div id="modal-note">#}
+    {#        {% include 'hx/modal_note.html' %}#}
+    {#    </div>#}
+    {#    <div id="modal-confirm">#}
+    {#        {% include 'hx/modal_confirm.html' %}#}
+    {#    </div>#}
     {{ course.id|json_script:'course_id' }}
 {% endblock %}
 
@@ -71,10 +56,10 @@
             return result.split('.')[0]
         }
 
-        var player;
+        var player
 
         function onYouTubeIframeAPIReady() {
-            player = new YT.Player('player-youtube', {
+            player = new YT.Player('player', {
                 events: {
                     'onStateChange': onPlayerStateChange,
                 }
@@ -88,7 +73,9 @@
                     let element = document.querySelector('#youtube-counter')
                     if (element) {
                         element.innerText = result
-                        document.querySelector('#time-counter').setAttribute('value', result)
+                        let counter = document.querySelector('#time-counter')
+                        if (counter)
+                            counter.setAttribute('value', result)
                     }
                 }, 200);
             } else {
