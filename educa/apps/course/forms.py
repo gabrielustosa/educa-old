@@ -1,5 +1,5 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Field, MultiField, Row, Column
+from crispy_forms.layout import Layout, Submit, Field, Row, Column
 from django import forms
 from django_summernote.widgets import SummernoteWidget
 

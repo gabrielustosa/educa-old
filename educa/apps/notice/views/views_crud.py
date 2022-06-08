@@ -6,14 +6,14 @@ from django.utils.functional import cached_property
 from django.views.generic import TemplateView
 
 from educa.apps.course.models import Course
-from educa.mixin import CourseOwnerMixin
+from educa.mixin import InstructorRequiredMixin
 from educa.apps.notice.models import Notice
 from educa.utils.utils import render_error
 
 
 class NoticeCreateView(
     LoginRequiredMixin,
-    CourseOwnerMixin,
+    InstructorRequiredMixin,
     TemplateView,
 ):
     http_method_names = ['post']
@@ -42,7 +42,7 @@ class NoticeCreateView(
 
 class NoticeUpdateView(
     LoginRequiredMixin,
-    CourseOwnerMixin,
+    InstructorRequiredMixin,
     TemplateView,
 ):
     http_method_names = ['post']
@@ -79,7 +79,7 @@ class NoticeUpdateView(
 
 class NoticeDeleteView(
     LoginRequiredMixin,
-    CourseOwnerMixin,
+    InstructorRequiredMixin,
     TemplateView,
 ):
     @cached_property

@@ -5,7 +5,7 @@ from django.utils.functional import cached_property
 from django.views.generic import TemplateView
 
 from educa.apps.course.models import Course
-from educa.mixin import CourseOwnerMixin, CacheMixin
+from educa.mixin import InstructorRequiredMixin, CacheMixin
 from educa.apps.notice.models import Notice
 
 
@@ -31,7 +31,7 @@ class NoticeView(
 
 class NoticeRenderCreateView(
     LoginRequiredMixin,
-    CourseOwnerMixin,
+    InstructorRequiredMixin,
     TemplateView,
 ):
     template_name = 'hx/notice/render/create.html'
@@ -50,7 +50,7 @@ class NoticeRenderCreateView(
 
 class NoticeRenderUpdateView(
     LoginRequiredMixin,
-    CourseOwnerMixin,
+    InstructorRequiredMixin,
     TemplateView,
 ):
     template_name = 'hx/notice/render/update.html'
@@ -75,7 +75,7 @@ class NoticeRenderUpdateView(
 
 class NoticeConfirmView(
     LoginRequiredMixin,
-    CourseOwnerMixin,
+    InstructorRequiredMixin,
     TemplateView,
 ):
     template_name = 'hx/modal_confirm.html'

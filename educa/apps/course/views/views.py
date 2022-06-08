@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.http import HttpResponse
@@ -8,7 +8,7 @@ from django.views.generic import ListView, TemplateView
 from educa.apps.course.models import Course
 from educa.apps.rating.models import Rating
 from educa.apps.student.models import User
-from educa.mixin import CourseOwnerMixin, CacheMixin
+from educa.mixin import InstructorRequiredMixin, CacheMixin
 from educa.utils.utils import render_error
 
 
@@ -21,11 +21,9 @@ class CourseListView(ListView):
 
 class CourseOwnerListView(
     LoginRequiredMixin,
-    PermissionRequiredMixin,
     CourseListView,
 ):
     template_name = 'course/mine.html'
-    permission_required = 'course.add_course'
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -69,7 +67,7 @@ class CourseSearchView(CourseListView):
 
 class CourseModulesView(
     LoginRequiredMixin,
-    CourseOwnerMixin,
+    InstructorRequiredMixin,
     CacheMixin,
     TemplateView,
 ):
@@ -86,7 +84,7 @@ class CourseModulesView(
 
 class InstructorAddView(
     LoginRequiredMixin,
-    CourseOwnerMixin,
+    InstructorRequiredMixin,
     CacheMixin,
     TemplateView,
 ):
@@ -125,7 +123,7 @@ class InstructorAddView(
 
 class InstructorRemoveView(
     LoginRequiredMixin,
-    CourseOwnerMixin,
+    InstructorRequiredMixin,
     CacheMixin,
     TemplateView,
 ):
@@ -154,5 +152,6 @@ class InstructorRemoveView(
 
         if len(user.courses_created.all()) == 0:
             user.is_instructor = False
+            user.save()
 
         return self.render_to_response(context)

@@ -6,7 +6,7 @@ from educa.apps.lesson.models import Lesson
 from educa.apps.module.models import Module
 
 
-class CourseOwnerMixin:
+class InstructorRequiredMixin:
     def dispatch(self, request, *args, **kwargs):
         course = self.get_course()
         if request.user not in course.instructors.all():

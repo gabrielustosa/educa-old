@@ -1,26 +1,22 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.shortcuts import get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.utils.functional import cached_property
 from django.views.generic import TemplateView, CreateView, DeleteView, UpdateView
 
 from educa.apps.content.models import Content
 from educa.apps.lesson.models import Lesson
-from educa.mixin import CourseOwnerMixin, CacheMixin
+from educa.mixin import InstructorRequiredMixin, CacheMixin
 from educa.utils.utils import content_is_instance
 
 
 class LessonCreateView(
     LoginRequiredMixin,
-    PermissionRequiredMixin,
     CacheMixin,
-    CourseOwnerMixin,
+    InstructorRequiredMixin,
     CreateView,
 ):
     template_name = 'partials/crud/create_or_update.html'
     model = Lesson
     fields = ['title', 'video']
-    permission_required = 'lesson.add_lesson'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -46,13 +42,11 @@ class LessonCreateView(
 
 class LessonDetailView(
     LoginRequiredMixin,
-    PermissionRequiredMixin,
-    CourseOwnerMixin,
+    InstructorRequiredMixin,
     CacheMixin,
     TemplateView,
 ):
     template_name = 'lesson/detail.html'
-    permission_required = 'lesson.view_lesson'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -72,13 +66,11 @@ class LessonDetailView(
 
 class LessonDeleteView(
     LoginRequiredMixin,
-    PermissionRequiredMixin,
-    CourseOwnerMixin,
+    InstructorRequiredMixin,
     DeleteView,
 ):
     template_name = 'partials/crud/delete.html'
     model = Lesson
-    permission_required = 'lessons.delete_lesson'
     pk_url_kwarg = 'lesson_id'
 
     def get_context_data(self, **kwargs):
@@ -100,14 +92,12 @@ class LessonDeleteView(
 
 class LessonUpdateView(
     LoginRequiredMixin,
-    PermissionRequiredMixin,
-    CourseOwnerMixin,
+    InstructorRequiredMixin,
     UpdateView,
 ):
     template_name = 'partials/crud/create_or_update.html'
     model = Lesson
     fields = ['title', 'video']
-    permission_required = 'lesson.change_lesson'
     pk_url_kwarg = 'lesson_id'
 
     def get_context_data(self, **kwargs):

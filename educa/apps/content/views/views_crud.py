@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import modelform_factory
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
@@ -6,18 +6,16 @@ from django.views.generic import TemplateView, DeleteView
 
 from educa.apps.content.models import Content
 from educa.apps.lesson.models import Lesson
-from educa.mixin import CourseOwnerMixin
+from educa.mixin import InstructorRequiredMixin
 from educa.utils.utils import get_model
 
 
 class ContentCreateUpdateView(
     LoginRequiredMixin,
-    PermissionRequiredMixin,
-    CourseOwnerMixin,
+    InstructorRequiredMixin,
     TemplateView,
 ):
     template_name = 'partials/crud/create_or_update.html'
-    permission_required = 'content.add_content'
     lesson = None
     model = None
     object = None
@@ -87,13 +85,11 @@ class ContentCreateUpdateView(
 
 class ContentDeleteView(
     LoginRequiredMixin,
-    PermissionRequiredMixin,
-    CourseOwnerMixin,
+    InstructorRequiredMixin,
     DeleteView,
 ):
     template_name = 'partials/crud/delete.html'
     model = Content
-    permission_required = 'content.delete_content'
     pk_url_kwarg = 'lesson_id'
 
     def get_context_data(self, **kwargs):

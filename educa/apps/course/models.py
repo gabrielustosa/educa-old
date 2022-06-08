@@ -1,7 +1,6 @@
 from django.db import models
 from django.db.models import Avg, Q
 from django.utils.text import slugify
-from django_summernote.fields import SummernoteTextField
 
 from educa.apps.student.models import User
 from educa.apps.subject.models import Subject

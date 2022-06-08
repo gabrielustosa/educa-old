@@ -1,24 +1,22 @@
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
 
 from educa.apps.course.forms import CourseUpdateForm, InstructorAddForm
 from educa.apps.course.models import Course
-from educa.mixin import CourseOwnerMixin
+from educa.mixin import InstructorRequiredMixin
 from educa.apps.module.models import Module
 
 
 class CourseCreateView(
     LoginRequiredMixin,
-    PermissionRequiredMixin,
     CreateView,
 ):
     template_name = 'partials/crud/create_or_update.html'
     model = Course
     fields = ['title', 'description', 'subject', 'image', 'short_description', 'learn_description', 'requirements']
     success_url = reverse_lazy('course:mine')
-    permission_required = 'course.add_course'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -44,15 +42,13 @@ class CourseCreateView(
 
 class CourseUpdateView(
     LoginRequiredMixin,
-    PermissionRequiredMixin,
-    CourseOwnerMixin,
+    InstructorRequiredMixin,
     UpdateView,
 ):
     template_name = 'course/update.html'
     model = Course
     form_class = CourseUpdateForm
     success_url = reverse_lazy('course:mine')
-    permission_required = 'course.change_course'
     pk_url_kwarg = 'course_id'
 
     def get_context_data(self, **kwargs):
@@ -72,14 +68,12 @@ class CourseUpdateView(
 
 class CourseDeleteView(
     LoginRequiredMixin,
-    PermissionRequiredMixin,
-    CourseOwnerMixin,
+    InstructorRequiredMixin,
     DeleteView,
 ):
     template_name = 'partials/crud/delete.html'
     model = Course
     success_url = reverse_lazy('course:mine')
-    permission_required = 'course.delete_course'
     pk_url_kwarg = 'course_id'
 
     def get_context_data(self, **kwargs):

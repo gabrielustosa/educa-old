@@ -1,16 +1,15 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, TemplateView, UpdateView, DeleteView
 
 from educa.apps.lesson.models import Lesson
-from educa.mixin import CourseOwnerMixin, CacheMixin
+from educa.mixin import InstructorRequiredMixin, CacheMixin
 from educa.apps.module.models import Module
 
 
 class ModuleCreateView(
     LoginRequiredMixin,
-    PermissionRequiredMixin,
-    CourseOwnerMixin,
+    InstructorRequiredMixin,
     CacheMixin,
     CreateView,
 ):
@@ -18,7 +17,6 @@ class ModuleCreateView(
     model = Module
     fields = ['title', 'description']
     success_url = reverse_lazy('course:mine')
-    permission_required = 'module.add_module'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -36,13 +34,11 @@ class ModuleCreateView(
 
 class ModuleDetailView(
     LoginRequiredMixin,
-    PermissionRequiredMixin,
-    CourseOwnerMixin,
+    InstructorRequiredMixin,
     CacheMixin,
     TemplateView,
 ):
     template_name = 'module/detail.html'
-    permission_required = 'module.view_module'
 
     def get_course(self):
         return self.get_module().course
@@ -57,14 +53,12 @@ class ModuleDetailView(
 
 class ModuleUpdateView(
     LoginRequiredMixin,
-    PermissionRequiredMixin,
-    CourseOwnerMixin,
+    InstructorRequiredMixin,
     UpdateView,
 ):
     template_name = 'partials/crud/create_or_update.html'
     model = Module
     fields = ['title', 'description']
-    permission_required = 'module.change_course'
     pk_url_kwarg = 'module_id'
 
     def get_context_data(self, **kwargs):
@@ -85,13 +79,11 @@ class ModuleUpdateView(
 
 class ModuleDeleteView(
     LoginRequiredMixin,
-    PermissionRequiredMixin,
-    CourseOwnerMixin,
+    InstructorRequiredMixin,
     DeleteView,
 ):
     template_name = 'partials/crud/delete.html'
     model = Module
-    permission_required = 'module.delete_course'
     pk_url_kwarg = 'module_id'
     success_url = reverse_lazy('course:mine')
 

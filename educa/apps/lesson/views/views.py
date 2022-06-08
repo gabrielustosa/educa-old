@@ -1,16 +1,13 @@
-from braces.views import CsrfExemptMixin
-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
 from educa.apps.lesson.models import Lesson
-from educa.mixin import CourseOwnerMixin, CacheMixin
+from educa.mixin import InstructorRequiredMixin, CacheMixin
 
 
 class LessonOrderView(
     LoginRequiredMixin,
-    CourseOwnerMixin,
-    CsrfExemptMixin,
+    InstructorRequiredMixin,
     CacheMixin,
     TemplateView,
 ):
