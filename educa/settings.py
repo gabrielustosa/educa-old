@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'compressor',
     'crispy_forms',
     'crispy_tailwind',
+    'django_summernote',
 
     # my apps
     'educa.apps.course',
@@ -153,10 +154,14 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# AUTH
+
 AUTH_USER_MODEL = 'student.User'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+# PAGINATE
 
 QUESTION_PAGINATE_BY = 4
 
@@ -173,3 +178,5 @@ STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'tailwind'
 
 CRISPY_TEMPLATE_PACK = 'tailwind'
+
+SUMMERNOTE_THEME = 'lite'

@@ -27,7 +27,7 @@
                 <div class="my-7">
                     <h1 class="p-5 text-2xl font-bold">O que você aprenderá</h1>
                     <p class="pl-5 py-5">
-                        {{ course.learn_description }}
+                        {{ course.learn_description|safe }}
                     </p>
                 </div>
                 <div class="my-7 p-5">
@@ -36,13 +36,13 @@
                 <div class="my-7">
                     <h1 class="p-5 text-2xl font-bold">Requisitos</h1>
                     <p class="pl-5 py-5">
-                        {{ course.requirements }}
+                        {{ course.requirements|safe }}
                     </p>
                 </div>
                 <div class="my-7">
                     <h1 class="p-5 text-2xl font-bold">Descrição</h1>
                     <p class="pl-5 py-5">
-                        {{ course.requirements }}
+                        {{ course.requirements|safe }}
                     </p>
                 </div>
                 <div class="my-7">

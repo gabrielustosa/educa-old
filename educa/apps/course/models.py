@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import Avg, Q
 from django.utils.text import slugify
+from django_summernote.fields import SummernoteTextField
 
 from educa.apps.student.models import User
 from educa.apps.subject.models import Subject
@@ -19,9 +20,9 @@ class Course(models.Model):
     )
     title = models.CharField('Título', max_length=200)
     slug = models.SlugField(unique=True)
-    short_description = models.TextField()
-    learn_description = models.TextField()
-    requirements = models.TextField()
+    short_description = models.TextField('Descrição curta')
+    learn_description = models.TextField('Descrição de aprendizado')
+    requirements = models.TextField('Requirementos para o curso')
     description = models.TextField('Descrição')
     image = models.ImageField('Imagem', upload_to='profiles/')
     created = models.DateField(auto_now_add=True)

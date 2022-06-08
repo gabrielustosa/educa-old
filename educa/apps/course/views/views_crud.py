@@ -1,12 +1,10 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
-from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
-from email_validator import validate_email, EmailSyntaxError
 
+from educa.apps.course.forms import CourseUpdateForm, InstructorAddForm
 from educa.apps.course.models import Course
-from educa.apps.student.models import User
 from educa.mixin import CourseOwnerMixin
 from educa.apps.module.models import Module
 
@@ -53,7 +51,7 @@ class CourseUpdateView(
 ):
     template_name = 'course/update.html'
     model = Course
-    fields = ['title', 'description', 'subject', 'image']
+    form_class = CourseUpdateForm
     success_url = reverse_lazy('course:mine')
     permission_required = 'course.change_course'
     pk_url_kwarg = 'course_id'
@@ -65,34 +63,9 @@ class CourseUpdateView(
 
         context['page_title'] = 'Editando curso'
         context['content_title'] = 'Editar curso'
-        context['button_label'] = 'Salvar'
+        context['instructor_form'] = InstructorAddForm()
 
         return context
-
-    def form_valid(self, form):
-        instructor = self.request.POST.get('instructor')
-
-        if instructor == '':
-            return super().form_valid(form)
-
-        try:
-            validate_email(instructor)
-            try:
-                user = User.objects.get(email=instructor)
-
-                course = get_object_or_404(Course, id=self.kwargs.get('course_id'))
-                if course.instructors.filter(id=user.id).exists():
-                    return super().form_invalid(form)
-
-                course.instructors.add(user)
-
-                user.is_instructor = True
-                user.save()
-            except ObjectDoesNotExist:
-                return super().form_invalid(form)
-            return super().form_valid(form)
-        except EmailSyntaxError:
-            return super().form_invalid(form)
 
     def get_course(self):
         return self.get_object()

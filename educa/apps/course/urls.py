@@ -12,5 +12,8 @@ urlpatterns = [
     path('udpdate/<int:course_id>/', views_crud.CourseUpdateView.as_view(), name='update'),
     path('delete/<int:course_id>/', views_crud.CourseDeleteView.as_view(), name='delete'),
     path('search/', views.CourseSearchView.as_view(), name='search'),
-    path('modules/<int:course_id>/', views.CourseModulesView.as_view(), name='modules')
+    path('modules/<int:course_id>/', views.CourseModulesView.as_view(), name='modules'),
+
+    path('instructor/add/<int:course_id>/', views.InstructorAddView.as_view(), name='add_instructor'),
+    path('instructor/remove/<int:course_id>/<int:instructor_id>/', views.InstructorRemoveView.as_view(), name='remove_instructor'),
 ]

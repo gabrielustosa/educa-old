@@ -142,4 +142,8 @@ db copy.sqlite3
 
 node_modules/
 
+summernote/
+
+static/admin
+
 static/CACHE

@@ -39,6 +39,8 @@ urlpatterns = [
 
     path('subject/', include('educa.apps.subject.urls')),
 
+    path('summernote/', include('django_summernote.urls')),
+
     path('', include('educa.apps.lesson.api.urls')),
     path('', CourseListView.as_view(), name='home'),
 ]
