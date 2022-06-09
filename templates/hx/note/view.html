@@ -14,7 +14,7 @@
         </div>
         <h3>Observações da aula</h3>
 
-        {% for note in context_object %}
+        {% for note in notes %}
             <div id="note-{{ note.id }}" class="d-flex justify-content-between">
                 <div>
                     <p class="timer">{{ note.time }}</p>

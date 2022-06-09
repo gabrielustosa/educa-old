@@ -21,7 +21,7 @@ class NoticeView(
 
         course = self.get_course()
         notices = Notice.objects.filter(course=course)
-        context['context_object'] = notices
+        context['notices'] = notices
         context['course'] = course
 
         self.request.session[f'section-{course.id}'] = 'notice'

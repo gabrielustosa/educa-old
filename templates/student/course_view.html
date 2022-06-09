@@ -87,4 +87,40 @@
         }
     </script>
     <script src="{% static 'js/lesson-player.js' %}"></script>
+    <script>
+        let options = document.querySelectorAll('div[data-value]')
+        options.forEach(option => {
+            option.addEventListener('click', () => {
+                option.classList.add('border-b-2', 'border-gray-600')
+                options.forEach(other_option => {
+                    if (other_option !== option) {
+                        other_option.classList.remove('border-b-2', 'border-gray-600')
+                    }
+                })
+            })
+        })
+
+        switch ('{{ select }}') {
+            case 'search':
+                htmx.ajax('GET', '{% url 'student:search' course.id %}', '#content')
+                break
+            case 'overview':
+                htmx.ajax('GET', '{% url 'student:overview' course.id %}', '#content')
+                break
+            case 'question':
+                htmx.ajax('GET', `{% url 'question:course' course.id %}?lesson_id=${document.lesson_id}`, '#content')
+                break
+            case 'notice':
+                htmx.ajax('GET', '{% url 'notice:view' course.id %}', '#content')
+                break
+            case 'note':
+                htmx.ajax('GET', `{% url 'note:view' %}?lesson_id=${document.lesson_id}`, '#content')
+                break
+            case 'rating':
+                htmx.ajax('GET', '{% url 'rating:view' course.id %}', '#content')
+                break
+            default:
+                htmx.ajax('GET', '{% url 'student:overview' course.id %}', '#content')
+        }
+    </script>
 {% endblock %}

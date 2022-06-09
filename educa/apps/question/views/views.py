@@ -8,13 +8,14 @@ from educa.apps.question.models import Question, Answer
 from educa.apps.question.views.views_crud import QuestionViewMixin
 from educa.settings import QUESTION_PAGINATE_BY
 from educa.mixin.question import QuestionMixin, QuestionOwnerMixin
+from educa.utils.utils import get_lesson_id
 
 
 class QuestionListView(QuestionMixin, ListView):
     template_name = 'hx/question/course/questions.html'
     model = Question
     paginate_by = QUESTION_PAGINATE_BY
-    context_object_name = 'context_object'
+    context_object_name = 'questions'
 
     def get_queryset(self):
         return Question.objects.filter(lesson__course=self.get_course())
@@ -25,6 +26,7 @@ class QuestionListView(QuestionMixin, ListView):
         self.request.session[f'section-{self.get_course().id}'] = 'question'
         course = self.get_course()
         context['course'] = course
+        context['lesson'] = get_lesson_id(self.request)
         context['scroll_url'] = f'/course/question/filter/all_questions/{course.id}/'
 
         return context
@@ -77,7 +79,7 @@ class QuestionSearchView(QuestionMixin, TemplateView):
         if search == "":
             return redirect(reverse('question_filter:all_questions', kwargs={'course_id': self.get_course().id}))
 
-        context['context_object'] = Question.objects.filter(lesson__course=self.get_course()). \
+        context['questions'] = Question.objects.filter(lesson__course=self.get_course()). \
             filter(Q(title__icontains=search) | Q(content__icontains=search))
 
         return self.render_to_response(context)

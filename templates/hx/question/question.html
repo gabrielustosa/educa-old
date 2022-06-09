@@ -1,4 +1,4 @@
-{% for question in context_object %}
+{% for question in questions %}
     {% if scroll_url %}
         {% if forloop.last %}
             <div hx-get="{{ scroll_url }}?page={{ page_obj.number|add:'1' }}"

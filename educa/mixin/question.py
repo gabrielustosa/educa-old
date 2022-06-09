@@ -73,7 +73,7 @@ class FilterQuestionMixin(
 ):
     model = Question
     paginate_by = QUESTION_PAGINATE_BY
-    context_object_name = 'context_object'
+    context_object_name = 'questions'
 
     def get_absolute_url(self):
         return None

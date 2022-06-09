@@ -16,7 +16,6 @@ class NoteView(
     CacheMixin,
 ):
     template_name = 'hx/note/view.html'
-    http_method_names = ['post', 'get', 'head', 'options']
 
     def get_kwargs(self):
         return self.request.GET
@@ -26,7 +25,7 @@ class NoteView(
 
         lesson = self.get_lesson()
 
-        context['context_object'] = Note.objects.filter(user=self.request.user, lesson=lesson)
+        context['notes'] = Note.objects.filter(user=self.request.user, lesson=lesson)
 
         self.request.session[f'section-{lesson.course.id}'] = 'note'
 
