@@ -2,7 +2,7 @@
     <div class="flex pt-10">
         <label for="search-input" class="mb-2 text-sm font-medium text-gray-900 sr-only">Pesquisar perguntas</label>
         <div class="relative w-full">
-            <input hx-post="{% url 'question:search' course.id %}" hx-target="#question"
+            <input hx-post="{% url 'question:search' course.id %}" hx-target="#question-section"
                    hx-trigger="keyup changed delay:500ms"
                    type="search" id="search-input" name="search"
                    class="block p-3.5 w-full z-20 text-gray-900 bg-gray-50 border-2 border-gray-400"

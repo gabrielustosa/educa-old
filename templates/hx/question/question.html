@@ -46,7 +46,7 @@
             </div>
         </div>
         <div>
-            <div class="flex items-center content-end space-x-1">
+            <div class="flex items-center justify-end space-x-1">
                 <span class="text-xl">{{ question.answers.all|length }}</span>
                 <span class="pt-1"
                       hx-get="{% url 'question:view' question.id %}"

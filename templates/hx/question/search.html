@@ -1,4 +1,2 @@
-<h5>Resultados para a sua pesquisa ({{ questions|length }} resultados)</h5>
-<div>
-    {% include 'hx/question/question.html' with empty_message='Não há resultados para sua pesquisa.' %}
-</div>
+<h5 class="pt-8 text-2xl font-medium">Resultados para a sua pesquisa <span class="text-gray-600 text-xl">({{ questions|length }} resultados)</span></h5>
+{% include 'hx/question/question.html' with empty_message='Não há resultados para sua pesquisa.' %}

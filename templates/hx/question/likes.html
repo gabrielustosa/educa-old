@@ -1,6 +1,6 @@
 {% load course_filter %}
 
-<span class="pt-1 flex items-center content-end space-x-1">
+<span class="pt-1 flex items-center justify-end space-x-1">
     <span class="text-xl">{{ question.user_likes.all|length }}</span>
     {% if request.user|user_liked:question %}
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 16 16">
