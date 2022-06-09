@@ -1,27 +1,65 @@
-{% load cache %}
-
-{% cache 900 course_overview course.id %}
-    <div class="pt-4">
-        <h3>Sobre este curso</h3>
-        <p class="py-2">{{ course.description }}</p>
-        <hr>
-        <div class="d-flex justify-content-around">
-            <div>Números do curso</div>
-            <div>
-                <p>Alunos: {{ course.students.count }}</p>
-                <p>Aulas: {{ course.get_total_lessons }}</p>
-            </div>
+<div class="pt-10 mx-24 divide-y divide-gray-400">
+    <div class="mx-6">
+        <h1 class="text-2xl font-bold">Sobre este curso</h1>
+        <p class="tex-tg py-6">{{ course.short_description|safe }}</p>
+    </div>
+    <div class="text-lg py-6 grid grid-cols-4 content-around mx-6">
+        <div>Números do curso</div>
+        <div>
+            <p>Alunos: {{ course.students.count }}</p>
+            <p>Aulas: {{ course.get_total_lessons }}</p>
         </div>
-        <hr>
-        <div class="d-flex justify-content-around">
-            <div>Descrição do curso</div>
-            <div>
-                <p>{{ course.description }}</p>
-                {% for module in course.modules.all %}
-                    <p>Módulo {{ module.order }}: {{ module.title }}</p>
-                    <p>{{ module.description }}</p>
-                {% endfor %}
+        <div>
+            <p>Perguntas: {{ course.get_total_questions }}</p>
+            <p>Video: 15 horas</p>
+        </div>
+    </div>
+    <div class="text-lg py-6 grid grid-cols-4">
+        <div>Descrição do curso</div>
+        <div class="col-span-3 mx-6">
+            <div class="pb-3">{{ course.description|safe }}</div>
+            {% for module in course.modules.all %}
+                <p class="py-2 font-bold">Módulo {{ module.order }}: {{ module.title }}</p>
+                <p>{{ module.description }}</p>
+            {% endfor %}
+            <div class="py-5">
+                {{ course.learn_description|safe }}
             </div>
         </div>
     </div>
-{% endcache %}
+    <div class="text-lg py-6 grid grid-cols-4 mx-6">
+        <div>Instrutores do curso</div>
+        <div class="col-span-2">
+            {% for instructor in course.instructors.all %}
+                <div class="pb-4">
+                    <a href="{% url 'profile_view' instructor.id %}"
+                       class="text-violet-800 text-xl font-bold underline">
+                        {{ instructor.name }}
+                    </a>
+                    <p class="text-gray-500">{{ instructor.job }}</p>
+                    <div class="flex items-center py-2 space-x-6">
+                        <img src="{{ instructor.get_url_profile }}" alt="Imagem de perfil"
+                             class="inline object-cover w-24 h-24 mr-2 rounded-full">
+                        <div class="text-neutral-800">
+                            <div>
+                                <i class="bi bi-award-fill"></i>
+                                <span class="pl-1">{{ instructor.get_total_ratings }} Avaliações</span>
+                            </div>
+                            <div>
+                                <i class="bi bi-people-fill"></i>
+                                <span class="pl-1">{{ instructor.get_total_students }} Alunos</span>
+                            </div>
+                            <div>
+                                <i class="bi bi-play-circle-fill"></i>
+                                <span class="pl-1">{{ instructor.courses_created.all|length }} Cursos</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-sm pt-2">
+                        {{ instructor.bio }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

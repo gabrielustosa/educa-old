@@ -93,12 +93,14 @@ class CourseLessonSearchView(
         search = request.POST.get('search')
 
         if search == "":
-            return HttpResponse("<h5>Iniciar uma nova pesquisa</h5> <p>Para encontrar aulas deste curso.</p>")
+            return HttpResponse(
+                '<h5 class="text-center text-3xl font-bold">Iniciar uma nova pesquisa</h5> <p class="text-center text-lg">Para encontrar aulas ou módulos</p>')
 
         lessons = Lesson.objects.filter(course=course, title__icontains=search).all()
 
         if not lessons.exists():
-            return HttpResponse("<h5>Não foi encontrado nenhum resultado para sua busca</h5>")
+            return HttpResponse(
+                f'<h5 class="text-center text-2xl font-bold">Nenhum resultado encontrado para "{search}"</h5> <p class="text-center text-lg">Sua pesquisa não correspondeu com nenhuma aula</p> ')
 
         context['lessons'] = lessons
         context['search'] = search

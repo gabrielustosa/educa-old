@@ -1,15 +1,24 @@
-<div>
-    <div class="input-group rounded">
-        <input hx-post="{% url 'student:content_search' course.id %}" hx-target="#result"
-               hx-trigger="keyup changed delay:500ms"
-               type="search" class="form-control rounded" name="search"
-               placeholder="Pesquisar" aria-label="Search" aria-describedby="search-addon"/>
-        <span class="input-group-text border-0" id="search-addon">
-               <i class="bi bi-search"></i>
-        </span>
+<div class="py-14">
+    <div class="flex mx-24">
+        <label for="search-dropdown" class="mb-2 text-sm font-medium text-gray-900 sr-only">Pesquisar aulas</label>
+        <div class="relative w-full">
+            <input hx-post="{% url 'student:content_search' course.id %}" hx-target="#result"
+                   hx-trigger="keyup changed delay:500ms"
+                   type="search" id="search-dropdown" name="search"
+                   class="block p-3.5 w-full z-20 text-gray-900 bg-gray-50 border-2 border-gray-400"
+                   placeholder="Pesquisar aulas do curso" required>
+            <button type="submit"
+                    class="absolute top-0 right-0 p-4 text-sm font-medium text-white bg-zinc-800">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+            </button>
+        </div>
     </div>
-    <div id="result">
-        <h5>Iniciar uma nova pesquisa</h5>
-        <p>Para encontrar aulas ou módulos</p>
+    <div id="result" class="pt-10">
+        <h5 class="text-center text-3xl font-bold">Iniciar uma nova pesquisa</h5>
+        <p class="text-center text-lg">Para encontrar aulas ou módulos</p>
     </div>
 </div>

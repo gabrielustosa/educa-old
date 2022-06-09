@@ -1,12 +1,15 @@
-<div>
-    <h5>Resultados para "{{ search }}" ({{ lessons|length }} aulas)</h5>
+<div class="mx-24">
+    <h5 class="text-lg py-5 border-b-2 border-gray-400">Resultados para "{{ search }}" ({{ lessons|length }} aulas)</h5>
     <div class="pt-2">
         {% for lesson in lessons %}
-            <p class="ps-5"
-               hx-get="{% url 'student:select_video' lesson.id %}"
-               hx-target="#video">
-                {{ lesson.order }}. {{ lesson.title }}
-            </p>
+            <div class="flex flex-col pl-5 py-5 border-b-2 border-gray-400"
+                 hx-get="{% url 'student:select_video' lesson.id %}"
+                 hx-target="#video">
+                <span class="pl-3">{{ lesson.order }}. {{ lesson.title }}</span>
+                <span class="pl-3 pt-1 bi bi-play-circle-fill text-gray-600">
+                    <span class="pl-2 text-sm">7m</span>
+                </span>
+            </div>
         {% endfor %}
     </div>
 </div>
