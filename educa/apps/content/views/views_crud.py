@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, DeleteView
 
+from educa.apps.content.forms import TextContentForm
 from educa.apps.content.models import Content
 from educa.apps.lesson.models import Lesson
 from educa.mixin import InstructorRequiredMixin
@@ -15,7 +16,7 @@ class ContentCreateUpdateView(
     InstructorRequiredMixin,
     TemplateView,
 ):
-    template_name = 'partials/crud/create_or_update.html'
+    template_name = 'content/create_or_update.html'
     lesson = None
     model = None
     object = None
@@ -41,13 +42,19 @@ class ContentCreateUpdateView(
 
         form = self.get_form(instance=self.object)
 
-        context['form'] = form
-
         if self.kwargs.get('object_id'):
+            if self.kwargs.get('model_name') == 'text':
+                context['form'] = TextContentForm(instance=self.object, button_label='Salvar')
+            else:
+                context['form'] = form
             context['page_title'] = 'Editando conteúdo'
             context['content_title'] = 'Editar conteúdo'
             context['button_label'] = 'Salvar'
         else:
+            if self.kwargs.get('model_name') == 'text':
+                context['form'] = TextContentForm(button_label='Criar')
+            else:
+                context['form'] = form
             context['page_title'] = 'Criando conteúdo'
             context['content_title'] = 'Criar conteúdo'
             context['button_label'] = 'Criar'
