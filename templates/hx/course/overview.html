@@ -3,13 +3,13 @@
         <h1 class="text-2xl font-bold">Sobre este curso</h1>
         <p class="tex-tg py-6">{{ course.short_description|safe }}</p>
     </div>
-    <div class="text-lg py-6 grid grid-cols-4 content-around mx-6">
+    <div class="text-lg py-6 grid grid-cols-4 content-around">
         <div>Números do curso</div>
-        <div>
+        <div class="mx-6">
             <p>Alunos: {{ course.students.count }}</p>
             <p>Aulas: {{ course.get_total_lessons }}</p>
         </div>
-        <div>
+        <div class="mx-6">
             <p>Perguntas: {{ course.get_total_questions }}</p>
             <p>Video: 15 horas</p>
         </div>
@@ -27,9 +27,9 @@
             </div>
         </div>
     </div>
-    <div class="text-lg py-6 grid grid-cols-4 mx-6">
+    <div class="text-lg py-6 grid grid-cols-4">
         <div>Instrutores do curso</div>
-        <div class="col-span-2">
+        <div class="col-span-2  mx-6">
             {% for instructor in course.instructors.all %}
                 <div class="pb-4">
                     <a href="{% url 'profile_view' instructor.id %}"

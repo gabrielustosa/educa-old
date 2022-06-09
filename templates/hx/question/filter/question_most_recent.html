@@ -1,5 +1,5 @@
 {% if first_render %}
-    <h5>Perguntas mais recentes do curso ({{ paginator.object_list|length }})</h5>
+    <h5 class="pt-8 text-2xl font-medium">Perguntas mais recentes do curso <span class="text-gray-600 text-xl">({{ paginator.object_list|length }})</span></h5>
 {% endif %}
 <div>
     {% include 'hx/question/question.html' with empty_message='Ainda não há perguntas.' %}

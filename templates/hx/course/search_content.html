@@ -3,7 +3,7 @@
     <div class="pt-2">
         {% for lesson in lessons %}
             <div class="flex flex-col pl-5 py-5 border-b-2 border-gray-400"
-                 hx-get="{% url 'student:select_video' lesson.id %}"
+                 hx-get="{% url 'student:select_video' %}"
                  hx-target="#video">
                 <span class="pl-3">{{ lesson.order }}. {{ lesson.title }}</span>
                 <span class="pl-3 pt-1 bi bi-play-circle-fill text-gray-600">

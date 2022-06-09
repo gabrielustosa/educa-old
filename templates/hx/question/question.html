@@ -1,3 +1,5 @@
+{% load course_filter %}
+
 {% for question in questions %}
     {% if scroll_url %}
         {% if forloop.last %}
@@ -7,30 +9,60 @@
             </div>
         {% endif %}
     {% endif %}
-    <div class="border border-dark my-4">
-        <div class="d-flex justify-content-between">
+    <div class="grid grid-cols-6 py-8">
+        <div class="flex col-span-5">
             <div>
-                <h5 id="view-question" hx-get="{% url 'question:view' question.id %}" hx-target="#question">
-                    {{ question.title }}
-                </h5>
-                <p>{{ question.content|slice:":80" }}{% if question.content|length > 80 %}...{% endif %} </p>
-                <p>{{ question.user.name }} - Aula "{{ question.lesson.title }}" - {{ question.updated }}</p>
+                <div class="mx-5">
+                    <img src="{{ question.user.get_url_profile }}" alt="Imagem de perfil"
+                         class="inline object-cover w-12 h-12 mr-2 rounded-full">
+                </div>
             </div>
-            <div>
+            <div class="flex content-between">
                 <div>
-                    {{ question.answers.all|length }}
-                    <i hx-get="{% url 'question:view' question.id %}"
-                       hx-target="#question" class="bi bi-chat">
-                    </i>
+                    <h5 id="view-question"
+                        class="text-lg font-bold pb-2"
+                        hx-get="{% url 'question:view' question.id %}"
+                        hx-target="#question-section">
+                        {{ question.title }}
+                    </h5>
+                    <p class="py-2">
+                        {{ question.content|cut_word:60 }}
+                    </p>
+                    <div class="flex text-sm py-3 space-x-2">
+                        <a href="{% url 'profile_view' question.user.id %}"
+                           class="text-violet-500">
+                            {{ question.user.name }}
+                        </a>
+                        <span>-</span>
+                        <span class="text-violet-500 cursor-pointer"
+                              hx-get="{% url 'student:select_video' %}"
+                              hx-target="#video">
+                                Aula {{ question.lesson.order }}
+                            </span>
+                        <span>-</span>
+                        <span>{{ question.updated }}</span>
+                    </div>
                 </div>
-                <div id="question-{{ question.id }}-like"
-                     hx-get="{% url 'question:like' question.id %}"
-                     hx-target="#question-{{ question.id }}-like">
-                    {% include 'hx/question/likes.html' %}
-                </div>
+            </div>
+        </div>
+        <div>
+            <div class="flex items-center content-end space-x-1">
+                <span class="text-xl">{{ question.answers.all|length }}</span>
+                <span class="pt-1"
+                      hx-get="{% url 'question:view' question.id %}"
+                      hx-target="#question-section">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                         viewBox="0 0 16 16">
+                        <path d="M2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"></path>
+                    </svg>
+                </span>
+            </div>
+            <div hx-get="{% url 'question:like' question.id %}"
+                 hx-target="this">
+                {% include 'hx/question/likes.html' %}
             </div>
         </div>
     </div>
 {% empty %}
-    <h5>{{ empty_message }}</h5>
+    <h5 class="py-7 text-lg">{{ empty_message }}</h5>
 {% endfor %}

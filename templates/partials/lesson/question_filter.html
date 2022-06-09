@@ -1,0 +1,131 @@
+<div class="flex justify-center">
+    <div>
+        <div class="dropdown relative">
+            <button class="dropdown-toggle text-lg flex items-center font-bold border border-zinc-600 p-3"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                <span id="filter-by">Todas as aulas</span>
+                <svg aria-hidden="true"
+                     focusable="false"
+                     data-prefix="fas"
+                     data-icon="caret-down"
+                     class="w-2 ml-2"
+                     role="img"
+                     xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 320 512">
+                    <path fill="currentColor"
+                          d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z">
+                    </path>
+                </svg>
+            </button>
+            <ul class="dropdown-menu min-w-maxabsolute hidden bg-white text-base z-50 float-left py-2 list-none text-left shadow-xl mt-1 hidden m-0 bg-clip-padding border-none">
+                <li>
+                    <a class="dropdown-item item-filter text-lg py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent hover:bg-gray-100 hover:text-violet-500 cursor-pointer"
+                       parent="#filter-by"
+                       hx-get="{% url 'question_filter:all_questions' course.id %}"
+                       hx-target="#question-section">
+                        Todas as aulas
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item item-filter text-lg py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent hover:bg-gray-100 hover:text-violet-500 cursor-pointer"
+                       parent="#filter-by"
+                       hx-get="{% url 'question_filter:lesson' lesson_id %}"
+                       hx-target="#question-section">
+                        Aula atual
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="flex justify-center">
+    <div>
+        <div class="dropdown relative">
+            <button class="dropdown-toggle text-lg flex items-center font-bold border border-zinc-600 p-3"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                <span id="sort">Classificar por mais recente</span>
+                <svg aria-hidden="true"
+                     focusable="false"
+                     data-prefix="fas"
+                     data-icon="caret-down"
+                     class="w-2 ml-2"
+                     role="img"
+                     xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 320 512">
+                    <path fill="currentColor"
+                          d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z">
+                    </path>
+                </svg>
+            </button>
+            <ul class="dropdown-menu min-w-max text-lg absolute hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-xl mt-1 hidden m-0 bg-clip-padding border-none">
+                <li>
+                    <a class="dropdown-item item-filter text-lg py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent hover:bg-gray-100 hover:text-violet-500 cursor-pointer"
+                       parent="#sort"
+                       hx-get="{% url 'question_filter:most_recent' course.id %}"
+                       hx-target="#question-section">
+                        Classificar por mais recente
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item item-filter text-lg py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent hover:bg-gray-100 hover:text-violet-500 cursor-pointer"
+                       parent="#sort"
+                       hx-get="{% url 'question_filter:most_voted' course.id %}"
+                       hx-target="#question-section">
+                        Classificar por mais votado
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="flex justify-center">
+    <div>
+        <div class="dropdown relative">
+            <button class="dropdown-toggle text-lg flex items-center font-bold border border-zinc-600 p-3"
+                    type="button"
+                    id="dropdownMenuButton1"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                Filtrar
+                <svg aria-hidden="true"
+                     focusable="false"
+                     data-prefix="fas"
+                     data-icon="caret-down"
+                     class="w-2 ml-2"
+                     role="img"
+                     xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 320 512">
+                    <path fill="currentColor"
+                          d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z">
+                    </path>
+                </svg>
+            </button>
+            <ul class="dropdown-menu min-w-max absolute hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-xl mt-1 hidden m-0 bg-clip-padding border-none">
+                <li>
+                    <a class="dropdown-item text-lg py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent hover:bg-gray-100 hover:text-violet-500 cursor-pointer"
+                       hx-get="{% url 'question_filter:i_ask' course.id %}"
+                       hx-target="#question-section">
+                        Filtrar por perguntas que eu fiz
+                    </a>
+                    <a class="dropdown-item text-lg py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent hover:bg-gray-100 hover:text-violet-500 cursor-pointer"
+                       hx-get="{% url 'question_filter:most_answered' course.id %}"
+                       hx-target="#question-section">
+                        Filtrar por perguntas com mais respostas
+                    </a>
+                    <a class="dropdown-item text-lg py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent hover:bg-gray-100 hover:text-violet-500 cursor-pointer"
+                       hx-get="{% url 'question_filter:without_answer' course.id %}"
+                       hx-target="#question-section">
+                        Filtrar por perguntas sem resposta
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

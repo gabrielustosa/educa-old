@@ -29,6 +29,7 @@
                 <hr>
             </div>
             <div id="content">
+
             </div>
         </div>
         <div>
@@ -122,5 +123,18 @@
             default:
                 htmx.ajax('GET', '{% url 'student:overview' course.id %}', '#content')
         }
+    </script>
+    <script>
+        htmx.on('htmx:afterSwap', e => {
+            if (e.detail.target.id === 'content') {
+                if (document.querySelector('#question-filters')) {
+                    document.querySelectorAll('.item-filter').forEach(item => {
+                        item.addEventListener('click', e => {
+                            document.querySelector(item.getAttribute('parent')).innerText = item.innerText
+                        })
+                    })
+                }
+            }
+        })
     </script>
 {% endblock %}

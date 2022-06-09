@@ -1,27 +1,25 @@
-{% load bootstrap5 %}
+{% load tailwind_filters %}
 
-<div class="container">
-    <button class="btn btn-dark"
+<div class="mt-7">
+    <button class="bg-zinc-800 p-3 text-white"
             hx-get="{% url 'question:course' course.id %}"
             hx-target="#content">
         Voltar para todas as perguntas
     </button>
     <div class="pt-3">
-        <ul class="text-danger" id="question-error">
+        <ul class="text-red-500" id="question-error">
         </ul>
     </div>
-    <div id="question-ask">
+    <div class="my-7 space-y-5 w-10/12" id="question-ask">
         {% csrf_token %}
-        {% bootstrap_form form %}
-        {% buttons %}
-            <button id="ask"
-                    class="btn btn-dark"
-                    hx-post="{% url 'question_crud:create' lesson_id %}"
-                    hx-target="#content"
-                    hx-parent="#question-ask"
-                    hx-error="#question-error">
-                Publicar
-            </button>
-        {% endbuttons %}
+        {{ form|crispy }}
+        <button id="ask"
+                class="bg-zinc-800 p-4 w-full text-center text-white"
+                hx-post="{% url 'question_crud:create' lesson_id %}"
+                hx-target="#question-content"
+                hx-parent="#question-ask"
+                hx-error="#question-error">
+            Publicar
+        </button>
     </div>
 </div>

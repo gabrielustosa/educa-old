@@ -30,7 +30,7 @@
                     {% for lesson in module.lessons|sort_order %}
                         <div class="relative">
                             <div class="py-2"
-                                 hx-get="{% url 'student:select_video' lesson.id %}"
+                                 hx-get="{% url 'student:select_video' %}"
                                  hx-target="#video">
                                 <p class="pl-3">{{ lesson.order }}. {{ lesson.title }}</p>
                                 <span class="pl-3 pt-1 bi bi-play-circle-fill text-gray-600">
