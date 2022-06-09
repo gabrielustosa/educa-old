@@ -9,11 +9,7 @@
     {% compress css %}
         <link rel="stylesheet" href="{% static 'dist/output.css' %}">
     {% endcompress %}
-    <style>
-        {% block css_internal %}{% endblock %}
-    </style>
-
-
+    {% block css %}{% endblock %}
 </head>
 <body>
 <div class="flex flex-col min-h-screen">

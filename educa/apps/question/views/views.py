@@ -84,7 +84,7 @@ class QuestionSearchView(QuestionMixin, TemplateView):
 
 
 class QuestionConfirmDeleteView(QuestionViewMixin):
-    template_name = 'hx/modal_confirm.html'
+    template_name = 'hx/modal/modal_confirm.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

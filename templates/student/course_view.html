@@ -10,6 +10,14 @@
     {% include 'partials/base/nav_lesson.html' %}
 {% endblock %}
 
+{% block css %}
+    <style>
+        ul {
+            list-style-type: disc;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
     <div class="grid grid-cols-4">
         <div class="col-span-3">
@@ -27,9 +35,7 @@
             {% include 'partials/lesson/accordion.html' %}
         </div>
     </div>
-    {#    <div id="modal-note">#}
-    {#        {% include 'hx/modal_note.html' %}#}
-    {#    </div>#}
+    {% include 'hx/modal/modal_note.html' %}
     {#    <div id="modal-confirm">#}
     {#        {% include 'hx/modal_confirm.html' %}#}
     {#    </div>#}

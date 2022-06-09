@@ -31,7 +31,7 @@ class LessonNoteView(
     CacheMixin,
     TemplateView,
 ):
-    template_name = 'hx/modal_note.html'
+    template_name = 'hx/modal/modal_note_body.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
