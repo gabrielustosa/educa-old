@@ -35,10 +35,7 @@
             {% include 'partials/lesson/accordion.html' %}
         </div>
     </div>
-    {% include 'hx/modal/modal_note.html' %}
-    {#    <div id="modal-confirm">#}
-    {#        {% include 'hx/modal_confirm.html' %}#}
-    {#    </div>#}
+    {% include 'hx/modal/modal.html' %}
     {{ course.id|json_script:'course_id' }}
 {% endblock %}
 
@@ -46,7 +43,7 @@
     <script src="https://www.youtube.com/iframe_api"></script>
     <script src="{% static 'js/lesson-events.js' %}"></script>
     <script src="{% static 'js/custom-form.js' %}"></script>
-    <script src="{% static 'js/lesson-modal.js' %}"></script>
+    <script src="{% static 'js/custom-modal.js' %}"></script>
     <script src="{% static 'js/custom-error.js' %}"></script>
     <script>
         const formatTime = seconds => {

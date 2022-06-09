@@ -78,7 +78,7 @@ class NoticeConfirmView(
     InstructorRequiredMixin,
     TemplateView,
 ):
-    template_name = 'hx/modal/modal_confirm.html'
+    template_name = 'hx/modal/confirm_body.html'
 
     @cached_property
     def get_notice(self):
