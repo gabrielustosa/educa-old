@@ -34,6 +34,6 @@ class QuestionForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.layout = Layout(
-            'title'
+            'title',
             'content',
         )

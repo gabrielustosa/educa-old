@@ -18,6 +18,9 @@ class SelectLessonView(
 ):
     template_name = 'hx/lesson/video.html'
 
+    def get_kwargs(self):
+        return self.request.GET
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 

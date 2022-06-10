@@ -19,6 +19,8 @@
                 }
             }
         }
-        e.detail.parameters['lesson_id'] = document.lesson_id
+        if (e.detail.target.id !== 'video') {
+            e.detail.parameters['lesson_id'] = document.lesson_id
+        }
     })
 })()
