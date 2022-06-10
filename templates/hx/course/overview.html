@@ -3,7 +3,7 @@
 <div class="pt-10 mx-24 divide-y divide-gray-400">
     <div class="mx-6">
         <h1 class="text-2xl font-bold">Sobre este curso</h1>
-        <p class="tex-tg py-6">{{ course.short_description|bleach:"em,b,code,li,p,span,i,br,ul,ol,sup,sub,u,hr,strike,font,img,a" }}</p>
+        <div class="tex-tg py-6">{{ course.short_description|bleach:"em,b,code,li,p,span,i,br,ul,ol,sup,sub,u,hr,strike,font,img,a" }}</div>
     </div>
     <div class="text-lg py-6 grid grid-cols-4 content-around">
         <div>Números do curso</div>

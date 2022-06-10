@@ -1,7 +1,7 @@
 from django.db import models
 
 from educa.apps.course.models import Course
-from educa.utils.fields import OrderField
+from educa.utils.fields import LessonOrderField
 from educa.apps.module.models import Module
 from educa.utils.utils import get_url_id
 
@@ -16,7 +16,7 @@ class Lesson(models.Model):
         on_delete=models.CASCADE
     )
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    order = OrderField(blank=True, for_fields=['module'])
+    order = LessonOrderField(blank=True, for_fields=['course', 'module'])
 
     def __str__(self):
         return self.title
