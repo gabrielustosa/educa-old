@@ -1,4 +1,4 @@
-{% load tailwind_filters %}
+{% load crispy_forms_tags %}
 
 <div class="mt-7">
     <button class="bg-zinc-800 p-3 text-white"
@@ -12,7 +12,7 @@
     </div>
     <div class="my-7 space-y-5 w-10/12" id="question-ask">
         {% csrf_token %}
-        {{ form|crispy }}
+        {% crispy form %}
         <button id="ask"
                 class="bg-zinc-800 p-4 w-full text-center text-white"
                 hx-post="{% url 'question_crud:create' lesson_id %}"

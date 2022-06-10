@@ -25,7 +25,9 @@
                             {{ question.title }}
                         </h5>
                         <p class="py-2">
-                            {{ question.content|cut_word:60 }}
+                            {% with cut_content=question.content|cut_word:60 %}
+                                {{ cut_content|safe }}
+                            {% endwith %}
                         </p>
                         <div class="flex text-sm py-3 space-x-2">
                             <a href="{% url 'profile_view' question.user.id %}"

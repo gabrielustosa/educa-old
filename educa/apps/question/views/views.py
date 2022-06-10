@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import ListView, TemplateView
 
-from educa.apps.question.forms import AnswerForm
+from educa.apps.question.forms import AnswerForm, QuestionForm
 from educa.apps.question.models import Question, Answer
 from educa.apps.question.views.views_crud import QuestionViewMixin
 from educa.settings import QUESTION_PAGINATE_BY
@@ -51,7 +51,7 @@ class QuestionRenderCreateView(QuestionMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['form'] = modelform_factory(Question, fields=('title', 'content'))
+        context['form'] = QuestionForm()
 
         return context
 
