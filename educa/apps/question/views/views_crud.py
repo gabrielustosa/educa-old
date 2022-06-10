@@ -75,4 +75,4 @@ class QuestionDeleteView(QuestionViewMixin):
 
         self.get_question.delete()
 
-        return redirect(reverse('question_filter:all_questions', kwargs={'course_id': question.lesson.course.id}))
+        return redirect(reverse('question:course', kwargs={'course_id': question.lesson.course.id}) + f'?lesson_id={question.lesson.id}')

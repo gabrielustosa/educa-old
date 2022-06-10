@@ -1,35 +1,35 @@
-<div class="pt-7">
-    <ul class="text-red-500" id="question-error">
-    </ul>
-</div>
-<div class="flex justify-between">
-    {% include 'hx/question/content.html' %}
-    <div>
-        {#        {% if question.user == request.user %}#}
-        {#            <div id="options" class="dropdown">#}
-        {#                <span data-bs-toggle="dropdown">#}
-        {#                            <i class="bi bi-three-dots-vertical"></i>#}
-        {#                </span>#}
-        {#                <ul class="dropdown-menu">#}
-        {#                    <li>#}
-        {#                        <span id="edit-question"#}
-        {#                              class="dropdown-item"#}
-        {#                              hx-get="{% url 'question:render_update' question.id %}"#}
-        {#                              hx-target="#question-content">#}
-        {#                                    Editar#}
-        {#                        </span>#}
-        {#                    </li>#}
-        {#                    <li>#}
-        {#                        <span id="delete-question"#}
-        {#                              class="dropdown-item"#}
-        {#                              hx-get="{% url 'question:confirm_delete' question.id %}"#}
-        {#                              hx-target="#modal-confirm">#}
-        {#                                    Apagar#}
-        {#                        </span>#}
-        {#                    </li>#}
-        {#                </ul>#}
-        {#            </div>#}
-        {#        {% endif %}#}
+<div class="mt-7">
+    <button class="bg-zinc-800 p-3 text-white"
+            hx-get="{% url 'question:course' course.id %}"
+            hx-target="#content">
+        Voltar para todas as perguntas
+    </button>
+    <div class="py-5">
+        <ul class="text-red-500" id="question-error">
+        </ul>
     </div>
-</div>
-{% include 'hx/question/answer/answer.html' %}
+    <div class="flex justify-between">
+        {% include 'hx/question/content.html' %}
+        {% if question.user == request.user %}
+            <div class="dropdown">
+                <i class="bi bi-three-dots-vertical"></i>
+                <div class="dropdown-content">
+                    <div class="pt-3 flex flex-col space-y-3">
+                        <span id="edit-question"
+                              class="cursor-pointer hover:text-violet-500"
+                              hx-get="{% url 'question:render_update' question.id %}"
+                              hx-target="#question-spot">
+                            Editar
+                        </span>
+                        <span id="delete-question"
+                              class="cursor-pointer hover:text-violet-500"
+                              hx-get="{% url 'question:confirm_delete' question.id %}"
+                              hx-target="#modal-body">
+                            Apagar
+                        </span>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    {% include 'hx/question/answer/answer.html' %}</div>

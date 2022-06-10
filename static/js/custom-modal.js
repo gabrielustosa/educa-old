@@ -6,9 +6,13 @@
     htmx.on("htmx:afterSwap", e => {
         if (e.detail.target.id === "modal-body") {
             modal.show()
-            targetModal.querySelector("#modal-close").addEventListener('click', () => {
-                modal.hide()
-            })
         }
     })
+
+    window.onclick = e => {
+        console.log(e.target.hasAttribute("modal-close"))
+        if (e.target.hasAttribute("modal-close")) {
+            modal.hide()
+        }
+    }
 })()

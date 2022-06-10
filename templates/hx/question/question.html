@@ -22,7 +22,7 @@
                         <h5 id="view-question"
                             class="text-lg font-bold pb-2"
                             hx-get="{% url 'question:view' question.id %}"
-                            hx-target="#question-section">
+                            hx-target="#question-content">
                             {{ question.title }}
                         </h5>
                         <div class="py-2">

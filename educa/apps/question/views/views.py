@@ -40,6 +40,7 @@ class QuestionView(QuestionViewMixin):
         context = super().get_context_data(**kwargs)
 
         context['answers'] = self.get_question.answers.all()
+        context['course'] = self.get_question.lesson.course
         context['form'] = AnswerForm()
 
         return context
@@ -62,8 +63,7 @@ class QuestionRenderUpdateView(QuestionViewMixin, QuestionOwnerMixin):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        form = modelform_factory(Question, fields=('title', 'content'))
-        context['form'] = form(instance=self.get_question)
+        context['form'] = QuestionForm(instance=self.get_question)
 
         return context
 
@@ -95,7 +95,7 @@ class QuestionConfirmDeleteView(QuestionViewMixin):
         context = context | {
             'confirm_text': 'Você tem certeza que deseja deletar a sua pergunta?',
             'post_url': f'/course/question/crud/delete/{self.get_question.id}/',
-            'target': '#question',
+            'target': '#question-content',
         }
         return context
 

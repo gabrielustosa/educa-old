@@ -1,18 +1,14 @@
-{% load bootstrap5 %}
+{% load crispy_forms_tags %}
 
-<div>
-    <div id="answer-update">
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        {% buttons %}
-            <button id="save"
-                    class="btn btn-dark"
-                    hx-post="{% url 'answer:update' answer.id %}"
-                    hx-target="#answer-view-{{ answer.id }}"
-                    hx-parent="#answer-update"
-                    hx-error="#question-error">
-                Salvar
-            </button>
-        {% endbuttons %}
-    </div>
+<div id="answer-update" class="w-full">
+    {% csrf_token %}
+    {% crispy form %}
+    <button id="save"
+            class="bg-zinc-800 px-4 cursor-pointer py-2 my-3 rounded-sm text-white"
+            hx-post="{% url 'answer:update' answer.id %}"
+            hx-target="#answer-view-{{ answer.id }}"
+            hx-parent="#answer-update"
+            hx-error="#question-error">
+        Salvar
+    </button>
 </div>
