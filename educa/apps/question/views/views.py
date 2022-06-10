@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import ListView, TemplateView
 
+from educa.apps.question.forms import AnswerForm
 from educa.apps.question.models import Question, Answer
 from educa.apps.question.views.views_crud import QuestionViewMixin
 from educa.settings import QUESTION_PAGINATE_BY
@@ -39,7 +40,7 @@ class QuestionView(QuestionViewMixin):
         context = super().get_context_data(**kwargs)
 
         context['answers'] = self.get_question.answers.all()
-        context['form'] = modelform_factory(Answer, fields=('content',))
+        context['form'] = AnswerForm()
 
         return context
 

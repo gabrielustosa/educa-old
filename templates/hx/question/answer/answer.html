@@ -1,28 +1,24 @@
-{% load bootstrap5 %}
+{% load crispy_forms_tags %}
 
-<div>
-    <div id="answers">
-        <div>
-            <p>{{ answers|length }} Respostas</p>
+<div id="answers">
+    <div class="text-lg py-7 font-semibold">
+        {{ answers|length }} Respostas
+    </div>
+    {% for answer in answers %}
+        <div id="answer-view-{{ answer.id }}" class="py-3">
+            {% include 'hx/question/answer/content.html' %}
         </div>
-        {% for answer in answers %}
-            <div id="aswner-view-{{ answer.id }}">
-                {% include 'hx/question/answer/content.html' %}
-            </div>
-        {% endfor %}
-        <div id="answer-question">
-            {% csrf_token %}
-            {% bootstrap_form form %}
-            {% buttons %}
-                <button id="answer-button"
-                        class="btn btn-dark"
-                        hx-post="{% url 'answer:create' question.id %}"
-                        hx-target="#answers"
-                        hx-parent="#answer-question"
-                        hx-error="#question-error">
-                    Responder
-                </button>
-            {% endbuttons %}
-        </div>
+    {% endfor %}
+    <div id="answer-question" class="pt-5">
+        {% csrf_token %}
+        {% crispy form %}
+        <button id="answer-button"
+                class="bg-zinc-800 px-4 cursor-pointer py-2 my-3 rounded-sm text-white"
+                hx-post="{% url 'answer:create' question.id %}"
+                hx-target="#answers"
+                hx-parent="#answer-question"
+                hx-error="#question-error">
+            Responder
+        </button>
     </div>
 </div>

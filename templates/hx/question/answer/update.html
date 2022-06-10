@@ -8,7 +8,7 @@
             <button id="save"
                     class="btn btn-dark"
                     hx-post="{% url 'answer:update' answer.id %}"
-                    hx-target="#aswner-view-{{ answer.id }}"
+                    hx-target="#answer-view-{{ answer.id }}"
                     hx-parent="#answer-update"
                     hx-error="#question-error">
                 Salvar

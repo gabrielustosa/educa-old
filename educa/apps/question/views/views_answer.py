@@ -1,6 +1,7 @@
 from django.forms import modelform_factory
 from django.http import HttpResponse
 
+from educa.apps.question.forms import AnswerForm
 from educa.apps.question.models import Answer
 from educa.mixin.question import QuestionViewMixin, AnswerMixin
 from educa.utils.utils import render_error
@@ -29,7 +30,7 @@ class AnswerCreateView(QuestionViewMixin):
         Answer.objects.create(user=self.request.user, question=self.get_question, content=content)
 
         context['answers'] = Answer.objects.filter(question=self.get_question)
-        context['form'] = modelform_factory(Answer, fields=('content',))
+        context['form'] = AnswerForm()
 
         return self.render_to_response(context)
 

@@ -1,34 +1,46 @@
-<div id="answer-{{ answer.id }}" class="d-flex justify-content-between border border-dark my-3">
-    <div>
-        <p>{{ answer.user.name }}</p>
-        <p>{{ answer.updated }}</p>
-        <div class="text-break">
-            <p>{{ answer.content }}</p>
+<div id="answer-{{ answer.id }}" class="flex justify-between">
+    <div class="flex">
+        <div class="mx-5">
+            <img src="{{ answer.user.get_url_profile }}" alt="Imagem de perfil"
+                 class="inline object-cover w-12 h-12 mr-2 rounded-full">
+        </div>
+        <div>
+            <div class="flex flex-col">
+                <a href="{% url 'profile_view' answer.user.id %}"
+                   class="text-lg text-violet-500">
+                    {{ answer.user.name }} {% if answer.user.is_instructor %}
+                    <span class="text-gray-500"> - Instrutor</span> {% endif %}
+                </a>
+                <span class="text-sm">{{ answer.updated }}</span>
+            </div>
+            <div class="break-all pt-2">
+                <p>{{ answer.content|safe }}</p>
+            </div>
         </div>
     </div>
-    {% if answer.user == request.user %}
-        <div class="dropdown">
-            <span id="option-answer" data-bs-toggle="dropdown">
-                <i class="bi bi-three-dots-vertical"></i>
-            </span>
-            <ul class="dropdown-menu">
-                <li>
-                    <span id="edit-answer"
-                          class="dropdown-item"
-                          hx-get="{% url 'answer:render_update' answer.id %}"
-                          hx-target="#answer-{{ answer.id }}">
-                        Editar
-                    </span>
-                </li>
-                <li>
-                    <span id="delete-answer"
-                          class="dropdown-item"
-                          hx-get="{% url 'answer:confirm' answer.id %}"
-                          hx-target="#modal-confirm">
-                        Apagar
-                    </span>
-                </li>
-            </ul>
-        </div>
-    {% endif %}
+    {#    {% if answer.user == request.user %}#}
+    {#        <div class="dropdown">#}
+    {#            <span id="option-answer" data-bs-toggle="dropdown">#}
+    {#                <i class="bi bi-three-dots-vertical"></i>#}
+    {#            </span>#}
+    {#            <ul class="dropdown-menu">#}
+    {#                <li>#}
+    {#                    <span id="edit-answer"#}
+    {#                          class="dropdown-item"#}
+    {#                          hx-get="{% url 'answer:render_update' answer.id %}"#}
+    {#                          hx-target="#answer-{{ answer.id }}">#}
+    {#                        Editar#}
+    {#                    </span>#}
+    {#                </li>#}
+    {#                <li>#}
+    {#                    <span id="delete-answer"#}
+    {#                          class="dropdown-item"#}
+    {#                          hx-get="{% url 'answer:confirm' answer.id %}"#}
+    {#                          hx-target="#modal-confirm">#}
+    {#                        Apagar#}
+    {#                    </span>#}
+    {#                </li>#}
+    {#            </ul>#}
+    {#        </div>#}
+    {#    {% endif %}#}
 </div>

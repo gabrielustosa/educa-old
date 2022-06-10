@@ -1,11 +1,26 @@
-<div>
-    <h5>{{ question.title }}</h5>
-    <p>
-        {{ question.user.name }} -
-        Aula "{{ question.lesson.title }}" -
-        {{ question.updated }}
-    </p>
-    <div class="text-break">
-        <p>{{ question.content }}</p>
+<div class="flex">
+    <div class="mx-5">
+        <img src="{{ question.user.get_url_profile }}" alt="Imagem de perfil"
+             class="inline object-cover w-12 h-12 mr-2 rounded-full">
+    </div>
+    <div>
+        <h5 class="text-lg font-bold">{{ question.title }}</h5>
+        <div class="flex text-sm py-2 space-x-2">
+            <a href="{% url 'profile_view' question.user.id %}"
+               class="text-violet-500">
+                {{ question.user.name }}
+            </a>
+            <span>-</span>
+            <span class="text-violet-500 cursor-pointer"
+                  hx-get="{% url 'student:select_video' %}"
+                  hx-target="#video">
+                Aula {{ question.lesson.order }}
+            </span>
+            <span>-</span>
+            <span>{{ question.updated }}</span>
+        </div>
+        <div class="break-all">
+            <p>{{ question.content|safe }}</p>
+        </div>
     </div>
 </div>
