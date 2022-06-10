@@ -11,7 +11,7 @@ class AnswerForm(forms.ModelForm):
         model = Answer
         fields = ['content', ]
         widgets = {
-            'content': SummernoteWidget(attrs={'summernote': {'width': '80%', 'height': '300px'}}),
+            'content': SummernoteWidget(attrs={'summernote': {'width': '80%', 'height': '400px'}}),
         }
 
     def __init__(self, *args, **kwargs):

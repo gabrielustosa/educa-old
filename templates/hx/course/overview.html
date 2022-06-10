@@ -1,7 +1,9 @@
+{% load bleach_tags %}
+
 <div class="pt-10 mx-24 divide-y divide-gray-400">
     <div class="mx-6">
         <h1 class="text-2xl font-bold">Sobre este curso</h1>
-        <p class="tex-tg py-6">{{ course.short_description|safe }}</p>
+        <p class="tex-tg py-6">{{ course.short_description|bleach:"em,b,code,li,p,span,i,br,ul,ol,sup,sub,u,hr,strike,font,img,a" }}</p>
     </div>
     <div class="text-lg py-6 grid grid-cols-4 content-around">
         <div>Números do curso</div>
@@ -17,13 +19,13 @@
     <div class="text-lg py-6 grid grid-cols-4">
         <div>Descrição do curso</div>
         <div class="col-span-3 mx-6">
-            <div class="pb-3">{{ course.description|safe }}</div>
+            <div class="pb-3">{{ course.description|bleach:"em,b,code,li,p,span,i,br,ul,ol,sup,sub,u,hr,strike,font,img,a" }}</div>
             {% for module in course.modules.all %}
                 <p class="py-2 font-bold">Módulo {{ module.order }}: {{ module.title }}</p>
                 <p>{{ module.description }}</p>
             {% endfor %}
             <div class="py-5">
-                {{ course.learn_description|safe }}
+                {{ course.learn_description|bleach:"em,b,code,li,p,span,i,br,ul,ol,sup,sub,u,hr,strike,font,img,a" }}
             </div>
         </div>
     </div>

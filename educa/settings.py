@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'crispy_tailwind',
     'django_summernote',
     'django_htmx',
+    'django_bleach',
 
     # my apps
     'educa.apps.course',
@@ -190,3 +191,7 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
     )
 }
+
+# bleach
+
+BLEACH_ALLOWED_ATTRIBUTES = ['href', 'src', 'title', 'style', 'target']

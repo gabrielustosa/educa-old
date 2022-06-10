@@ -1,4 +1,5 @@
 {% load course_filter %}
+{% load bleach_tags %}
 
 <div class="pt-5">
     {% for question in questions %}
@@ -24,11 +25,9 @@
                             hx-target="#question-section">
                             {{ question.title }}
                         </h5>
-                        <p class="py-2">
-                            {% with cut_content=question.content|cut_word:60 %}
-                                {{ cut_content|safe }}
-                            {% endwith %}
-                        </p>
+                        <div class="py-2">
+                            {{ question.content|cut_word:60|bleach:"em,b,code,li,p,span,i,br,ul,ol,sup,sub,u,hr,strike,font,img,a" }}
+                        </div>
                         <div class="flex text-sm py-3 space-x-2">
                             <a href="{% url 'profile_view' question.user.id %}"
                                class="text-violet-500">
