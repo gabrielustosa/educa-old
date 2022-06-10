@@ -9,7 +9,9 @@
         </ul>
     </div>
     <div class="flex justify-between">
-        {% include 'hx/question/content.html' %}
+        <div id="question-spot" class="grid grid-cols-12 w-full">
+            {% include 'hx/question/content.html' %}
+        </div>
         {% if question.user == request.user %}
             <div class="dropdown">
                 <i class="bi bi-three-dots-vertical"></i>
@@ -32,4 +34,5 @@
             </div>
         {% endif %}
     </div>
-    {% include 'hx/question/answer/answer.html' %}</div>
+    {% include 'hx/question/answer/answer.html' %}
+</div>

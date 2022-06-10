@@ -1,12 +1,11 @@
 {% load bleach_tags %}
 
-<div id="question-spot" class="flex w-full">
-    <div class="mx-5">
-        <img src="{{ question.user.get_url_profile }}" alt="Imagem de perfil"
-             class="inline object-cover w-12 h-12 mr-2 rounded-full">
-    </div>
-    <div>
-        <h5 class="text-lg font-bold">{{ question.title }}</h5>
+<div class="mx-auto">
+    <img src="{{ question.user.get_url_profile }}" alt="Imagem de perfil"
+         class="inline object-cover w-12 h-12 mr-2 rounded-full">
+</div>
+<div class="col-span-11">
+    <h5 class="text-lg font-bold">{{ question.title }}</h5>
         <div class="flex text-sm py-2 space-x-2">
             <a href="{% url 'profile_view' question.user.id %}"
                class="text-violet-500">
@@ -21,8 +20,7 @@
             <span>-</span>
             <span>{{ question.updated }}</span>
         </div>
-        <div class="pt-3">
-            {{ question.content|bleach:"em,b,code,li,p,span,i,br,ul,ol,sup,sub,u,hr,strike,font,img,a" }}
+    <div class="pt-3 break-all">
+        {{ question.content|bleach:"em,b,code,li,p,span,i,br,ul,ol,sup,sub,u,hr,strike,font,img,a" }}
         </div>
-    </div>
 </div>

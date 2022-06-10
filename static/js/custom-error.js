@@ -14,6 +14,7 @@
                     li.innerText = message
                     parent.appendChild(li)
                 }
+                parent.scrollIntoView()
             }
         }
     })

@@ -1,4 +1,3 @@
-from django.forms import modelform_factory
 from django.http import HttpResponse
 
 from educa.apps.question.forms import AnswerForm
@@ -23,6 +22,9 @@ class AnswerCreateView(QuestionViewMixin):
 
         if len(content) <= 5:
             error_messages.append('A sua resposta precisa ter mais de 5 carácteres.')
+
+        if len(content) > 986:
+            error_messages.append('A sua repsosta não pode ter mais de 986 carácteres.')
 
         if error_messages:
             return HttpResponse(render_error(error_messages), status=400)
@@ -62,6 +64,9 @@ class AnswerUpdateView(AnswerMixin):
 
         if len(content) <= 5:
             error_messages.append('A sua resposta precisa ter mais de 5 carácteres.')
+
+        if len(content) > 986:
+            error_messages.append('A sua repsosta não pode ter mais de 986 carácteres.')
 
         if error_messages:
             return HttpResponse(render_error(error_messages), status=400)

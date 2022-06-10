@@ -1,7 +1,7 @@
 {% load crispy_forms_tags %}
 
 
-<div id="question-update" class="w-full">
+<div id="question-update" class="w-full col-span-12">
     {% csrf_token %}
     {% crispy form %}
     <button id="save"

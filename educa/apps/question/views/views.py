@@ -1,5 +1,4 @@
 from django.db.models import Q
-from django.forms import modelform_factory
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import ListView, TemplateView

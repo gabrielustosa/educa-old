@@ -10,7 +10,6 @@
     })
 
     window.onclick = e => {
-        console.log(e.target.hasAttribute("modal-close"))
         if (e.target.hasAttribute("modal-close")) {
             modal.hide()
         }

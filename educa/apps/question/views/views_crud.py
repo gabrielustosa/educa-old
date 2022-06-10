@@ -25,6 +25,9 @@ class QuestionCreateView(QuestionMixin, TemplateView):
         if len(content) == 0:
             error_messages.append('Os detalhes da sua pergunta não podem estar vazios.')
 
+        if len(content) > 986:
+            error_messages.append('Os detalhes da sua pergunta não podem ter mais de 986 carácteres.')
+
         if error_messages:
             return HttpResponse(render_error(error_messages), status=400)
 
@@ -56,6 +59,9 @@ class QuestionUpdateView(QuestionOwnerMixin, QuestionViewMixin):
 
         if len(content) == 0:
             error_messages.append('Os detalhes da sua pergunta não podem estar vazios.')
+
+        if len(content) > 986:
+            error_messages.append('Os detalhes da sua pergunta não podem ter mais de 986 carácteres.')
 
         if error_messages:
             return HttpResponse(render_error(error_messages), status=400)
