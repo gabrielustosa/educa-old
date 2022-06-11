@@ -10,6 +10,7 @@ class Lesson(models.Model):
     title = models.CharField('Título', max_length=100)
     video = models.URLField(verbose_name='Vídeo')
     video_id = models.CharField(max_length=100, blank=True)
+    video_duration = models.FloatField(null=True)
     module = models.ForeignKey(
         Module,
         related_name='lessons',
@@ -22,8 +23,8 @@ class Lesson(models.Model):
         return self.title
 
     def save(self, **kwargs):
-        if getattr(self, 'video_id') == "":
-            setattr(self, 'video_id', get_url_id(getattr(self, 'video')))
+        if self.video_id == '':
+            self.video_id = get_url_id(self.video)
         return super().save(**kwargs)
 
     def delete(self, **kwargs):

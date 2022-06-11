@@ -4,6 +4,7 @@ from django.utils.text import slugify
 
 from educa.apps.student.models import User
 from educa.apps.subject.models import Subject
+from educa.utils.utils import format_time
 
 
 class Course(models.Model):
@@ -89,6 +90,12 @@ class Course(models.Model):
             result[k] = "{:.2f}".format(operation)
 
         return result
+
+    def get_total_video_seconds(self):
+        seconds = 0
+        for module in self.modules.all():
+            seconds += module.get_total_video_seconds()
+        return seconds
 
 
 class CourseRelation(models.Model):

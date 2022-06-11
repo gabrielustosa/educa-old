@@ -103,3 +103,46 @@ def cut_word(word, size):
 @register.filter()
 def is_instructor(user, course):
     return user in course.instructors.all()
+
+
+@register.filter()
+def get_only_hour(seconds):
+    return round(seconds / 3600)
+
+
+@register.filter()
+def format_time(seconds):
+    h = round(seconds / 3600)
+    m = round(seconds % 3600 / 60)
+    s = seconds % 60
+
+    result = ''
+    if h > 0:
+        result += f'{h} h '
+    if m > 0:
+        result += f'{m} m '
+    if result == '':
+        result = f'{s} s '
+    return result
+
+
+@register.filter()
+def format_time_counter(seconds):
+    seconds = int(seconds)
+
+    def pad(x):
+        return int(f'0{x}') if x < 10 else x
+
+    h = pad(round(seconds / 3600))
+    m = pad(round(seconds % 3600 / 60))
+    s = pad(seconds % 60)
+
+    result = ''
+    if h > 0:
+        result += f'{+h}:'
+    i = m if h > 0 else +m
+    result += f'{i}'
+    if s > 0:
+        result += f':{s}'
+
+    return result.split('.')[0]

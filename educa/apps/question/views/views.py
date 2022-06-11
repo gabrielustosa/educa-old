@@ -37,8 +37,7 @@ class QuestionView(QuestionViewMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        context['answers'] = self.get_question.answers.all()
+        context['answers'] = self.get_question.answers.order_by('created').all()
         context['course'] = self.get_question.lesson.course
         context['form'] = AnswerForm()
 

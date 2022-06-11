@@ -1,3 +1,6 @@
+import requests
+import pafy
+
 from django.apps import apps
 from urllib import parse
 
@@ -28,4 +31,36 @@ def render_error(error_messages):
 def get_url_id(url):
     url_parsed = parse.urlparse(url)
     qsl = parse.parse_qs(url_parsed.query)
-    return qsl['v'][0]
+    if len(qsl) > 0:
+        return qsl['v'][0]
+    return ''
+
+
+def check_video_url(url):
+    video_id = get_url_id(url)
+    checker_url = "https://www.youtube.com/oembed?url=http://www.youtube.com/watch?v="
+    video_url = checker_url + video_id
+
+    request = requests.get(video_url)
+
+    return request.status_code != 200
+
+
+def get_video_duration(url):
+    video = pafy.new(url)
+    return video.length
+
+
+def format_time(seconds):
+    h = round(seconds / 3600)
+    m = round(seconds % 3600 / 60)
+    s = seconds % 60
+
+    result = ''
+    if h > 0:
+        result += f'{h} h '
+    if m > 0:
+        result += f'{m} m '
+    if result == '':
+        result = f'{s} s '
+    return result

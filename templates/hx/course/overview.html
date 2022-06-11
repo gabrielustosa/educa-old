@@ -1,4 +1,5 @@
 {% load bleach_tags %}
+{% load course_filter %}
 
 <div class="pt-10 mx-24 divide-y divide-gray-400">
     <div class="mx-6">
@@ -13,7 +14,7 @@
         </div>
         <div class="mx-6">
             <p>Perguntas: {{ course.get_total_questions }}</p>
-            <p>Video: 15 horas</p>
+            <p>Horas de vídeo: {{ course.get_total_video_seconds|format_time }}</p>
         </div>
     </div>
     <div class="text-lg py-6 grid grid-cols-4">

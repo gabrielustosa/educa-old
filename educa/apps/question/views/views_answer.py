@@ -31,7 +31,7 @@ class AnswerCreateView(QuestionViewMixin):
 
         Answer.objects.create(user=self.request.user, question=self.get_question, content=content)
 
-        context['answers'] = Answer.objects.filter(question=self.get_question)
+        context['answers'] = Answer.objects.filter(question=self.get_question).order_by('created')
         context['form'] = AnswerForm()
 
         return self.render_to_response(context)

@@ -13,7 +13,7 @@
                       <span class="pl-3 text-black col-span-3">
                           <span class="flex flex-col">
                               <span class="font-bold">Módulo {{ module.order }}: {{ module.title }}</span>
-                              <span class="text-xs pt-1">0 / {{ module.lessons.all|length }} | 1h</span>
+                              <span class="text-xs pt-1">0 / {{ module.lessons.all|length }} | {{ module.get_total_video_seconds|format_time }}</span>
                           </span>
                       </span>
                 </span>
@@ -34,7 +34,7 @@
                                  hx-target="#video">
                                 <p class="pl-3">{{ lesson.order }}. {{ lesson.title }}</p>
                                 <span class="pl-3 pt-1 bi bi-play-circle-fill text-gray-600">
-                                    <span class="pl-2 text-sm">7m</span>
+                                    <span class="pl-2 text-sm">{{ lesson.video_duration|format_time }}</span>
                                 </span>
                             </div>
                             {% if lesson.contents.exists %}

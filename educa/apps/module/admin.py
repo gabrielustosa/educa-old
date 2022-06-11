@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from educa.apps.module.models import Module
+
+admin.site.register(Module)

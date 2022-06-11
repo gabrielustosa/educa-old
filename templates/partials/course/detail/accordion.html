@@ -1,6 +1,8 @@
+{% load course_filter %}
+
 <h1 class="text-2xl font-bold">Conteúdo do curso</h1>
 <div class="pt-8 text-sm">
-    {{ course.modules.all|length }} módulos • {{ course.lesson_set.all|length }} aulas
+    {{ course.modules.all|length }} módulos • {{ course.lesson_set.all|length }} aulas • Duração total {{ course.get_total_video_seconds|format_time }}
     <div class="pt-5">
         {% for module in course.modules.all %}
             <div id="accordion-collapse" data-accordion="collapse">
@@ -15,16 +17,22 @@
                         </path>
                     </svg>
                     <span class="grid grid-cols-2 content-between w-full">
-                            <span class="pl-3 text-black">{{ module.title }}</span>
-                            <span class="text-black text-right">{{ module.lessons.all|length }} aulas</span>
+                           <span class="pl-3 text-black">{{ module.title }}</span>
+                           <span class="text-right text-sm">
+                               <span>{{ module.lessons.all|length }} aulas •</span>
+                               <span>{{ module.get_total_video_seconds|format_time }}</span>
+                           </span>
                         </span>
                 </button>
                 <div id="accordion-module-{{ module.id }}" class="hidden">
                     <div class="p-5 border border-t-0 border-gray-200 dark:border-gray-700">
                         {% for lesson in module.lessons.all %}
-                            <div class="text-base flex py-2">
-                                <i class="bi bi-play-circle-fill"></i>
-                                <p class="pl-3">Aula {{ lesson.order }} - {{ lesson.title }}</p>
+                            <div class="text-base flex justify-between py-2">
+                               <div class="flex">
+                                   <i class="bi bi-play-circle-fill"></i>
+                                   <p class="pl-3">Aula {{ lesson.order }} - {{ lesson.title }}</p>
+                               </div>
+                                <div class="text-sm">{{ lesson.video_duration|format_time_counter }}</div>
                             </div>
                         {% endfor %}
                     </div>

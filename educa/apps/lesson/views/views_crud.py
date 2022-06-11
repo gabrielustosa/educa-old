@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView, DeleteView, UpdateView
 
 from educa.apps.content.models import Content
+from educa.apps.lesson.forms import LessonForm
 from educa.apps.lesson.models import Lesson
 from educa.mixin import InstructorRequiredMixin, CacheMixin
 from educa.utils.utils import content_is_instance
@@ -16,7 +17,7 @@ class LessonCreateView(
 ):
     template_name = 'partials/crud/create_or_update.html'
     model = Lesson
-    fields = ['title', 'video']
+    form_class = LessonForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -97,7 +98,7 @@ class LessonUpdateView(
 ):
     template_name = 'partials/crud/create_or_update.html'
     model = Lesson
-    fields = ['title', 'video']
+    form_class = LessonForm
     pk_url_kwarg = 'lesson_id'
 
     def get_context_data(self, **kwargs):

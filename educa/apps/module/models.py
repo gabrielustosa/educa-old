@@ -2,6 +2,7 @@ from django.db import models
 
 from educa.apps.course.models import Course
 from educa.utils.fields import OrderField
+from educa.utils.utils import format_time
 
 
 class Module(models.Model):
@@ -23,3 +24,9 @@ class Module(models.Model):
     def get_total_lessons(self):
         from educa.apps.lesson.models import Lesson
         return Lesson.objects.filter(module=self).count()
+
+    def get_total_video_seconds(self):
+        seconds = 0
+        for lesson in self.lessons.all():
+            seconds += lesson.video_duration
+        return seconds
