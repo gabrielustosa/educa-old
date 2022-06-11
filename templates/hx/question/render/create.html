@@ -16,7 +16,7 @@
         <button id="ask"
                 class="bg-zinc-800 p-4 w-full text-center text-white"
                 hx-post="{% url 'question_crud:create' lesson_id %}"
-                hx-target="#question-content"
+                hx-target="#content"
                 hx-parent="#question-ask"
                 hx-error="#question-error">
             Publicar

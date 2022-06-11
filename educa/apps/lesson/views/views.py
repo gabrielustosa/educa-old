@@ -20,12 +20,11 @@ class LessonOrderView(
 
         lessons_list = request.POST.getlist('lesson')
 
-        order_list = [lesson.split('/')[1] for lesson in lessons_list]
+        order_list = [Lesson.objects.get(id=lesson).order for lesson in lessons_list]
 
         lesson_start = int(min(order_list))
 
-        for order, lesson in enumerate(lessons_list, start=lesson_start):
-            lesson_id = int(lesson.split('/')[0])
+        for order, lesson_id in enumerate(lessons_list, start=lesson_start):
             Lesson.objects.filter(id=lesson_id).update(order=order)
 
         context['lessons'] = Lesson.objects.filter(module=self.get_module()).order_by('order').all()

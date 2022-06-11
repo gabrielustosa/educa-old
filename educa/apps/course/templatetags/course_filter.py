@@ -98,3 +98,8 @@ def cut_word(word, size):
     if len(word) > size:
         return f'{word[:size]}...'
     return word
+
+
+@register.filter()
+def is_instructor(user, course):
+    return user in course.instructors.all()

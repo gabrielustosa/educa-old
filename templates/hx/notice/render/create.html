@@ -1,16 +1,14 @@
-{% load bootstrap5 %}
+{% load crispy_forms_tags %}
 
 <div id="notice-create" class="container">
     {% csrf_token %}
-    {% bootstrap_form form %}
-    {% buttons %}
-        <button id="send"
-                class="btn btn-dark"
-                hx-post="{% url 'notice:create' course.id %}"
-                hx-target="#notice-content"
-                hx-parent="#notice-create"
-                hx-error="#notice-error">
-            Publicar
-        </button>
-    {% endbuttons %}
+    {% crispy form %}
+    <button id="send"
+            class="bg-zinc-800 my-5 p-3 text-center w-full rounded-sm text-white"
+            hx-post="{% url 'notice:create' course.id %}"
+            hx-target="#content"
+            hx-parent="#notice-create"
+            hx-error="#notice-error">
+        Publicar
+    </button>
 </div>

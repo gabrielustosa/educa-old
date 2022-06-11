@@ -1,10 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.forms import modelform_factory
 from django.shortcuts import get_object_or_404
 from django.utils.functional import cached_property
 from django.views.generic import TemplateView
 
 from educa.apps.course.models import Course
+from educa.apps.notice.forms import NoticeForm
 from educa.mixin import InstructorRequiredMixin, CacheMixin
 from educa.apps.notice.models import Notice
 
@@ -43,7 +43,7 @@ class NoticeRenderCreateView(
         context = super().get_context_data(**kwargs)
 
         context['course'] = self.get_course()
-        context['form'] = modelform_factory(Notice, fields=('title', 'content'))
+        context['form'] = NoticeForm()
 
         return context
 
@@ -66,8 +66,7 @@ class NoticeRenderUpdateView(
         context = super().get_context_data(**kwargs)
 
         notice = self.get_notice
-        form = modelform_factory(Notice, fields=('title', 'content'))
-        context['form'] = form(instance=notice)
+        context['form'] = NoticeForm(instance=notice)
         context['notice'] = notice
 
         return context

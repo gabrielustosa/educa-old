@@ -35,7 +35,7 @@
                             </a>
                             <span>-</span>
                             <span class="text-violet-500 cursor-pointer"
-                                  hx-get="{% url 'student:select_video' %}"
+                                  hx-get="{% url 'student:select_video' %}?lesson_id={{ question.lesson.id }}"
                                   hx-target="#video">
                                 Aula {{ question.lesson.order }}
                             </span>

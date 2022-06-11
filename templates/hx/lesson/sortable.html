@@ -2,7 +2,7 @@
 
 {% for lesson in lessons %}
     <div class="mx-auto bg-violet-600 text-sm rounded-lg py-1 text-white hover:text-violet-500 mb-2">
-        <input type='hidden' name='lesson' value='{{ lesson.id }}/{{ lesson.order }}'>
+        <input type='hidden' name='lesson' value='{{ lesson.id }}'>
         <span>{{ lesson.order }}. </span>
         <span>{{ lesson.title|cut_word:18 }}</span>
     </div>

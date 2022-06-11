@@ -1,8 +1,18 @@
-<div class="my-3">
-    <p>{{ notice.user.name }}</p>
-    <p>{{ notice.updated }}</p>
-    <div>
-        <h5>{{ notice.title }}</h5>
-        <p class="text-break">{{ notice.content }}</p>
+{% load bleach_tags %}
+
+<div class="mx-auto">
+    <img src="{{ notice.instructor.get_url_profile }}" alt="Imagem de perfil"
+         class="inline object-cover w-12 h-12 mr-2 rounded-full">
+</div>
+<div class="col-span-11">
+    <div class="pl-5 flex flex-col space-y-2">
+        <span class="text-lg text-violet-500 font-semibold">{{ notice.instructor.name }}</span>
+        <span>{{ notice.updated }}</span>
+        <div class="space-y-4">
+            <h5 class="text-2xl font-bold">{{ notice.title }}</h5>
+            <p class="break-all">
+                {{ notice.content|bleach:"em,b,code,li,p,span,i,br,ul,ol,sup,sub,u,hr,strike,font,img,a" }}
+            </p>
+        </div>
     </div>
 </div>

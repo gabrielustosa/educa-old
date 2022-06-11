@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from educa.apps.notice.models import Notice
+
+admin.site.register(Notice)

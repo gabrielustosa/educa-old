@@ -35,7 +35,7 @@ class NoticeCreateView(
         if error_messages:
             return HttpResponse(render_error(error_messages), status=400)
 
-        Notice.objects.create(course=self.get_course(), title=title, content=content)
+        Notice.objects.create(course=self.get_course(), instructor=self.request.user, title=title, content=content)
 
         return redirect(reverse('notice:view', kwargs={'course_id': self.get_course().id}))
 
