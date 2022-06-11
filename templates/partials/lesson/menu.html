@@ -36,7 +36,7 @@
     </div>
     <div id="rating"
          data-value="menu-option"
-         hx-get="{% url 'rating:view' course.id %}"
+         hx-get="{% url 'rating:view_lesson' course.id %}"
          hx-target="#content"
             {% if select == 'rating' %} class="border-b-2 border-gray-600" {% endif %}>
         <h5>Avaliações</h5>

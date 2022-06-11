@@ -3,11 +3,11 @@
         <form class="flex" hx-get="{% url 'rating:search' course.id %}" hx-target="#rating-list">
             <input id="rating-search"
                    type="search" name="search"
-                   class="form-control flex-auto block w-full px-3 py-3 text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none"
+                   class="form-control flex-auto block w-full px-3 py-4 text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none"
                    placeholder="Pesquisar avaliações" aria-label="Search"
                    aria-describedby="button-addon2">
             <input id="rating-filter" type="hidden" name="filter" value="all">
-            <button class="btn bg-zinc-800 px-6 py-2.5 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:shadow-lg flex items-center"
+            <button class="btn bg-zinc-800 px-6 py-3 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:shadow-lg flex items-center"
                     type="submit" id="button-addon2">
                 <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search"
                      class="w-4" role="img" xmlns="http://www.w3.org/2000/svg"

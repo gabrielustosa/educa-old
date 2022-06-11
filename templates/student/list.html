@@ -29,9 +29,10 @@
                             <span class="text-xs text-gray-400">
                                     {{ instructor.name }}{% if foorloop.is_last %}, {% endif %}
                                 </span>
-                            {% endfor %}
-                        </div>
-                        <div class="flex text-xs items-center justify-end space-x-1 pt-2">
+                        {% endfor %}
+                    </div>
+                    <div class="flex text-xs items-center justify-end space-x-1 pt-2">
+                        {% if not request.user|hasnt_rating:course %}
                             {% with rating=request.user|get_rating_course:course %}
                                 {% for r in rating|get_rating_stars %}
                                     {% if r == "i" %}
@@ -49,10 +50,11 @@
                                     {% endif %}
                                 {% endfor %}
                             {% endwith %}
-                        </div>
-                        <span class="text-right text-xs pt-2">Sua avaliação</span>
-                    </a>
-                {% endwith %}
-            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <span class="text-right text-xs pt-2">Sua avaliação</span>
+                </a>
+            {% endwith %}
+        {% endfor %}
     </div>
 {% endblock %}

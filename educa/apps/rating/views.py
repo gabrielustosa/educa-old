@@ -36,6 +36,10 @@ class RatingView(
         return context
 
 
+class RatingLessonView(RatingView):
+    template_name = 'hx/rating/rating.html'
+
+
 class RatingRenderCreateView(
     HTMXRequireMixin,
     LoginRequiredMixin,
@@ -69,7 +73,7 @@ class RatingCreateView(
         if not rating:
             error_messages.append('Você precisa escolher um número de 1 a 5 a sua avaliação.')
         if rating:
-            if int(rating) > 5 or int(rating) < 1:
+            if float(rating) > 5 or float(rating) < 1:
                 error_messages.append('Você deve escolher um número de 1 a 5.')
 
         if len(comment) == 0:
@@ -80,7 +84,7 @@ class RatingCreateView(
 
         Rating.objects.create(rating=rating, comment=comment, user=request.user, course=course)
 
-        return redirect(reverse('rating:view', kwargs={'course_id': course.id}))
+        return redirect(reverse('rating:view_lesson', kwargs={'course_id': course.id}))
 
 
 class RatingSearchView(RatingView):

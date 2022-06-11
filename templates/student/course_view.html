@@ -71,6 +71,7 @@
     <script src="{% static 'js/custom-form.js' %}"></script>
     <script src="{% static 'js/custom-modal.js' %}"></script>
     <script src="{% static 'js/custom-error.js' %}"></script>
+    <script src="{% static 'js/rating.js' %}"></script>
     <script>
         const formatTime = seconds => {
             const pad = num => num < 10 ? `0${num}` : num
@@ -143,7 +144,7 @@
                 htmx.ajax('GET', `{% url 'note:view' %}?lesson_id=${document.lesson_id}`, '#content')
                 break
             case 'rating':
-                htmx.ajax('GET', '{% url 'rating:view' course.id %}', '#content')
+                htmx.ajax('GET', '{% url 'rating:view_lesson' course.id %}', '#content')
                 break
             default:
                 htmx.ajax('GET', '{% url 'student:overview' course.id %}', '#content')

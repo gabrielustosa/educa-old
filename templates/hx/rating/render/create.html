@@ -1,19 +1,16 @@
-{% load bootstrap5 %}
+{% load crispy_forms_tags %}
 
 <div id="rating-create" class="container">
-    <h1 class="text-center">Avaliar curso</h1>
     <div>
         {% csrf_token %}
-        {% bootstrap_form form %}
-        {% buttons %}
-            <button id="send"
-                    class="btn btn-dark"
-                    hx-post="{% url 'rating:create' course.id %}"
-                    hx-target="#rating-content"
-                    hx-parent="#rating-create"
-                    hx-error="#rating-error">
-                Avaliar
-            </button>
-            {% endbuttons %}
+        {% crispy form %}
+        <button id="send"
+                class="bg-zinc-800 my-5 p-3 px-6 text-center rounded-sm text-white"
+                hx-post="{% url 'rating:create' course.id %}"
+                hx-target="#content"
+                hx-parent="#rating-create"
+                hx-error="#rating-error">
+            Avaliar
+        </button>
     </div>
 </div>
