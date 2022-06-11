@@ -1,4 +1,4 @@
 {% if first_render %}
-    <h5 class="pt-8 text-2xl font-medium">Todas as perguntas deste curso <span class="text-gray-600 text-xl">({{ paginator.object_list|length }})</span></h5>
+    <h5 class="py-8 text-2xl font-medium">Todas as perguntas deste curso <span class="text-gray-600 text-xl">({{ paginator.object_list|length }})</span></h5>
 {% endif %}
 {% include 'hx/question/question.html' with empty_message='Ainda não há perguntas.' %}

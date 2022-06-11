@@ -1,26 +1,20 @@
 {% load bleach_tags %}
 
-<div class="mx-auto">
-    <img src="{{ question.user.get_url_profile }}" alt="Imagem de perfil"
-         class="inline object-cover w-12 h-12 mr-2 rounded-full">
+<h5 class="text-lg font-bold">{{ question.title }}</h5>
+<div class="flex text-sm space-x-2">
+    <a href="{% url 'profile_view' question.user.id %}"
+       class="text-violet-500">
+        {{ question.user.name }}
+    </a>
+    <span>-</span>
+    <span class="text-violet-500 cursor-pointer"
+          hx-get="{% url 'student:select_video' %}?lesson_id={{ question.lesson.id }}"
+          hx-target="#video">
+        Aula {{ question.lesson.order }}
+    </span>
+    <span>-</span>
+    <span>{{ question.updated }}</span>
 </div>
-<div class="col-span-11">
-    <h5 class="text-lg font-bold">{{ question.title }}</h5>
-        <div class="flex text-sm py-2 space-x-2">
-            <a href="{% url 'profile_view' question.user.id %}"
-               class="text-violet-500">
-                {{ question.user.name }}
-            </a>
-            <span>-</span>
-            <span class="text-violet-500 cursor-pointer"
-                  hx-get="{% url 'student:select_video' %}?lesson_id={{ question.lesson.id }}"
-                  hx-target="#video">
-                Aula {{ question.lesson.order }}
-            </span>
-            <span>-</span>
-            <span>{{ question.updated }}</span>
-        </div>
-    <div class="pt-3 break-all">
-        {{ question.content|bleach:"em,b,code,li,p,span,i,br,ul,ol,sup,sub,u,hr,strike,font,img,a" }}
-        </div>
+<div class="pt-3 break-all">
+    {{ question.content|bleach:"em,b,code,li,p,span,i,br,ul,ol,sup,sub,u,hr,strike,font,img,a" }}
 </div>

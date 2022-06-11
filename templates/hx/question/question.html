@@ -1,69 +1,63 @@
 {% load course_filter %}
 {% load bleach_tags %}
 
-<div class="pt-5">
-    {% for question in questions %}
-        {% if scroll_url %}
-            {% if forloop.last %}
-                <div hx-get="{{ scroll_url }}?page={{ page_obj.number|add:'1' }}"
-                     hx-trigger="revealed"
-                     hx-swap="afterend">
-                </div>
-            {% endif %}
-        {% endif %}
-        <div class="grid grid-cols-6 py-2">
-            <div class="flex col-span-5">
-                <div class="mx-5">
-                    <img src="{{ question.user.get_url_profile }}" alt="Imagem de perfil"
-                         class="inline object-cover w-12 h-12 mr-2 rounded-full">
-                </div>
-                <div class="flex content-between">
-                    <div>
-                        <h5 id="view-question"
-                            class="text-lg font-bold pb-2"
-                            hx-get="{% url 'question:view' question.id %}"
-                            hx-target="#question-content">
-                            {{ question.title }}
-                        </h5>
-                        <div class="py-2">
-                            {{ question.content|cut_word:60|bleach:"em,b,code,li,p,span,i,br,ul,ol,sup,sub,u,hr,strike,font,img,a" }}
-                        </div>
-                        <div class="flex text-sm py-3 space-x-2">
-                            <a href="{% url 'profile_view' question.user.id %}"
-                               class="text-violet-500">
-                                {{ question.user.name }}
-                            </a>
-                            <span>-</span>
-                            <span class="text-violet-500 cursor-pointer"
-                                  hx-get="{% url 'student:select_video' %}?lesson_id={{ question.lesson.id }}"
-                                  hx-target="#video">
-                                Aula {{ question.lesson.order }}
-                            </span>
-                            <span>-</span>
-                            <span>{{ question.updated }}</span>
-                        </div>
-                    </div>
-                </div>
+{% for question in questions %}
+    {% if scroll_url %}
+        {% if forloop.last %}
+            <div hx-get="{{ scroll_url }}?page={{ page_obj.number|add:'1' }}"
+                 hx-trigger="revealed"
+                 hx-swap="afterend">
             </div>
-            <div>
-                <div class="flex items-center justify-end space-x-1">
-                    <span class="text-xl">{{ question.answers.all|length }}</span>
-                    <span class="pt-1"
-                          hx-get="{% url 'question:view' question.id %}"
-                          hx-target="#question-section">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                         viewBox="0 0 16 16">
-                        <path d="M2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"></path>
-                    </svg>
-                </span>
-                </div>
-                <div hx-get="{% url 'question:like' question.id %}"
-                     hx-target="this">
-                    {% include 'hx/question/likes.html' %}
-                </div>
+        {% endif %}
+    {% endif %}
+    <div class="flex max-w-full p-3">
+        <div class="px-2 mx-auto min-w-max">
+            <img src="{{ question.user.get_url_profile }}" alt="Imagem de perfil"
+                 class="inline object-cover w-12 h-12 mr-2 rounded-full">
+        </div>
+        <div class="grow">
+            <h5 id="view-question"
+                class="text-lg font-bold pb-2 cursor-pointer"
+                hx-get="{% url 'question:view' question.id %}"
+                hx-target="#question-content">
+                {{ question.title }}
+            </h5>
+            <div class="break-all mr-3">
+                {{ question.content|cut_word:100|bleach:"em,b,code,li,p,span,i,br,ul,ol,sup,sub,u,hr,strike,font,img,a" }}
+            </div>
+            <div class="flex text-sm py-2 space-x-2">
+                <a href="{% url 'profile_view' question.user.id %}"
+                   class="text-violet-500">
+                    {{ question.user.name }}
+                </a>
+                <span>-</span>
+                <span class="text-violet-500 cursor-pointer"
+                      hx-get="{% url 'student:select_video' %}?lesson_id={{ question.lesson.id }}"
+                      hx-target="#video">
+                        Aula {{ question.lesson.order }}
+                    </span>
+                <span>-</span>
+                <span>{{ question.updated }}</span>
             </div>
         </div>
-    {% empty %}
-        <h5 class="py-7 text-lg">{{ empty_message }}</h5>
-    {% endfor %}
-</div>
+        <div>
+            <div class="flex items-center justify-end space-x-2">
+                <span class="text-xl">{{ question.answers.all|length }}</span>
+                <span class="pt-1 cursor-pointer"
+                      hx-get="{% url 'question:view' question.id %}"
+                      hx-target="#question-section">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                             viewBox="0 0 16 16">
+                            <path d="M2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"></path>
+                        </svg>
+                    </span>
+            </div>
+            <div hx-get="{% url 'question:like' question.id %}"
+                 hx-target="this">
+                {% include 'hx/question/likes.html' %}
+            </div>
+        </div>
+    </div>
+{% empty %}
+    <h5 class="py-7 text-lg">{{ empty_message }}</h5>
+{% endfor %}

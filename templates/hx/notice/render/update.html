@@ -6,7 +6,7 @@
     <button id="save"
             class="bg-zinc-800 my-5 p-3 text-center w-full rounded-sm text-white"
             hx-post="{% url 'notice:update' notice.id %}"
-            hx-target="#notice-content"
+            hx-target="#content"
             hx-parent="#notice-update"
             hx-error="#notice-error">
         Salvar

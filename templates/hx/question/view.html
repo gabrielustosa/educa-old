@@ -8,8 +8,12 @@
         <ul class="text-red-500" id="question-error">
         </ul>
     </div>
-    <div class="flex justify-between">
-        <div id="question-spot" class="grid grid-cols-12 w-full">
+    <div class="flex max-w-full">
+        <div class="px-2 mx-auto min-w-max">
+            <img src="{{ question.user.get_url_profile }}" alt="Imagem de perfil"
+                 class="inline object-cover w-12 h-12 mr-2 rounded-full">
+        </div>
+        <div id="question-spot" class="grow">
             {% include 'hx/question/content.html' %}
         </div>
         {% if question.user == request.user %}

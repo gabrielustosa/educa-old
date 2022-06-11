@@ -1,7 +1,7 @@
 {% load course_filter %}
 
-<div class="pt-3">
-    <ul class="text-danger" id="notice-error">
+<div class="mx-24 py-7">
+    <ul class="text-red-500" id="notice-error">
     </ul>
 </div>
 <div id="notice-content" class="mx-24">
@@ -15,34 +15,36 @@
             </button>
         </div>
     {% endif %}
-    {% for notice in notices %}
-        <div id="notice-content" class="py-4 flex justify-between">
-        <div class="grid grid-cols-12">
-            {% include 'hx/notice/content.html' %}
-        </div>
-        <div>
-            {% if request.user|is_instructor:course %}
-                <div class="dropdown">
-                <i class="bi bi-three-dots-vertical"></i>
-                <div class="dropdown-content">
-                    <div class="pt-3 flex flex-col space-y-3">
-                        <span id="edit-question"
-                              class="cursor-pointer hover:text-violet-500"
-                              hx-get="{% url 'notice:render_update' notice.id %}"
-                              hx-target="#notice-content">
-                        Editar
-                        </span>
-                        <span id="delete-question"
-                              class="cursor-pointer hover:text-violet-500"
-                              hx-get="{% url 'notice:confirm' notice.id %}"
-                              hx-target="#modal-body">
-                            Apagar
-                        </span>
-                    </div>
+    <div id="notice-content" class="py-4 flex flex-col justify-between">
+        {% for notice in notices %}
+            <div class="flex max-w-full p-3">
+                <div class="px-2 mx-auto min-w-max">
+                    <img src="{{ notice.instructor.get_url_profile }}" alt="Imagem de perfil"
+                         class="inline object-cover w-12 h-12 mr-2 rounded-full">
                 </div>
-            {% endif %}
+                {% include 'hx/notice/content.html' %}
+                {% if request.user|is_instructor:course %}
+                    <div class="dropdown">
+                        <i class="bi bi-three-dots-vertical"></i>
+                        <div class="dropdown-content">
+                            <div class="pt-3 flex flex-col space-y-3">
+                               <span id="edit-question"
+                                     class="cursor-pointer hover:text-violet-500"
+                                     hx-get="{% url 'notice:render_update' notice.id %}"
+                                     hx-target="#notice-content">
+                               Editar
+                               </span>
+                                <span id="delete-question"
+                                      class="cursor-pointer hover:text-violet-500"
+                                      hx-get="{% url 'notice:confirm' notice.id %}"
+                                      hx-target="#modal-body">
+                                   Apagar
+                               </span>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
     </div>
 </div>

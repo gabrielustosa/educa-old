@@ -25,3 +25,13 @@ class Lesson(models.Model):
         if getattr(self, 'video_id') == "":
             setattr(self, 'video_id', get_url_id(getattr(self, 'video')))
         return super().save(**kwargs)
+
+    def delete(self, **kwargs):
+        for lesson in self.module.lessons.filter(order__gt=self.order).order_by('order').all():
+            lesson.order = lesson.order - 1
+            lesson.save()
+        for module in self.course.modules.filter(order__gt=self.module.order).order_by('order').all():
+            for lesson in module.lessons.order_by('order').all():
+                lesson.order = lesson.order - 1
+                lesson.save()
+        return super().delete(**kwargs)
