@@ -3,6 +3,7 @@ from django.forms import modelform_factory
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 
+from educa.apps.note.forms import NoteForm
 from educa.apps.note.models import Note
 from educa.mixin import CacheMixin
 
@@ -23,6 +24,7 @@ class NoteView(
         lesson = self.get_lesson()
 
         context['notes'] = Note.objects.filter(user=self.request.user, lesson=lesson)
+        context['lesson'] = lesson
 
         self.request.session[f'section-{lesson.course.id}'] = 'note'
 
@@ -35,7 +37,6 @@ class NoteRenderCreateView(
     CacheMixin,
 ):
     template_name = 'hx/note/render/create.html'
-    http_method_names = ['post', 'get', 'head', 'options']
 
     def get_kwargs(self):
         return self.request.GET
@@ -44,7 +45,7 @@ class NoteRenderCreateView(
         context = super().get_context_data(**kwargs)
 
         context['lesson'] = self.get_lesson()
-        context['form'] = modelform_factory(Note, fields=('note',))
+        context['form'] = NoteForm()
 
         return context
 
@@ -64,8 +65,7 @@ class NoteRenderUpdateView(
         note = get_object_or_404(Note, id=self.kwargs.get('note_id'))
 
         context['lesson'] = self.get_lesson()
-        form = modelform_factory(Note, fields=('note',))
-        context['form'] = form(instance=note)
+        context['form'] = NoteForm(instance=note)
         context['note'] = note
 
         return context

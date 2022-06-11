@@ -101,7 +101,7 @@
                     let result = formatTime(player.getCurrentTime())
                     let element = document.querySelector('#youtube-counter')
                     if (element) {
-                        element.innerText = result
+                        element.innerHTML = result
                         let counter = document.querySelector('#time-counter')
                         if (counter)
                             counter.setAttribute('value', result)

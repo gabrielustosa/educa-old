@@ -1,17 +1,15 @@
-{% load bootstrap5 %}
+{% load crispy_forms_tags %}
 
-<div id="note-update" class="container">
+<div id="note-update" class="w-full">
     {% csrf_token %}
     <input type="hidden" id="time-counter" name="time">
-    {% bootstrap_form form %}
-    {% buttons %}
-        <button id="save"
-                class="btn btn-dark"
-                hx-post="{% url 'note:update' note.id %}"
-                hx-target="#note-content"
-                hx-parent="#note-update"
-                hx-error="#note-error">
-            Salvar
-        </button>
-    {% endbuttons %}
+    {% crispy form %}
+    <button id="save"
+            class="bg-zinc-800 my-5 p-3 px-6 text-center rounded-sm text-white"
+            hx-post="{% url 'note:update' note.id %}"
+            hx-target="#content"
+            hx-parent="#note-update"
+            hx-error="#note-error">
+        Salvar
+    </button>
 </div>

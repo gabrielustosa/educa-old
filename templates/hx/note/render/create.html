@@ -1,21 +1,20 @@
-{% load bootstrap5 %}
+{% load crispy_forms_tags %}
 
-<div id="note-create" class="container">
-    <div id="youtube-counter"></div>
-    <h1 class="text-center">Criar observação</h1>
-    <div>
-        {% csrf_token %}
-        <input type="hidden" id="time-counter" name="time">
-        {% bootstrap_form form %}
-        {% buttons %}
+<div id="note-create">
+    <div class="flex space-x-5">
+        <div id="youtube-counter" class="text-lg font-bold text-white p-2 bg-zinc-800 rounded-lg max-h-12">0:00</div>
+        <div class="w-full">
+            {% csrf_token %}
+            <input type="hidden" id="time-counter" name="time" value="0:00">
+            {% crispy form %}
             <button id="send"
-                    class="btn btn-dark"
+                    class="bg-zinc-800 my-5 p-3 px-6 text-center rounded-sm text-white"
                     hx-post="{% url 'note:create' %}"
-                    hx-target="#note-content"
+                    hx-target="#content"
                     hx-parent="#note-create"
                     hx-error="#note-error">
-                Salvar
+                Criar
             </button>
-        {% endbuttons %}
+        </div>
     </div>
 </div>

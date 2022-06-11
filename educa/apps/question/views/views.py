@@ -94,7 +94,7 @@ class QuestionConfirmDeleteView(QuestionViewMixin):
         context = context | {
             'confirm_text': 'Você tem certeza que deseja deletar a sua pergunta?',
             'post_url': f'/course/question/crud/delete/{self.get_question.id}/',
-            'target': '#question-content',
+            'target': '#content',
         }
         return context
 

@@ -1,26 +1,45 @@
-<div>
-    <div>
-        <ul class="text-danger" id="note-error">
+{% load bleach_tags %}
+
+<div class="mx-24">
+    <div class="py-3">
+        <ul class="text-red-500" id="note-error">
         </ul>
     </div>
     <div id="note-content">
-        <div class="d-flex justify-content-end">
+        <div class="flex justify-end">
             <button id="create-note"
-                    class="btn btn-dark"
+                    class="bg-zinc-800 my-5 p-3 px-6 text-center rounded-sm text-white"
                     hx-get="{% url 'note:render_create' %}"
                     hx-target="#note-content">
                 Criar observação
             </button>
         </div>
-        <h3>Observações da aula</h3>
-
+        <h3 class="text-2xl pb-5">Observações da aula "{{ lesson.title }}"</h3>
         {% for note in notes %}
-            <div id="note-{{ note.id }}" class="d-flex justify-content-between">
-                <div>
-                    <p class="timer">{{ note.time }}</p>
-                    <p>{{ note.note }}</p>
+            <div id="note-{{ note.id }}" class="flex max-w-full p-3">
+                <div class="timer px-2 mx-auto min-w-max">
+                    <div class="font-bold text-white p-2 bg-zinc-800 rounded-lg max-h-12 cursor-pointer">
+                        {{ note.time }}
+                    </div>
                 </div>
-                <div>
+                <div class="grow self-center">
+                    <div class="pl-3">
+                        {% with lesson=note.lesson %}
+                            <div class="flex flex-col space-y-2 pb-5">
+                                <span class="text-lg font-bold">
+                                    {{ lesson.module.order }}. {{ lesson.module.title }}
+                                </span>
+                                <span class="pl-8 text-gray-600">
+                                    {{ lesson.order }}. {{ lesson.title }}
+                                </span>
+                            </div>
+                        {% endwith %}
+                        <div class="break-all">
+                            {{ note.note|bleach:"em,b,code,li,p,span,i,br,ul,ol,sup,sub,u,hr,strike,font,img,a" }}
+                        </div>
+                    </div>
+                </div>
+                <div class="flex space-x-5">
                     <i id="update"
                        hx-get="{% url 'note:render_update' note.id %}"
                        hx-target="#note-{{ note.id }}"
@@ -28,10 +47,13 @@
                     </i>
                     <i id="delete"
                        hx-get="{% url 'note:confirm' note.id %}"
-                       hx-target="#modal-confirm"
-                       class="bi bi-trash-fill"></i>
+                       hx-target="#modal-body"
+                       class="bi bi-trash-fill">
+                    </i>
                 </div>
             </div>
+        {% empty %}
+            <h3 class="text-lg py-3">Ainda não há nenhuma observação para essa aula.</h3>
         {% endfor %}
     </div>
 </div>
