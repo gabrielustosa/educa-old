@@ -16,7 +16,7 @@ class ContentCreateUpdateView(
     InstructorRequiredMixin,
     TemplateView,
 ):
-    template_name = 'content/create_or_update.html'
+    template_name = 'partials/crud/create_or_update.html'
     lesson = None
     model = None
     object = None
@@ -44,7 +44,7 @@ class ContentCreateUpdateView(
 
         if self.kwargs.get('object_id'):
             if self.kwargs.get('model_name') == 'text':
-                context['form'] = TextContentForm(instance=self.object, button_label='Salvar')
+                context['form'] = TextContentForm(instance=self.object)
             else:
                 context['form'] = form
             context['page_title'] = 'Editando conteúdo'
@@ -52,7 +52,7 @@ class ContentCreateUpdateView(
             context['button_label'] = 'Salvar'
         else:
             if self.kwargs.get('model_name') == 'text':
-                context['form'] = TextContentForm(button_label='Criar')
+                context['form'] = TextContentForm()
             else:
                 context['form'] = form
             context['page_title'] = 'Criando conteúdo'

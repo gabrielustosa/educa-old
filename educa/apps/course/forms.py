@@ -14,10 +14,10 @@ class CourseUpdateForm(forms.ModelForm):
             'requirements', 'description', 'image'
         ]
         widgets = {
-            'learn_description': SummernoteWidget(attrs={'summernote': {'width': '100%', 'height': '400px'}}),
-            'short_description': SummernoteWidget(attrs={'summernote': {'width': '100%', 'height': '400px'}}),
-            'description': SummernoteWidget(attrs={'summernote': {'width': '100%', 'height': '400px'}}),
-            'requirements': SummernoteWidget(attrs={'summernote': {'width': '100%', 'height': '400px'}}),
+            'learn_description': SummernoteWidget(attrs={'summernote': {'height': '400px'}}),
+            'short_description': SummernoteWidget(attrs={'summernote': {'height': '400px'}}),
+            'description': SummernoteWidget(attrs={'summernote': {'height': '400px'}}),
+            'requirements': SummernoteWidget(attrs={'summernote': {'height': '400px'}}),
         }
 
     def __init__(self, *args, **kwargs):

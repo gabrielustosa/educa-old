@@ -195,3 +195,22 @@ REST_FRAMEWORK = {
 # bleach
 
 BLEACH_ALLOWED_ATTRIBUTES = ['href', 'src', 'title', 'style', 'target']
+
+SUMMERNOTE_CONFIG = {
+    'iframe': True,
+
+    'summernote': {
+        'airMode': False,
+
+        'width': '100%',
+        'height': '200',
+
+        'toolbar': [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear']],
+            ['fontname', ['fontname']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['insert', ['link', 'picture']],
+        ],
+    }
+}
