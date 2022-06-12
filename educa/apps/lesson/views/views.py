@@ -1,7 +1,12 @@
+import json
+
+from braces.views import CsrfExemptMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
 from django.views.generic import TemplateView
 
-from educa.apps.lesson.models import Lesson
+from educa.apps.course.models import Course
+from educa.apps.lesson.models import Lesson, LessonRelation
 from educa.mixin import InstructorRequiredMixin, CacheMixin, HTMXRequireMixin
 
 
@@ -33,3 +38,24 @@ class LessonOrderView(
 
     def get_course(self):
         return self.get_module().course
+
+
+class LessonCheckView(
+    CsrfExemptMixin,
+    LoginRequiredMixin,
+    TemplateView,
+):
+    http_method_names = ['post']
+
+    def post(self, request, *args, **kwargs):
+        response_json = json.load(self.request)
+        check = response_json.get('check')
+        lesson_id = response_json.get('lesson_id')
+        lesson = Lesson.objects.get(id=lesson_id)
+
+        if LessonRelation.objects.filter(user=self.request.user, lesson__id=lesson_id).exists():
+            LessonRelation.objects.filter(user=self.request.user, lesson=lesson).update(done=check)
+        else:
+            LessonRelation.objects.create(lesson=lesson, user=request.user, done=check)
+
+        return JsonResponse({'status': 'ok'})

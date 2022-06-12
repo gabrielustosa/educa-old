@@ -1,6 +1,7 @@
 from django.db import models
 
 from educa.apps.course.models import Course
+from educa.apps.student.models import User
 from educa.utils.fields import LessonOrderField
 from educa.apps.module.models import Module
 from educa.utils.utils import get_url_id
@@ -36,3 +37,16 @@ class Lesson(models.Model):
                 lesson.order = lesson.order - 1
                 lesson.save()
         return super().delete(**kwargs)
+
+
+class LessonRelation(models.Model):
+    lesson = models.ForeignKey(
+        Lesson,
+        on_delete=models.CASCADE
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='lessons'
+    )
+    done = models.BooleanField(default=False)
