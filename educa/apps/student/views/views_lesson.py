@@ -8,6 +8,8 @@ from django.views.generic import TemplateView
 from educa.apps.content.models import Content
 from educa.apps.course.models import CourseRelation
 from educa.apps.lesson.models import Lesson
+from educa.apps.module.models import Module
+from educa.apps.module.module import ModuleObject, LessonObject
 from educa.mixin import CacheMixin
 
 
@@ -99,13 +101,49 @@ class CourseLessonSearchView(
             return HttpResponse(
                 '<h5 class="text-center text-3xl font-bold">Iniciar uma nova pesquisa</h5> <p class="text-center text-lg">Para encontrar aulas ou módulos</p>')
 
-        lessons = Lesson.objects.filter(course=course, title__icontains=search).all()
+        lessons_query = Lesson.objects.filter(course=course, title__icontains=search).all()
 
-        if not lessons.exists():
+        modules_query = Module.objects.filter(title__icontains=search).all()
+
+        if not lessons_query.exists() and not modules_query.exists():
             return HttpResponse(
                 f'<h5 class="text-center text-2xl font-bold">Nenhum resultado encontrado para "{search}"</h5> <p class="text-center text-lg">Sua pesquisa não correspondeu com nenhuma aula</p> ')
 
-        context['lessons'] = lessons
+        modules = []
+
+        for module in modules_query:
+            module_object = ModuleObject(
+                id_=module.id,
+                title=module.title,
+                order=module.order
+            )
+            modules.append(module_object)
+
+        for lesson in lessons_query:
+            lesson_module = lesson.module
+            lesson_object = LessonObject(
+                id_=lesson.id,
+                title=lesson.title,
+                order=lesson.order,
+                video_duration=lesson.video_duration
+            )
+            by_id = list(filter(lambda m: m.id == lesson_module.id, modules))
+            if by_id:
+                module = by_id[0]
+                module.video_duration += lesson.video_duration
+                module.add_lesson(lesson_object)
+            else:
+                module_object = ModuleObject(
+                    id_=lesson_module.id,
+                    title=lesson_module.title,
+                    order=lesson_module.order,
+                    video_duration=lesson.video_duration
+                )
+                module_object.add_lesson(lesson_object)
+                modules.append(module_object)
+
+        context['modules'] = modules
+        context['total_lessons'] = lessons_query.count()
         context['search'] = search
 
         return self.render_to_response(context)
