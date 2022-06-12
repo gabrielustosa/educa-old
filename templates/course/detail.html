@@ -24,10 +24,10 @@
         <div class="bg-zinc-800 w-full">
             <div class="grid grid-cols-3">
                 <div class="col-span-2 p-10 pl-28">
-                    {% include 'partials/course/detail/detail_info.html' %}
+                    {% include 'course/partials/detail_info.html' %}
                 </div>
                 <div class="relative">
-                    {% include 'partials/course/detail/detail_card.html' %}
+                    {% include 'course/partials/detail_card.html' %}
                 </div>
             </div>
         </div>
@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <div class="my-7 p-5">
-                    {% include 'partials/course/detail/accordion.html' %}
+                    {% include 'course/partials/accordion.html' %}
                 </div>
                 <div class="my-7">
                     <h1 class="p-5 text-2xl font-bold">Requisitos</h1>
@@ -55,15 +55,15 @@
                     </div>
                 </div>
                 <div class="my-7">
-                    {% include 'partials/course/detail/instructors.html' %}
+                    {% include 'course/partials/instructors.html' %}
                 </div>
                 <div id="rating">
-                    {% include 'partials/course/detail/rating/rating_feedback.html' %}
+                    {% include 'course/partials/rating/rating_feedback.html' %}
                 </div>
                 <div class="pt-8">
                     <h1 class="text-3xl font-bold pb-10">Avaliações</h1>
                     <div class="flex justify-between">
-                        {% include 'partials/course/detail/rating/rating_filter.html' %}
+                        {% include 'course/partials/rating/rating_filter.html' %}
                     </div>
                     <div id="rating-list" class="mx-14">
                     </div>

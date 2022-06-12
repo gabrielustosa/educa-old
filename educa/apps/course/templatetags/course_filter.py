@@ -1,5 +1,4 @@
 from django import template
-from django.db.models import Q
 
 from educa.apps.course.models import CourseRelation
 from educa.apps.lesson.models import LessonRelation
@@ -153,3 +152,13 @@ def format_time_counter(seconds):
 @register.filter()
 def user_done_lesson(user, lesson):
     return LessonRelation.objects.filter(user=user, lesson__id=lesson.id, done=True).exists()
+
+
+@register.filter()
+def get_total_lessons_done_by_module(user, module):
+    return LessonRelation.objects.filter(user=user, lesson__module=module, done=True).count()
+
+
+@register.filter()
+def get_total_lessons_done_by_course(user, course):
+    return LessonRelation.objects.filter(user=user, lesson__course=course, done=True).count()

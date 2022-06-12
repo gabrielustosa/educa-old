@@ -11,5 +11,5 @@ urlpatterns = [
     path('update/<int:lesson_id>/', views_crud.LessonUpdateView.as_view(), name='update'),
     path('delete/<int:lesson_id>/', views_crud.LessonDeleteView.as_view(), name='delete'),
     path('order/<int:module_id>/', views.LessonOrderView.as_view(), name='order'),
-    path('check/<int:lesson_id>/', views.LessonCheckView.as_view(), name='check'),
+    path('check/', views.LessonCheckView.as_view(), name='check'),
 ]

@@ -18,7 +18,7 @@
         </div>
     </div>
     <div id="question-filters" class="flex space-x-5 pt-6 relative">
-        {% include 'partials/lesson/question_filter.html' %}
+        {% include 'student/partials/question_filter.html' %}
         <button id="ask-button"
                 class="bg-zinc-800 p-4 absolute right-0 text-white"
                 hx-get="{% url 'question:render_create' course.id %}"

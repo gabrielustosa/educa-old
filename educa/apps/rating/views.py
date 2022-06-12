@@ -16,7 +16,7 @@ class RatingView(
     CacheMixin,
     ListView,
 ):
-    template_name = 'partials/course/detail/rating/rating.html'
+    template_name = 'course/partials/rating/rating.html'
     model = Rating
     paginate_by = 6
     context_object_name = 'ratings'

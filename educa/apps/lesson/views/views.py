@@ -5,7 +5,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.views.generic import TemplateView
 
-from educa.apps.course.models import Course
 from educa.apps.lesson.models import Lesson, LessonRelation
 from educa.mixin import InstructorRequiredMixin, CacheMixin, HTMXRequireMixin
 
@@ -53,9 +52,10 @@ class LessonCheckView(
         lesson_id = response_json.get('lesson_id')
         lesson = Lesson.objects.get(id=lesson_id)
 
-        if LessonRelation.objects.filter(user=self.request.user, lesson__id=lesson_id).exists():
+        if LessonRelation.objects.filter(user=self.request.user, lesson=lesson).exists():
             LessonRelation.objects.filter(user=self.request.user, lesson=lesson).update(done=check)
         else:
             LessonRelation.objects.create(lesson=lesson, user=request.user, done=check)
 
-        return JsonResponse({'status': 'ok'})
+        total = LessonRelation.objects.filter(user=request.user, lesson__course=lesson.course, done=True).count()
+        return JsonResponse({'total': total})

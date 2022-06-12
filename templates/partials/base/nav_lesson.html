@@ -1,7 +1,41 @@
+{% load course_filter %}
+
 <header class="py-3 bg-violet-700 text-white border-y-2 border-gray-600">
-    <div class="flex items-center space-x-5 mx-5 text-lg">
-        <a href="/" class="text-md pr-6">EDUCA</a>
-        <div class="border-l-2 border-zinc-800 w-10 h-7"></div>
-        <div>{{ course.title }}</div>
+    <div class="flex justify-between items-center space-x-5 mx-5 text-lg">
+        <div class="flex">
+            <a href="/" class="text-md pr-6">EDUCA</a>
+            <div class="border-l-2 border-zinc-800 w-10 h-7"></div>
+            <div>{{ course.title }}</div>
+        </div>
+        <div class="relative flex cursor-pointer" data-dropdown-toggle="dropdown">
+            <svg class="progress-ring"
+                 width="58"
+                 height="58">
+                <circle class="progress-ring__circle"
+                        stroke="white"
+                        stroke-width="3"
+                        fill="transparent"
+                        r="24"
+                        cx="28"
+                        cy="28">
+                </circle>
+            </svg>
+            <div class="absolute top-0" style="transform: translateX(100%) translateY(50%);">
+                <i class="bi bi-trophy text-gray-300"></i>
+            </div>
+            <div class="pl-4 self-center text-base">
+                Seu progresso
+                <i class="bi bi-chevron-down pt-1"></i>
+            </div>
+        </div>
+    </div>
+    <div id="dropdown" class="z-30 hidden bg-white divide-y divide-gray-100 rounded shadow w-60 dark:bg-gray-700">
+        <div class="py-4 text-sm text-zinc-800" aria-labelledby="dropdownDefault">
+            <div class="p-3">
+                <div class="mx-auto font-bold text-lg w-10/12">
+                    <span id="lessons-done">{{ user|get_total_lessons_done_by_course:course }}</span> de {{ course.get_total_lessons }} concluídos
+                </div>
+            </div>
+        </div>
     </div>
 </header>
