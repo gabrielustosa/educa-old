@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django_summernote',
     'django_htmx',
     'django_bleach',
+    'debug_toolbar',
 
     # my apps
     'educa.apps.course',
@@ -64,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -214,3 +216,7 @@ SUMMERNOTE_CONFIG = {
         ],
     }
 }
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]

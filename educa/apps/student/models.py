@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
+from django.db.models import Count
 
 
 class UserManager(BaseUserManager):
@@ -67,16 +68,12 @@ class User(AbstractUser):
         return f'https://ui-avatars.com/api/?name={first_name}&background=27272A&color=fff&format=png&font-size=0.5'
 
     def get_total_students(self):
-        count = 0
-        for course in self.courses_created.all():
-            count += course.students.count()
-        return count
+        query = self.courses_created.values('students').aggregate(total=Count('students'))
+        return query['total']
 
-    def get_total_ratings(self):
-        count = 0
-        for course in self.courses_created.all():
-            count += course.ratings.count()
-        return count
+    def get_total_rating(self):
+        query = self.courses_created.values('ratings').aggregate(total=Count('ratings'))
+        return query['total']
 
     def get_social_buttons(self):
         social = {

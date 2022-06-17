@@ -2,9 +2,9 @@
 
 <h1 class="text-2xl font-bold">Conteúdo do curso</h1>
 <div class="pt-8 text-sm">
-    {{ course.modules.all|length }} módulos • {{ course.lesson_set.all|length }} aulas • Duração total {{ course.get_total_video_seconds|format_time }}
+    {{ course.modules.all|length }} módulos • {{ course.lesson_set.all|length }} aulas • Duração total {{ total_video_hours|format_time }}
     <div class="pt-5">
-        {% for module in course.modules.all %}
+        {% for module in modules %}
             <div id="accordion-collapse" data-accordion="collapse">
                 <button type="button"
                         class="flex items-center p-3 text-lg w-full text-left border border-gray-200 focus:ring-4 focus:ring-gray-200"

@@ -1,10 +1,9 @@
 from django.db import models
-from django.db.models import Avg, Q
+from django.db.models import Avg, Q, Count, Sum
 from django.utils.text import slugify
 
 from educa.apps.student.models import User
 from educa.apps.subject.models import Subject
-from educa.utils.utils import format_time
 
 
 class Course(models.Model):
@@ -67,8 +66,7 @@ class Course(models.Model):
 
     def get_total_files_download(self):
         from educa.apps.content.models import Content
-        return Content.objects.filter(lesson__course=self).filter(
-            Q(content_type__model='file') | Q(content_type__model='image')).count()
+        return Content.objects.filter(lesson__course=self).filter(content_type__model__in=['file', 'image']).count()
 
     def get_rating_bars(self):
         ratings = self.ratings
@@ -92,10 +90,8 @@ class Course(models.Model):
         return result
 
     def get_total_video_seconds(self):
-        seconds = 0
-        for module in self.modules.all():
-            seconds += module.get_total_video_seconds()
-        return seconds
+        query = self.modules.values('lessons__video_duration').aggregate(total=Sum('lessons__video_duration'))
+        return query['total']
 
 
 class CourseRelation(models.Model):

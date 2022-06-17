@@ -4,7 +4,7 @@
     <h1 class="text-lg pl-3 font-bold py-3">Conteúdo do curso</h1>
 </div>
 <div class="overflow-auto" style="max-height: 80vh;">
-    {% for module in modules %}
+    {% for module in course.modules.all %}
         <div id="accordion-collapse" data-accordion="collapse">
             <button type="button"
                     class="flex items-center p-4 text-lg w-full text-left border border-gray-200 focus:ring-4 focus:ring-gray-200"

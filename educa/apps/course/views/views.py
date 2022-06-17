@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, TemplateView
 
 from educa.apps.course.models import Course
+from educa.apps.module.models import Module
 from educa.apps.rating.models import Rating
 from educa.apps.student.models import User
 from educa.mixin import InstructorRequiredMixin, CacheMixin, HTMXRequireMixin
@@ -17,6 +18,9 @@ class CourseListView(ListView):
     model = Course
     paginate_by = 6
     context_object_name = 'courses'
+
+    def get_queryset(self):
+        return Course.objects.prefetch_related('ratings').all()
 
 
 class CourseOwnerListView(
@@ -35,9 +39,17 @@ class CourseDetailView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        course = get_object_or_404(Course, id=self.kwargs['course_id'])
+        course = Course.objects \
+            .select_related('subject') \
+            .prefetch_related('instructors', 'ratings', 'lesson_set', 'modules') \
+            .get(id=self.kwargs['course_id'])
+
+        modules = course.modules.prefetch_related('lessons').all()
+
         context['course'] = course
-        context['ratings'] = Rating.objects.filter(course=course)
+        context['ratings'] = course.ratings
+        context['modules'] = modules
+        context['instructors'] = course.instructors.all()
 
         return context
 

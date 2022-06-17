@@ -1,6 +1,6 @@
 <h1 class="p-5 text-2xl font-bold">Instrutores</h1>
 <div class="pl-5">
-    {% for instructor in course.instructors.all %}
+    {% for instructor in instructors %}
         <div class="pb-4">
             <a href="{% url 'profile_view' instructor.id %}"
                class="text-violet-800 text-xl font-bold underline">
@@ -13,7 +13,7 @@
                 <div class="text-neutral-800">
                     <div>
                         <i class="bi bi-award-fill"></i>
-                        <span class="pl-1">{{ instructor.get_total_ratings }} Avaliações</span>
+                        <span class="pl-1">{{ instructor.get_total_rating }} Avaliações</span>
                     </div>
                     <div>
                         <i class="bi bi-people-fill"></i>
@@ -21,7 +21,7 @@
                     </div>
                     <div>
                         <i class="bi bi-play-circle-fill"></i>
-                        <span class="pl-1">{{ instructor.courses_created.all|length }} Cursos</span>
+                        <span class="pl-1">{{ instructor.courses_created.count }} Cursos</span>
                     </div>
                 </div>
             </div>

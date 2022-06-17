@@ -33,7 +33,7 @@
             // update if student in filter lesson
 
             if (document.querySelector('#filter-lesson-content')) {
-                htmx.ajax('GET', `/course/question/filter/lesson/${document.lesson_id}/?lesson_id=${document.lesson_id}`, '#question')
+                htmx.ajax('GET', `/course/question/filter/lesson/${document.lesson_id}/?lesson_id=${document.lesson_id}`, '#question-section')
             }
 
         }

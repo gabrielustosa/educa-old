@@ -12,7 +12,6 @@ from educa.utils.utils import render_error
 
 class RatingView(
     HTMXRequireMixin,
-    LoginRequiredMixin,
     CacheMixin,
     ListView,
 ):

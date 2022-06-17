@@ -10,9 +10,9 @@
     {{ course.short_description }}
 </p>
 <div class="flex pt-3">
-    <span class="text-yellow-300">{{ course.get_rating_avg|floatformat }}</span>
+    <span class="text-yellow-300">{{ rating_avg|floatformat }}</span>
     <span class="flex space-x-2  pl-1">
-        {% for r in course.get_rating_avg|get_rating_stars %}
+        {% for r in rating_avg|get_rating_stars %}
             {% if r == "i" %}
                 <svg xmlns="http://www.w3.org/2000/svg"
                      fill="currentColor" class="w-5 h-5 text-yellow-400"
@@ -29,14 +29,14 @@
         {% endfor %}
     </span>
     <span class="px-2 text-gray-500">
-        (<a href="#rating" class="text-violet-300 underline">{{ course.ratings.all|length }} avaliações</a>)
+        (<a href="#rating" class="text-violet-300 underline">{{ course.ratings.count }} avaliações</a>)
     </span>
     <span class="text-white">
         {{ course.students.all|length }} alunos
     </span>
 </div>
 <p class="text-white pt-2">Criado por
-    {% for instructor in course.instructors.all %}
+    {% for instructor in instructors %}
         <span class="text-violet-300">
             <a href="{% url 'profile_view' instructor.id %}" class="underline">
                 {{ instructor.name }}</a><span>{% if not forloop.last %}, {% endif %}</span>

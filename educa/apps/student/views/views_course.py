@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import TemplateView
@@ -29,9 +30,13 @@ class StudentCourseView(
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         course = self.get_course()
+        current_lesson = self.get_lesson()
+
+        if not course or not current_lesson:
+            raise Http404()
+
         context['course'] = course
-        context['modules'] = course.modules.all()
-        context['current_lesson'] = self.get_lesson()
+        context['current_lesson'] = current_lesson
 
         match self.request.session.get(f'section-{course.id}'):
             case 'search':

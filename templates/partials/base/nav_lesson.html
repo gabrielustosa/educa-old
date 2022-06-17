@@ -5,7 +5,7 @@
         <div class="flex">
             <a href="/" class="text-md pr-6">EDUCA</a>
             <div class="border-l-2 border-zinc-800 w-10 h-7"></div>
-            <div>{{ course.title }}</div>
+            <a href="{% url 'course:detail' course.id %}" class="cursor-pointer">{{ course.title }}</a>
         </div>
         <div class="relative flex cursor-pointer" data-dropdown-toggle="dropdown">
             <svg class="progress-ring"

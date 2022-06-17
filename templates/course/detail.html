@@ -20,57 +20,59 @@
 {% endblock %}
 
 {% block content %}
-    <section>
-        <div class="bg-zinc-800 w-full">
+    {% with rating_avg=course.get_rating_avg total_video_hours=course.get_total_video_seconds %}
+        <section>
+            <div class="bg-zinc-800 w-full">
+                <div class="grid grid-cols-3">
+                    <div class="col-span-2 p-10 pl-28">
+                        {% include 'course/partials/detail_info.html' %}
+                    </div>
+                    <div class="relative">
+                        {% include 'course/partials/detail_card.html' %}
+                    </div>
+                </div>
+            </div>
             <div class="grid grid-cols-3">
-                <div class="col-span-2 p-10 pl-28">
-                    {% include 'course/partials/detail_info.html' %}
-                </div>
-                <div class="relative">
-                    {% include 'course/partials/detail_card.html' %}
-                </div>
-            </div>
-        </div>
-        <div class="grid grid-cols-3">
-            <div class="mx-16 col-span-2">
-                <div class="my-7">
-                    <h1 class="p-5 text-2xl font-bold">O que você aprenderá</h1>
-                    <div class="mx-10 py-5">
-                        {{ course.learn_description|bleach:"em,b,code,li,p,span,i,br,ul,ol,sup,sub,u,hr,strike,font,img,a" }}
+                <div class="mx-16 col-span-2">
+                    <div class="my-7">
+                        <h1 class="p-5 text-2xl font-bold">O que você aprenderá</h1>
+                        <div class="mx-10 py-5">
+                            {{ course.learn_description|bleach:"em,b,code,li,p,span,i,br,ul,ol,sup,sub,u,hr,strike,font,img,a" }}
+                        </div>
                     </div>
-                </div>
-                <div class="my-7 p-5">
-                    {% include 'course/partials/accordion.html' %}
-                </div>
-                <div class="my-7">
-                    <h1 class="p-5 text-2xl font-bold">Requisitos</h1>
-                    <div class="mx-10 py-5">
-                        {{ course.requirements|bleach:"em,b,code,li,p,span,i,br,ul,ol,sup,sub,u,hr,strike,font,img,a" }}
+                    <div class="my-7 p-5">
+                        {% include 'course/partials/accordion.html' %}
                     </div>
-                </div>
-                <div class="my-7">
-                    <h1 class="p-5 text-2xl font-bold">Descrição</h1>
-                    <div class="mx-10 py-5">
-                        {{ course.requirements|bleach:"em,b,code,li,p,span,i,br,ul,ol,sup,sub,u,hr,strike,font,img,a" }}
+                    <div class="my-7">
+                        <h1 class="p-5 text-2xl font-bold">Requisitos</h1>
+                        <div class="mx-10 py-5">
+                            {{ course.requirements|bleach:"em,b,code,li,p,span,i,br,ul,ol,sup,sub,u,hr,strike,font,img,a" }}
+                        </div>
                     </div>
-                </div>
-                <div class="my-7">
-                    {% include 'course/partials/instructors.html' %}
-                </div>
-                <div id="rating">
-                    {% include 'course/partials/rating/rating_feedback.html' %}
-                </div>
-                <div class="pt-8">
-                    <h1 class="text-3xl font-bold pb-10">Avaliações</h1>
-                    <div class="flex justify-between">
-                        {% include 'course/partials/rating/rating_filter.html' %}
+                    <div class="my-7">
+                        <h1 class="p-5 text-2xl font-bold">Descrição</h1>
+                        <div class="mx-10 py-5">
+                            {{ course.requirements|bleach:"em,b,code,li,p,span,i,br,ul,ol,sup,sub,u,hr,strike,font,img,a" }}
+                        </div>
                     </div>
-                    <div id="rating-list" class="mx-14">
+                    <div class="my-7">
+                        {% include 'course/partials/instructors.html' %}
+                    </div>
+                    <div id="rating">
+                        {% include 'course/partials/rating/rating_feedback.html' %}
+                    </div>
+                    <div class="pt-8">
+                        <h1 class="text-3xl font-bold pb-10">Avaliações</h1>
+                        <div class="flex justify-between">
+                            {% include 'course/partials/rating/rating_filter.html' %}
+                        </div>
+                        <div id="rating-list" class="mx-14">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    {% endwith %}
 {% endblock %}
 
 {% block javascript %}
