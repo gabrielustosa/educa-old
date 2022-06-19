@@ -21,7 +21,7 @@ class RatingView(
     context_object_name = 'ratings'
 
     def get_queryset(self):
-        return Rating.objects.filter(course=self.get_course())
+        return Rating.objects.filter(course=self.get_course()).select_related('user')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

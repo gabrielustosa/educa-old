@@ -33,7 +33,7 @@
         <div class="py-4 text-sm text-zinc-800" aria-labelledby="dropdownDefault">
             <div class="p-3">
                 <div class="mx-auto font-bold text-lg w-10/12">
-                    <span id="lessons-done">{{ user|get_total_lessons_done_by_course:course }}</span> de {{ course.get_total_lessons }} concluídos
+                    <span id="lessons-done">{{ relations|get_total_lessons_done_by_course }}</span> de {{ course.total_lessons }} concluídos
                 </div>
             </div>
         </div>

@@ -97,7 +97,7 @@ class AnswerDeleteView(AnswerMixin):
 
     def post(self, request, *args, **kwargs):
         question = self.get_answer.question
-        answers = Answer.objects.filter(question=question)
+        answers = Answer.objects.filter(question=question).order_by('updated')
         form = AnswerForm()
 
         self.get_answer.delete()

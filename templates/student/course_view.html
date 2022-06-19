@@ -82,12 +82,11 @@
         circle.style.strokeDashoffset = `${circumference}`;
 
         function setProgress(percent) {
-            let total = parseInt('{{ course.get_total_lessons }}')
-            const offset = circumference - percent / total * circumference;
-            circle.style.strokeDashoffset = offset;
+            let total = parseInt('{{ course.total_lessons }}')
+            circle.style.strokeDashoffset = circumference - percent / total * circumference;
         }
 
-        let lessons_done = '{{ user|get_total_lessons_done_by_course:course }}'
+        let lessons_done = '{{ relations|get_total_lessons_done_by_course }}'
         setProgress(parseInt(lessons_done));
 
     </script>

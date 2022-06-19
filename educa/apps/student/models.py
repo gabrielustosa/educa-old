@@ -59,21 +59,16 @@ class User(AbstractUser):
         return self.name.split(' ')[0]
 
     def get_url_profile(self):
-        first_name = self.name.split(' ')[0]
+        name_parts = self.name.split(' ')
+        first_name = name_parts[0]
         last_name = None
-        if len(self.name.split(' ')) > 1:
-            last_name = self.name.split(' ')[1]
+
+        if len(name_parts) > 1:
+            last_name = name_parts[1]
+
         if last_name:
             return f'https://ui-avatars.com/api/?name={first_name}+{last_name}&background=27272A&color=fff&format=png&font-size=0.5'
         return f'https://ui-avatars.com/api/?name={first_name}&background=27272A&color=fff&format=png&font-size=0.5'
-
-    def get_total_students(self):
-        query = self.courses_created.values('students').aggregate(total=Count('students'))
-        return query['total']
-
-    def get_total_rating(self):
-        query = self.courses_created.values('ratings').aggregate(total=Count('ratings'))
-        return query['total']
 
     def get_social_buttons(self):
         social = {

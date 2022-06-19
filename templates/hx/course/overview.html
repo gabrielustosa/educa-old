@@ -9,12 +9,12 @@
     <div class="text-lg py-6 grid grid-cols-4 content-around">
         <div>Números do curso</div>
         <div class="mx-6">
-            <p>Alunos: {{ course.students.count }}</p>
-            <p>Aulas: {{ course.get_total_lessons }}</p>
+            <p>Alunos: {{ course.total_students }}</p>
+            <p>Aulas: {{ course.total_lessons }}</p>
         </div>
         <div class="mx-6">
-            <p>Perguntas: {{ course.get_total_questions }}</p>
-            <p>Horas de vídeo: {{ course.get_total_video_seconds|format_time }}</p>
+            <p>Perguntas: {{ course.total_questions }}</p>
+            <p>Horas de vídeo: {{ course.total_video_duration|format_time }}</p>
         </div>
     </div>
     <div class="text-lg py-6 grid grid-cols-4">
@@ -46,15 +46,15 @@
                         <div class="text-neutral-800">
                             <div>
                                 <i class="bi bi-award-fill"></i>
-                                <span class="pl-1">{{ instructor.get_total_ratings }} Avaliações</span>
+                                <span class="pl-1">{{ instructor.total_rating }} Avaliações</span>
                             </div>
                             <div>
                                 <i class="bi bi-people-fill"></i>
-                                <span class="pl-1">{{ instructor.get_total_students }} Alunos</span>
+                                <span class="pl-1">{{ instructor.total_students }} Alunos</span>
                             </div>
                             <div>
                                 <i class="bi bi-play-circle-fill"></i>
-                                <span class="pl-1">{{ instructor.courses_created.all|length }} Cursos</span>
+                                <span class="pl-1">{{ instructor.total_courses }} Cursos</span>
                             </div>
                         </div>
                     </div>

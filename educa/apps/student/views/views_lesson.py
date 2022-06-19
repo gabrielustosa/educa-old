@@ -2,11 +2,12 @@ import json
 
 from braces.views import CsrfExemptMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Sum, Count, Q
 from django.http import HttpResponse, JsonResponse
 from django.views.generic import TemplateView
 
 from educa.apps.content.models import Content
-from educa.apps.course.models import CourseRelation
+from educa.apps.course.models import CourseRelation, Course
 from educa.apps.lesson.models import Lesson
 from educa.apps.module.models import Module
 from educa.apps.module.module import ModuleObject, LessonObject
@@ -49,7 +50,6 @@ class LessonNoteView(
 
 class CourseOverView(
     LoginRequiredMixin,
-    CacheMixin,
     TemplateView,
 ):
     template_name = 'hx/course/overview.html'
@@ -57,7 +57,10 @@ class CourseOverView(
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        course = self.get_course()
+        course = Course.objects.filter(id=self.kwargs.get('course_id')) \
+            .annotate(total_video_duration=Sum('lesson__video_duration')) \
+            .annotate(total_students=Count('students')).prefetch_related('modules').first()
+
         context['course'] = course
         self.request.session[f'section-{course.id}'] = 'overview'
 
@@ -101,7 +104,7 @@ class CourseLessonSearchView(
             return HttpResponse(
                 '<h5 class="text-center text-3xl font-bold">Iniciar uma nova pesquisa</h5> <p class="text-center text-lg">Para encontrar aulas ou módulos</p>')
 
-        lessons_query = Lesson.objects.filter(course=course, title__icontains=search).all()
+        lessons_query = Lesson.objects.filter(course=course, title__icontains=search).select_related('module').all()
 
         modules_query = Module.objects.filter(title__icontains=search).all()
 

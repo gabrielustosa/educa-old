@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import F, ExpressionWrapper, PositiveIntegerField, When, Q
 from django.shortcuts import get_object_or_404
 from django.utils.functional import cached_property
 from django.views.generic import TemplateView
@@ -20,7 +21,9 @@ class NoticeView(
         context = super().get_context_data(**kwargs)
 
         course = self.get_course()
-        notices = Notice.objects.filter(course=course)
+        notices = Notice.objects.filter(course=course) \
+            .annotate(is_instructor=Q(instructor__exact=self.request.user)) \
+            .select_related('instructor')
         context['notices'] = notices
         context['course'] = course
 

@@ -1,13 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Q
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
+from django.db.models import Q, Count
+from django.http import HttpResponse, Http404
 from django.views.generic import ListView, TemplateView
 
 from educa.apps.course.models import Course
-from educa.apps.module.models import Module
-from educa.apps.rating.models import Rating
 from educa.apps.student.models import User
 from educa.mixin import InstructorRequiredMixin, CacheMixin, HTMXRequireMixin
 from educa.utils.utils import render_error
@@ -41,15 +38,23 @@ class CourseDetailView(TemplateView):
 
         course = Course.objects \
             .select_related('subject') \
-            .prefetch_related('instructors', 'ratings', 'lesson_set', 'modules') \
-            .get(id=self.kwargs['course_id'])
+            .prefetch_related('ratings', 'modules') \
+            .filter(id=self.kwargs['course_id']).first()
+
+        if not course:
+            raise Http404()
 
         modules = course.modules.prefetch_related('lessons').all()
 
         context['course'] = course
         context['ratings'] = course.ratings
         context['modules'] = modules
-        context['instructors'] = course.instructors.all()
+
+        context['instructors'] = course.instructors.annotate(
+            total_course=Count('courses_created'),
+            total_rating=Count('courses_created__ratings'),
+            total_students=Count('courses_created__students'),
+        ).all()
 
         return context
 

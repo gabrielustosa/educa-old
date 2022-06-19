@@ -47,26 +47,19 @@ class Course(models.Model):
     def __str__(self):
         return self.title
 
-    def get_rating_avg(self):
-        result = self.ratings.aggregate(Avg('rating'))
-        result = result['rating__avg']
-        if result:
-            return "{:.2f}".format(result)
-        return 0
+    # def get_rating_avg(self):
+    #     result = self.ratings.aggregate(Avg('rating'))
+    #     result = result['rating__avg']
+    #     if result:
+    #         return "{:.2f}".format(result)
+    #     return 0
 
     def get_first_lesson(self):
         return self.lesson_set.order_by('order').first()
 
-    def get_total_lessons(self):
-        return self.lesson_set.count()
-
-    def get_total_questions(self):
-        from educa.apps.question.models import Question
-        return Question.objects.filter(lesson__course=self).count()
-
-    def get_total_files_download(self):
-        from educa.apps.content.models import Content
-        return Content.objects.filter(lesson__course=self).filter(content_type__model__in=['file', 'image']).count()
+    # def get_total_files_download(self):
+    #     from educa.apps.content.models import Content
+    #     return Content.objects.filter(lesson__course=self).filter(content_type__model__in=['file', 'image']).count()
 
     def get_rating_bars(self):
         ratings = self.ratings
@@ -88,10 +81,10 @@ class Course(models.Model):
             result[k] = "{:.2f}".format(operation)
 
         return result
-
-    def get_total_video_seconds(self):
-        query = self.modules.values('lessons__video_duration').aggregate(total=Sum('lessons__video_duration'))
-        return query['total']
+    #
+    # def get_total_video_seconds(self):
+    #     query = self.modules.values('lessons__video_duration').aggregate(total=Sum('lessons__video_duration'))
+    #     return query['total']
 
 
 class CourseRelation(models.Model):

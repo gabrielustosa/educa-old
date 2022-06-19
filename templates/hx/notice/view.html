@@ -23,7 +23,7 @@
                          class="inline object-cover w-12 h-12 mr-2 rounded-full">
                 </div>
                 {% include 'hx/notice/content.html' %}
-                {% if request.user|is_instructor:course %}
+                {% if rating.is_instructor %}
                     <div class="dropdown">
                         <i class="bi bi-three-dots-vertical"></i>
                         <div class="dropdown-content">

@@ -52,8 +52,12 @@ def get_current_lesson(user, course):
 
 
 @register.filter()
-def sort_order(query):
-    return query.order_by('order')
+def get_module_lessons(lessons, module):
+    module_lessons = []
+    for lesson in lessons:
+        if lesson.module == module:
+            module_lessons.append(lesson)
+    return module_lessons
 
 
 @register.filter()
@@ -103,7 +107,7 @@ def cut_word(word, size):
 
 @register.filter()
 def is_instructor(user, course):
-    return user in course.instructors.all()
+    return course.instructors.filter(id=user.id).exists()
 
 
 @register.filter()
@@ -122,7 +126,7 @@ def format_time(seconds):
         result += f'{h} h '
     if m > 0:
         result += f'{m} m '
-    if result == '':
+    if result == '' and s > 0:
         result = f'{s} s '
     return result
 
@@ -155,10 +159,26 @@ def user_done_lesson(user, lesson):
 
 
 @register.filter()
-def get_total_lessons_done_by_module(user, module):
-    return LessonRelation.objects.filter(user=user, lesson__module=module, done=True).count()
+def get_total_lessons_done_by_module(relations, module):
+    count = 0
+    for relation in relations:
+        if relation.lesson.module == module and relation.done:
+            count += 1
+    return count
 
 
 @register.filter()
-def get_total_lessons_done_by_course(user, course):
-    return LessonRelation.objects.filter(user=user, lesson__course=course, done=True).count()
+def lesson_is_done(relations, lesson):
+    for relation in relations:
+        if relation.lesson == lesson:
+            return relation.done
+    return False
+
+
+@register.filter()
+def get_total_lessons_done_by_course(relations):
+    count = 0
+    for relation in relations:
+        if relation.done:
+            count += 1
+    return count

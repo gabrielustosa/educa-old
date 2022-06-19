@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView
@@ -55,6 +56,11 @@ class StudentProfileView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['user'] = get_object_or_404(User, id=self.kwargs.get('user_id'))
+        user = User.objects.filter(id=self.kwargs.get('user_id')).prefetch_related('courses_created').first()
+
+        if not user:
+            raise Http404()
+
+        context['user'] = user
 
         return context

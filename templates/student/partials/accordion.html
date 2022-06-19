@@ -4,7 +4,7 @@
     <h1 class="text-lg pl-3 font-bold py-3">Conteúdo do curso</h1>
 </div>
 <div class="overflow-auto" style="max-height: 80vh;">
-    {% for module in course.modules.all %}
+    {% for module in modules %}
         <div id="accordion-collapse" data-accordion="collapse">
             <button type="button"
                     class="flex items-center p-4 text-lg w-full text-left border border-gray-200 focus:ring-4 focus:ring-gray-200"
@@ -13,7 +13,7 @@
                       <span class="pl-3 text-black col-span-3">
                           <span class="flex flex-col">
                               <span class="font-bold">Módulo {{ module.order }}: {{ module.title }}</span>
-                              <span class="text-xs pt-1">{{ user|get_total_lessons_done_by_module:module }} / {{ module.lessons.all|length }} | {{ module.get_total_video_seconds|format_time }}</span>
+                              <span class="text-xs pt-1">{{ relations|get_total_lessons_done_by_module:module }} / {{ module.total_lessons }} | {{ module.total_video_duration|format_time }}</span>
                           </span>
                       </span>
                 </span>
@@ -27,13 +27,13 @@
             </button>
             <div id="accordion-module-{{ module.id }}" class="hidden">
                 <div class="p-5 border border-t-0 border-gray-200 space-y-2 dark:border-gray-70">
-                    {% for lesson in module.lessons|sort_order %}
+                    {% for lesson in lessons|get_module_lessons:module %}
                         <div class="relative">
                             <div class="flex cursor-pointer">
                                 <div class="pt-3">
                                     <label>
                                         <input type="checkbox" value="{{ lesson.id }}" name="checkbox"
-                                                {% if request.user|user_done_lesson:lesson %} checked {% endif %}
+                                                {% if relations|lesson_is_done:lesson %} checked {% endif %}
                                                class="w-6 h-6 bg-gray-200 rounded cursor-pointer checked:bg-zinc-600 border-transparent focus:border-transparent focus:ring-0 focus:outline-none">
                                     </label>
                                 </div>
@@ -65,51 +65,49 @@
 
                         <div id="accordion-dropdown-{{ lesson.id }}"
                              class="z-10 hidden bg-white shadow-xl divide-y divide-gray-600 p-3 rounded shadow w-56">
-                            <ul class="py-1 text-center list-none" aria-labelledby="dropdownDefault">
-                                {% for subject in subjects %}
-                                    {% for content in lesson.contents.all %}
-                                        {% with item=content.item %}
-                                            {% if item|item_is_instance:'text' %}
-                                                <li class="p-1">
-                                                    <a id="content-text"
-                                                       class="hover:text-violet-500 cursor-pointer"
-                                                       hx-get="{% url 'student:lesson_note' content.id %}"
-                                                       hx-target="#modal-body">
-                                                        <i class="bi bi-card-text pr-1"></i>
-                                                        {{ item.title|cut_word:15 }}
-                                                    </a>
-                                                </li>
-                                            {% endif %}
-                                            {% if item|item_is_instance:'file' %}
-                                                <li class="p-1">
-                                                    <a class="hover:text-violet-500 cursor-pointer"
-                                                       href="{{ item.file.url }}" download>
-                                                        <i class="bi bi-file-earmark pr-1"></i>
-                                                        {{ item.title|cut_word:15 }}
-                                                    </a>
-                                                </li>
-                                            {% endif %}
-                                            {% if item|item_is_instance:'image' %}
-                                                <li class="p-1">
-                                                    <a class="hover:text-violet-500 cursor-pointer"
-                                                       href="{{ item.image.url }}" download>
-                                                        <i class="bi bi-file-earmark-image pr-1"></i>
-                                                        {{ item.title|cut_word:15 }}
-                                                    </a>
-                                                </li>
-                                            {% endif %}
-                                            {% if item|item_is_instance:'link' %}
-                                                <li class="p-1">
-                                                    <a class="hover:text-violet-500 cursor-pointer"
-                                                       href="{{ item.url }}"
-                                                       target="_blank">
-                                                        <i class="bi bi-link-45deg pr-1"></i>
-                                                        {{ item.title|cut_word:15 }}
-                                                    </a>
-                                                </li>
-                                            {% endif %}
-                                        {% endwith %}
-                                    {% endfor %}
+                            <ul class="py-1 text-center list-none">
+                                {% for content in lesson.contents.all %}
+                                    {% with item=content.item %}
+                                        {% if item|item_is_instance:'text' %}
+                                            <li class="p-1">
+                                                <a id="content-text"
+                                                   class="hover:text-violet-500 cursor-pointer"
+                                                   hx-get="{% url 'student:lesson_note' content.id %}"
+                                                   hx-target="#modal-body">
+                                                    <i class="bi bi-card-text pr-1"></i>
+                                                    {{ item.title|cut_word:15 }}
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% if item|item_is_instance:'file' %}
+                                            <li class="p-1">
+                                                <a class="hover:text-violet-500 cursor-pointer"
+                                                   href="{{ item.file.url }}" download>
+                                                    <i class="bi bi-file-earmark pr-1"></i>
+                                                    {{ item.title|cut_word:15 }}
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% if item|item_is_instance:'image' %}
+                                            <li class="p-1">
+                                                <a class="hover:text-violet-500 cursor-pointer"
+                                                   href="{{ item.image.url }}" download>
+                                                    <i class="bi bi-file-earmark-image pr-1"></i>
+                                                    {{ item.title|cut_word:15 }}
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% if item|item_is_instance:'link' %}
+                                            <li class="p-1">
+                                                <a class="hover:text-violet-500 cursor-pointer"
+                                                   href="{{ item.url }}"
+                                                   target="_blank">
+                                                    <i class="bi bi-link-45deg pr-1"></i>
+                                                    {{ item.title|cut_word:15 }}
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    {% endwith %}
                                 {% endfor %}
                             </ul>
                         </div>

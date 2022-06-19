@@ -20,13 +20,3 @@ class Module(models.Model):
 
     def __str__(self):
         return f'{self.order}. {self.title}'
-
-    def get_total_lessons(self):
-        from educa.apps.lesson.models import Lesson
-        return Lesson.objects.filter(module=self).count()
-
-    def get_total_video_seconds(self):
-        seconds = 0
-        for lesson in self.lessons.all():
-            seconds += lesson.video_duration
-        return seconds
