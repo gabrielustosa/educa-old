@@ -182,3 +182,31 @@ def get_total_lessons_done_by_course(relations):
         if relation.done:
             count += 1
     return count
+
+
+@register.filter()
+def replace_dot(replace):
+    return replace.replace(',', '.')
+
+
+@register.filter()
+def get_rating_bars(course):
+    ratings = course.ratings
+
+    ranting_dict = {5: 0, 4: 0, 3: 0, 2: 0, 1: 0}
+    numbers_rating = [1, 2, 3, 4, 5]
+    for number in numbers_rating:
+        for rating in ratings.all():
+            if int(rating.rating) == number:
+                ranting_dict[int(rating.rating)] = ranting_dict.get(int(rating.rating)) + 1
+
+    result = {}
+
+    for k, v in ranting_dict.items():
+        try:
+            operation = v / len(ratings.all()) * 100
+        except ZeroDivisionError:
+            operation = 0
+        result[k] = "{:.2f}".format(operation)
+
+    return result.items()

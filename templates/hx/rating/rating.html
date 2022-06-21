@@ -18,10 +18,8 @@
         {% endif %}
 
         <div>
-            {% with rating_avg=course.get_rating_avg %}
-                <div>
-                    {% include 'course/partials/rating/rating_feedback.html' %}
-                </div>
+            {% with rating_avg=course.rating_avg %}
+                {% include 'course/partials/rating/rating_feedback.html' %}
             {% endwith %}
             <div class="pt-8">
                 <h1 class="text-3xl font-bold pb-10">Avaliações</h1>

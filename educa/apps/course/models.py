@@ -46,44 +46,12 @@ class Course(models.Model):
     def __str__(self):
         return self.title
 
-    # def get_rating_avg(self):
-    #     result = self.ratings.aggregate(Avg('rating'))
-    #     result = result['rating__avg']
-    #     if result:
-    #         return "{:.2f}".format(result)
-    #     return 0
-
     def get_first_lesson(self):
         return self.lesson_set.order_by('order').first()
 
     def total_files_download(self):
         from educa.apps.content.models import Content
         return Content.objects.filter(lesson__course=self).filter(content_type__model__in=['file', 'image']).count()
-
-    def get_rating_bars(self):
-        ratings = self.ratings
-
-        ranting_dict = {5: 0, 4: 0, 3: 0, 2: 0, 1: 0}
-        numbers_rating = [1, 2, 3, 4, 5]
-        for number in numbers_rating:
-            for rating in ratings.all():
-                if int(rating.rating) == number:
-                    ranting_dict[int(rating.rating)] = ranting_dict.get(int(rating.rating)) + 1
-
-        result = {}
-
-        for k, v in ranting_dict.items():
-            try:
-                operation = v / len(ratings.all()) * 100
-            except ZeroDivisionError:
-                operation = 0
-            result[k] = "{:.2f}".format(operation)
-
-        return result
-    #
-    # def get_total_video_seconds(self):
-    #     query = self.modules.values('lessons__video_duration').aggregate(total=Sum('lessons__video_duration'))
-    #     return query['total']
 
 
 class CourseRelation(models.Model):

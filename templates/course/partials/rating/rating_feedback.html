@@ -3,7 +3,7 @@
 <h1 class="text-3xl font-bold">Feedback dos alunos</h1>
 <div class="grid grid-cols-4">
     <div class="pt-6 text-center">
-        <h1 class="text-6xl font-bold text-yellow-500">{{ rating_avg|floatformat:'0' }}</h1>
+        <h1 class="text-6xl font-bold text-yellow-500">{{ rating_avg|floatformat:'1'|replace_dot }}</h1>
         <div class="flex justify-center space-x-2 items-center py-2">
             {% for r in rating_avg|get_rating_stars %}
                 {% if r == "i" %}
@@ -23,7 +23,7 @@
         <p class="text-yellow-600 text-lg">Avaliação do curso</p>
     </div>
     <div class="col-span-3 pt-3 space-y-2">
-        {% for k, v in course.get_rating_bars.items %}
+        {% for k, v in course|get_rating_bars %}
             <div class="grid grid-cols-2 items-center">
                 <div class="progress w-full bg-gray-200 rounded-full h-4" data-value="{{ k }}">
                     <div class="bg-gray-600 h-4 rounded-full" style="width: {{ v }}%"></div>
@@ -44,7 +44,7 @@
                         {% endif %}
                     {% endfor %}
                     <div class="grid grid-cols-3 items-center w-1/3">
-                        <span class="pl-5 text-violet-500 text-lg">{{ v|floatformat }}%</span>
+                        <span class="pl-5 text-violet-500 text-lg">{{ v|floatformat:'0' }}%</span>
                         <i id="close-{{ k }}" class="close col-span-2 text-right bi bi-x hidden"></i>
                     </div>
                 </div>

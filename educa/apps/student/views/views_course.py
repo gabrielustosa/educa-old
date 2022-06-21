@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Count, Q, Sum
+from django.db.models import Count, Sum
 from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -8,7 +8,6 @@ from django.views.generic import TemplateView
 
 from educa.apps.course.models import Course, CourseRelation
 from educa.apps.lesson.models import LessonRelation, Lesson
-from educa.apps.student.models import User
 from educa.mixin import CacheMixin
 
 
@@ -41,13 +40,13 @@ class StudentCourseView(
         context['course'] = course
 
         context['relations'] = LessonRelation.objects \
-            .filter(
-            user=self.request.user,
-            lesson__course=course
-        ).prefetch_related('lesson__module').all()
+            .filter(user=self.request.user,
+                    lesson__course=course).prefetch_related('lesson__module').all()
 
-        context['modules'] = course.modules.annotate(total_lessons=Count('lessons'), total_video_duration=Sum(
-            'lessons__video_duration')).prefetch_related('lessons').all()
+        context['modules'] = course.modules.annotate(
+            total_lessons=Count('lessons'),
+            total_video_duration=Sum('lessons__video_duration')).prefetch_related('lessons').all()
+
         context['lessons'] = Lesson.objects.filter(course=course).order_by('order').select_related(
             'module').prefetch_related('contents').all()
 

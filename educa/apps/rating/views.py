@@ -1,10 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Avg
 from django.forms import modelform_factory
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import TemplateView, ListView
 
+from educa.apps.course.models import Course
 from educa.apps.rating.models import Rating
 from educa.mixin import CacheMixin, HTMXRequireMixin
 from educa.utils.utils import render_error
@@ -12,7 +14,6 @@ from educa.utils.utils import render_error
 
 class RatingView(
     HTMXRequireMixin,
-    CacheMixin,
     ListView,
 ):
     template_name = 'course/partials/rating/rating.html'
@@ -21,7 +22,10 @@ class RatingView(
     context_object_name = 'ratings'
 
     def get_queryset(self):
-        return Rating.objects.filter(course=self.get_course()).select_related('user')
+        return Rating.objects.filter(course__id=self.kwargs.get('course_id')).select_related('user')
+
+    def get_course(self):
+        return Course.objects.filter(id=self.kwargs.get('course_id')).annotate(rating_avg=Avg('ratings__rating')).first()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
