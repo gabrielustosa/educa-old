@@ -20,7 +20,7 @@
 {% endblock %}
 
 {% block content %}
-    {% with rating_avg=course.get_rating_avg total_video_hours=course.get_total_video_seconds %}
+    {% with rating_avg=course.rating_avg total_video_hours=course.get_total_video_seconds %}
         <section>
             <div class="bg-zinc-800 w-full">
                 <div class="grid grid-cols-3">

@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Avg, Sum, Subquery, F
 from django.http import HttpResponse, Http404
 from django.views.generic import ListView, TemplateView
 
@@ -17,7 +17,7 @@ class CourseListView(ListView):
     context_object_name = 'courses'
 
     def get_queryset(self):
-        return Course.objects.prefetch_related('ratings').all()
+        return Course.objects.annotate(rating_avg=Avg('ratings__rating')).all()
 
 
 class CourseOwnerListView(
@@ -36,10 +36,17 @@ class CourseDetailView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        course = Course.objects \
-            .select_related('subject') \
-            .prefetch_related('ratings', 'modules') \
-            .filter(id=self.kwargs['course_id']).first()
+        course_id = self.kwargs.get('course_id')
+
+        course_query = Course.objects.filter(id=course_id).annotate(
+            rating_avg=Avg('ratings__rating'),
+            total_video_duration=Subquery(
+                Course.objects.filter(id=course_id).annotate(
+                    total=Sum('lesson__video_duration')).values('total'),
+            ),
+        ).select_related('subject').prefetch_related('ratings', 'modules', 'lesson_set')
+
+        course = course_query.first()
 
         if not course:
             raise Http404()
@@ -51,9 +58,15 @@ class CourseDetailView(TemplateView):
         context['modules'] = modules
 
         context['instructors'] = course.instructors.annotate(
-            total_course=Count('courses_created'),
-            total_rating=Count('courses_created__ratings'),
-            total_students=Count('courses_created__students'),
+            total_courses=Count('courses_created'),
+            total_rating=Subquery(
+                User.objects.filter(id=F('id')).annotate(
+                    total=Count('courses_created__ratings__rating')).values('total'),
+            ),
+            total_students=Subquery(
+                User.objects.filter(id=F('id')).annotate(
+                    total=Count('courses_created__students')).values('total'),
+            ),
         ).all()
 
         return context

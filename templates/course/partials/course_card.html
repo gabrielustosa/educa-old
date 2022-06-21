@@ -14,7 +14,7 @@
             {% endfor %}
         </div>
         <div class="flex items-center space-x-1">
-            {% with rating_avg=course.get_rating_avg %}
+            {% with rating_avg=course.rating_avg %}
                 <span>{{ rating_avg|floatformat }}</span>
                 {% for r in rating_avg|get_rating_stars %}
                     {% if r == "i" %}

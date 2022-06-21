@@ -33,7 +33,7 @@
     <div class="text-lg py-6 grid grid-cols-4">
         <div>Instrutores do curso</div>
         <div class="col-span-2  mx-6">
-            {% for instructor in course.instructors.all %}
+            {% for instructor in instructors %}
                 <div class="pb-4">
                     <a href="{% url 'profile_view' instructor.id %}"
                        class="text-violet-800 text-xl font-bold underline">

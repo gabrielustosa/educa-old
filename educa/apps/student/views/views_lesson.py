@@ -2,7 +2,7 @@ import json
 
 from braces.views import CsrfExemptMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Sum, Count, Q
+from django.db.models import Sum, Count, Q, Subquery, F
 from django.http import HttpResponse, JsonResponse
 from django.views.generic import TemplateView
 
@@ -11,6 +11,7 @@ from educa.apps.course.models import CourseRelation, Course
 from educa.apps.lesson.models import Lesson
 from educa.apps.module.models import Module
 from educa.apps.module.module import ModuleObject, LessonObject
+from educa.apps.student.models import User
 from educa.mixin import CacheMixin
 
 
@@ -57,11 +58,37 @@ class CourseOverView(
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        course = Course.objects.filter(id=self.kwargs.get('course_id')) \
-            .annotate(total_video_duration=Sum('lesson__video_duration')) \
-            .annotate(total_students=Count('students')).prefetch_related('modules').first()
+        course_id = self.kwargs.get('course_id')
+
+        course = Course.objects.filter(id=course_id).prefetch_related('modules') \
+            .annotate(
+            total_students=Count('students'),
+            total_lessons=Subquery(
+                Course.objects.filter(id=course_id).annotate(total=Count('lesson')).values('total')
+            ),
+            total_questions=Subquery(
+                Course.objects.filter(id=course_id).annotate(total=Count('lesson__questions')).values('total')
+            ),
+            total_video_duration=Subquery(
+                Course.objects.filter(id=course_id).annotate(
+                    total=Sum('lesson__video_duration')).values('total'),
+            )
+        ).first()
 
         context['course'] = course
+
+        context['instructors'] = course.instructors.annotate(
+            total_courses=Count('courses_created'),
+            total_rating=Subquery(
+                User.objects.filter(id=F('id')).annotate(
+                    total=Count('courses_created__ratings__rating')).values('total'),
+            ),
+            total_students=Subquery(
+                User.objects.filter(id=F('id')).annotate(
+                    total=Count('courses_created__students')).values('total'),
+            ),
+        ).all()
+
         self.request.session[f'section-{course.id}'] = 'overview'
 
         return context

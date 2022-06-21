@@ -2,7 +2,7 @@
 
 <h1 class="text-2xl font-bold">Conteúdo do curso</h1>
 <div class="pt-8 text-sm">
-    {{ course.modules.all|length }} módulos • {{ course.lesson_set.all|length }} aulas • Duração total {{ total_video_hours|format_time }}
+    {{ course.modules.count }} módulos • {{ course.lesson_set.count }} aulas • Duração total {{  course.total_video_duration|format_time }}
     <div class="pt-5">
         {% for module in modules %}
             <div id="accordion-collapse" data-accordion="collapse">
@@ -19,8 +19,8 @@
                     <span class="grid grid-cols-2 content-between w-full">
                            <span class="pl-3 text-black">{{ module.title }}</span>
                            <span class="text-right text-sm">
-                               <span>{{ module.lessons.all|length }} aulas •</span>
-                               <span>{{ module.get_total_video_seconds|format_time }}</span>
+                               <span>{{ module.lessons.count }} aulas •</span>
+                               <span>{{ module.total_video_duration }}</span>
                            </span>
                         </span>
                 </button>

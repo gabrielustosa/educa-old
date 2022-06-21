@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models import Avg, Q, Count, Sum
 from django.utils.text import slugify
 
 from educa.apps.student.models import User
@@ -57,9 +56,9 @@ class Course(models.Model):
     def get_first_lesson(self):
         return self.lesson_set.order_by('order').first()
 
-    # def get_total_files_download(self):
-    #     from educa.apps.content.models import Content
-    #     return Content.objects.filter(lesson__course=self).filter(content_type__model__in=['file', 'image']).count()
+    def total_files_download(self):
+        from educa.apps.content.models import Content
+        return Content.objects.filter(lesson__course=self).filter(content_type__model__in=['file', 'image']).count()
 
     def get_rating_bars(self):
         ratings = self.ratings
