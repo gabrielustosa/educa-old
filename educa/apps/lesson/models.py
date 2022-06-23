@@ -4,7 +4,7 @@ from educa.apps.course.models import Course
 from educa.apps.student.models import User
 from educa.utils.fields import LessonOrderField
 from educa.apps.module.models import Module
-from educa.utils.utils import get_url_id
+from educa.utils.utils import get_url_id, get_video_duration
 
 
 class Lesson(models.Model):
@@ -26,6 +26,8 @@ class Lesson(models.Model):
     def save(self, **kwargs):
         if self.video_id == '':
             self.video_id = get_url_id(self.video)
+            self.video_duration = get_video_duration(self.video)
+
         return super().save(**kwargs)
 
     def delete(self, **kwargs):

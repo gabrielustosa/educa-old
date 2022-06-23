@@ -68,6 +68,8 @@ def user_liked(user, question):
 @register.filter()
 def get_rating_stars(avg):
     stars = []
+    if not avg:
+        avg = 0
     avg = float(avg)
     avg_int = int(avg)
     for n in range(avg_int):
@@ -112,11 +114,15 @@ def is_instructor(user, course):
 
 @register.filter()
 def get_only_hour(seconds):
+    if not seconds:
+        seconds = 1
     return round(seconds / 3600)
 
 
 @register.filter()
 def format_time(seconds):
+    if not seconds:
+        seconds = 1
     h = round(seconds / 3600)
     m = round(seconds % 3600 / 60)
     s = seconds % 60

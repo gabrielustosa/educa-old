@@ -58,7 +58,10 @@ class CourseDetailView(TemplateView):
         context['modules'] = modules
 
         context['instructors'] = course.instructors.annotate(
-            total_courses=Count('courses_created'),
+            total_courses=Subquery(
+                User.objects.filter(id=F('id')).annotate(
+                    total=Count('courses_created')).values('total'),
+            ),
             total_rating=Subquery(
                 User.objects.filter(id=F('id')).annotate(
                     total=Count('courses_created__ratings__rating')).values('total'),

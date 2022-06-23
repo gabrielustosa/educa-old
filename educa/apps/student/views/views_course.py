@@ -45,7 +45,7 @@ class StudentCourseView(
 
         context['modules'] = course.modules.annotate(
             total_lessons=Count('lessons'),
-            total_video_duration=Sum('lessons__video_duration')).prefetch_related('lessons').all()
+            total_video_duration=Sum('lessons__video_duration')).prefetch_related('lessons').order_by('order').all()
 
         context['lessons'] = Lesson.objects.filter(course=course).order_by('order').select_related(
             'module').prefetch_related('contents').all()

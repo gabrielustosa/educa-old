@@ -1,3 +1,4 @@
+from django.db.models import Avg
 from django.shortcuts import get_object_or_404
 from django.utils.functional import cached_property
 
@@ -22,6 +23,6 @@ class SubjectCourseView(CourseListView):
     def get_queryset(self):
         subject = self.get_subject
 
-        queryset = Course.objects.filter(subject=subject)
+        queryset = Course.objects.filter(subject=subject).annotate(rating_avg=Avg('ratings__rating'))
 
         return queryset
