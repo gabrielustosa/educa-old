@@ -1,6 +1,7 @@
 # Educa
 
-IMG
+![Screenshot from 2022-06-28 15-29-51](https://user-images.githubusercontent.com/59217330/176256435-61e44864-b525-4015-a9d4-fa4ef127687a.png)
+
 
 O educa é uma plataforma de cursos online inspirada na udemy.
 
@@ -31,14 +32,14 @@ git clone https://github.com/gabrielustosa/educa.git
 Agora, dentro da pasta que você baixou inicie um ambiente virtual.
 
 ```
-python3.9 -m venv venv
-. venv/bin/activate
+python3 -m venv venv
+source venv/bin/activate
 ```
 
 Instale todos os pacotes necessários
 
 ```
-pip install -r requirements.txt
+pip install youtube-dl && pip install -r requirements.txt
 ```
 
 Ajuste o .env
@@ -47,6 +48,12 @@ Ajuste o .env
 cp .env-example .env
 nano .env
 ```
+
+Faça as migrações 
+
+```
+python manage.py migrate
+``` 
 
 ### Observação
 
