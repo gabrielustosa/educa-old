@@ -52,21 +52,22 @@ class StudentCourseView(
 
         context['current_lesson'] = current_lesson
 
-        match self.request.session.get(f'section-{course.id}'):
-            case 'search':
-                select = 'search'
-            case 'overview':
-                select = 'overview'
-            case 'question':
-                select = 'question'
-            case 'notice':
-                select = 'notice'
-            case 'note':
-                select = 'note'
-            case 'rating':
-                select = 'rating'
-            case _:
-                select = 'overview'
+        section = self.request.session.get(f'section-{course.id}')
+
+        if section == 'search':
+            select = 'search'
+        elif section == 'overview':
+            select = 'overview'
+        elif section == 'question':
+            select = 'question'
+        elif section == 'notice':
+            select = 'notice'
+        elif section == 'note':
+            select = 'note'
+        elif section == 'rating':
+            select = 'rating'
+        else:
+            select = 'overview'
 
         context['select'] = select
 
