@@ -48,6 +48,7 @@ mock==4.0.3
 note==0.5.2
 outcome==1.1.0
 packaging==21.3
+youtube-dl==2021.12.17
 pafy @ git+https://github.com/Cupcakus/pafy@45f0deb067bf7c420cdf83a0529fd5274c12de18
 parameterized==0.8.1
 Pillow==9.1.1
@@ -97,4 +98,3 @@ webencodings==0.5.1
 Werkzeug==2.1.2
 wrapt==1.14.1
 wsproto==1.1.0
-youtube-dl==2021.12.17
