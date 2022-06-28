@@ -136,7 +136,7 @@ class CourseLessonSearchView(
 
         lessons_query = Lesson.objects.filter(course=course, title__icontains=search).select_related('module').all()
 
-        modules_query = Module.objects.filter(title__icontains=search).all()
+        modules_query = Module.objects.filter(course=course, title__icontains=search).all()
 
         if not lessons_query.exists() and not modules_query.exists():
             return HttpResponse(

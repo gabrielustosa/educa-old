@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Subquery, Count, F
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
@@ -56,7 +57,17 @@ class StudentProfileView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        user = User.objects.filter(id=self.kwargs.get('user_id')).prefetch_related('courses_created').first()
+        user = User.objects.filter(id=self.kwargs.get('user_id')).prefetch_related('courses_created') \
+            .annotate(
+            total_rating=Subquery(
+                User.objects.filter(id=F('id')).annotate(
+                    total=Count('courses_created__ratings__rating')).values('total'),
+            ),
+            total_students=Subquery(
+                User.objects.filter(id=F('id')).annotate(
+                    total=Count('courses_created__students')).values('total'),
+            ),
+        ).first()
 
         if not user:
             raise Http404()

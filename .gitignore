@@ -147,3 +147,9 @@ summernote/
 static/admin
 
 static/CACHE
+
+package-lock.json
+package.json
+tailwind.config.js
+debug_toolbar
+src

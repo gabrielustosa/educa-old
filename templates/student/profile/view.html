@@ -26,11 +26,11 @@
                     <div class="flex py-8 space-x-6">
                         <div>
                             <p class="text-gray-500 font-bold">Total de alunos</p>
-                            <span class="pt-2 text-2xl font-bold">{{ user.get_total_students }}</span>
+                            <span class="pt-2 text-2xl font-bold">{{ user.total_students }}</span>
                         </div>
                         <div>
                             <p class="text-gray-500 font-bold">Avaliações</p>
-                            <span class="pt-2 text-2xl font-bold">{{ user.get_total_ratings }}</span>
+                            <span class="pt-2 text-2xl font-bold">{{ user.total_ratings }}</span>
                         </div>
                     </div>
                 {% endif %}
@@ -42,7 +42,7 @@
                 {% endif %}
                 {% if user.is_instructor %}
                     <div class="py-5">
-                        <h1 class="py-2 text-xl font-bold">Meus cursos ({{ user.courses_created.all|length }})</h1>
+                        <h1 class="py-2 text-xl font-bold">Meus cursos ({{ user.courses_created.count }})</h1>
                         <div class="grid grid cols-2">
                             {% for course in user.courses_created.all %}
                                 {% include 'course/partials/course_card.html' %}

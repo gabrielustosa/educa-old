@@ -49,7 +49,7 @@
 
     <div id="option-dropdown"
          class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-72">
-        <ul class="py-1 text-sm space-y-2 dark:text-gray-200" aria-labelledby="dropdownDefault">
+        <ul class="py-1 text-sm space-y-2 dark:text-gray-200 list-none" aria-labelledby="dropdownDefault">
             {% if user.is_authenticated %}
                 <div class="flex items-center px-5 py-5 text-gray-900 mx-auto">
                     <a href="{% url 'profile' %}">

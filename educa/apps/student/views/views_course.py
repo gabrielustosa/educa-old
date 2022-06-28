@@ -11,7 +11,7 @@ from educa.apps.lesson.models import LessonRelation, Lesson
 from educa.mixin import CacheMixin
 
 
-class StudentCourseListView(TemplateView):
+class StudentCourseListView(LoginRequiredMixin, TemplateView):
     template_name = 'student/list.html'
 
     def get_context_data(self, **kwargs):

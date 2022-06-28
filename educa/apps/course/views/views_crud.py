@@ -28,6 +28,7 @@ class CourseCreateView(
         return context
 
     def form_valid(self, form):
+        form.instance.owner = self.request.user
         response = super().form_valid(form)
 
         user = self.request.user
