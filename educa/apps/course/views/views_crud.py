@@ -19,11 +19,6 @@ class CourseCreateView(
     fields = ['title', 'description', 'subject', 'image', 'short_description', 'learn_description', 'requirements']
     success_url = reverse_lazy('course:mine')
 
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_superuser:
-            raise PermissionDenied()
-        return super().dispatch(request, *args, **kwargs)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
