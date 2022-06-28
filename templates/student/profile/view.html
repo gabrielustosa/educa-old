@@ -26,11 +26,11 @@
                     <div class="flex py-8 space-x-6">
                         <div>
                             <p class="text-gray-500 font-bold">Total de alunos</p>
-                            <span class="pt-2 text-2xl font-bold">{{ user.total_students }}</span>
+                            <span class="pt-2 text-2xl font-bold">{{ user.get_total_students }}</span>
                         </div>
                         <div>
                             <p class="text-gray-500 font-bold">Avaliações</p>
-                            <span class="pt-2 text-2xl font-bold">{{ user.total_ratings }}</span>
+                            <span class="pt-2 text-2xl font-bold">{{ user.get_total_rating }}</span>
                         </div>
                     </div>
                 {% endif %}

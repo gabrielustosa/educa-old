@@ -57,6 +57,18 @@ class User(AbstractUser):
     def first_name(self):
         return self.name.split(' ')[0]
 
+    def get_total_students(self):
+        count = 0
+        for course in self.courses_created.all():
+            count += course.students.count()
+        return count
+
+    def get_total_rating(self):
+        count = 0
+        for course in self.courses_created.all():
+            count += course.ratings.count()
+        return count
+
     def get_url_profile(self):
         name_parts = self.name.split(' ')
         first_name = name_parts[0]
