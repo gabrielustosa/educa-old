@@ -18,13 +18,10 @@ class TestModuleCrud(TestCustomBase):
         self.assertEqual(response.status_code, 403)
 
     def test_user_cant_create_module_if_course_is_not_his_own(self):
-        user = UserFactory(username='teste')
-        course = CourseFactory(owner=user)
-
-        self.login()
+        course = CourseFactory()
 
         response = self.response_get('module:create', kwargs={'course_id': course.id})
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 302)
 
     def test_user_without_permission_can_view_update_module(self):
         module = ModuleFactory()
